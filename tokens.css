@@ -1,22 +1,60 @@
 /* ============================================================
-   YUZK.AI Design System — Design Tokens v1.5.0
+   YUZK.AI Design System — Design Tokens v2.2.0
    唯一事实来源：MASTER.md
    用法：引入本文件后，只使用语义令牌，禁止裸 hex。
    默认主题：亮色（:root）。暗色为可选主题：[data-theme='dark']。
+   品牌色：只改「BRAND CONFIG」一段即可换色，下游零硬编码。
    ============================================================ */
 
 @import url('https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&family=JetBrains+Mono:wght@400;500;600&family=Space+Grotesk:wght@500;600;700&display=swap');
 
 :root {
-  /* ---------- Brand: Electric Blue ---------- */
-  --blue-300: #A9C8FF;
-  --blue-400: #7FB0FF;
-  --blue-500: #4C8DFF;
-  --blue-600: #2F6BDB;
-  --blue-700: #2455B4;
-  --blue-950: #071A3A;
-  --blue-glow: rgba(76, 141, 255, .18);
-  --blue-ring: rgba(76, 141, 255, .50);
+  /* ==========================================================
+     BRAND CONFIG · 品牌色配置端
+     ----------------------------------------------------------
+     换品牌色 = 只改下面 8 个 --brand-* 值。
+     全部语义令牌（--accent / --action-primary / --focus-ring /
+     --chart-1 / --text-link / --bg-selected / --syntax-number …）
+     自动跟随，下游零硬编码。
+
+     色阶语义（必须按此排布，否则对比度会崩）：
+       300 最浅   暗底高亮文字
+       400        次要图表序列、悬停文字
+       500        暗色主题核心强调（焦点环、激活、数据高亮）
+       550        暗色主按钮悬停（500 与 600 的中间档）
+       600        暗色实心主按钮底
+       700        亮色主题核心强调 + 实心按钮底
+       800        按下态、链接正文
+       950 最深   品牌信息底
+
+     硬约束（改色后必须实测）：
+       brand-700 对 #FFFFFF ≥ 4.5:1   亮色 CTA / accent
+       brand-600 对 #FFFFFF ≥ 4.5:1   暗色实心按钮
+       brand-500 对 #05080F ≥ 4.5:1   暗色 accent / focus ring
+     详见 THEMING.md §5.6。
+     ========================================================== */
+  --brand-300: #A9C8FF;
+  --brand-400: #7FB0FF;
+  --brand-500: #4C8DFF;
+  --brand-550: #3470E1;
+  --brand-600: #2F6BDB;
+  --brand-700: #2455B4;
+  --brand-800: #1D4796;
+  --brand-950: #071A3A;
+
+  /* 品牌派生 · 自动计算，禁止手改 */
+  --brand-glow: color-mix(in srgb, var(--brand-500) 18%, transparent);
+  --brand-ring: color-mix(in srgb, var(--brand-500) 50%, transparent);
+
+  /* 兼容别名 · @deprecated since v2.2.0 —— 改引 --brand-*，v3.0.0 移除 */
+  --blue-300: var(--brand-300);
+  --blue-400: var(--brand-400);
+  --blue-500: var(--brand-500);
+  --blue-600: var(--brand-600);
+  --blue-700: var(--brand-700);
+  --blue-950: var(--brand-950);
+  --blue-glow: var(--brand-glow);
+  --blue-ring: var(--brand-ring);
 
   /* ---------- Neutral ramp (light · default) ---------- */
   --gray-950: #F5F7FB;
@@ -44,21 +82,21 @@
   --text-secondary: var(--gray-400);
   --text-tertiary: var(--gray-500);
   --text-inverse: var(--white);
-  --action-primary: #2455B4;
-  --action-primary-hover: #2F6BDB;
-  --action-primary-active: #1D4796;
+  --action-primary: var(--brand-700);
+  --action-primary-hover: var(--brand-600);
+  --action-primary-active: var(--brand-800);
   --on-action-primary: var(--white);
-  --accent: #2455B4;
+  --accent: var(--brand-700);
   --on-accent: var(--white);
-  --focus-ring: #2455B4;
+  --focus-ring: var(--brand-700);
   --success: #12805C;
   --warning: #9A5B00;
   --danger: #C22B2B;
-  --info: #2455B4;
+  --info: var(--brand-700);
   --success-bg: rgba(18, 128, 92, .08);
   --warning-bg: rgba(154, 91, 0, .08);
   --danger-bg: rgba(194, 43, 43, .08);
-  --info-bg: rgba(36, 85, 180, .08);
+  --info-bg: color-mix(in srgb, var(--brand-700) 8%, transparent);
   --overlay: rgba(13, 20, 32, .42);
   --grid-line: rgba(13, 20, 32, .05);
 
@@ -110,7 +148,8 @@
   --shadow-md: 0 8px 24px rgba(13, 20, 32, .08);
   --shadow-lg: 0 20px 48px rgba(13, 20, 32, .12);
   --shadow-focus: 0 0 0 2px var(--bg-canvas), 0 0 0 4px var(--focus-ring);
-  --shadow-active: 0 0 0 1px var(--blue-ring), 0 0 20px var(--blue-glow);
+  --shadow-active: 0 0 0 1px var(--brand-ring), 0 0 20px var(--brand-glow);
+  --glow-accent: var(--brand-glow);   /* 品牌柔光：品牌符号内发光、强调描边外发光 */
 
   /* ---------- Motion ---------- */
   --duration-instant: 80ms;
@@ -150,20 +189,20 @@
   /* ---------- Interaction states (light · default) ---------- */
   --bg-hover: rgba(13, 20, 32, .04);
   --bg-active: rgba(13, 20, 32, .08);
-  --bg-selected: rgba(36, 85, 180, .08);
+  --bg-selected: color-mix(in srgb, var(--brand-700) 8%, transparent);
   --bg-disabled: rgba(13, 20, 32, .04);
   --border-hover: #8B99AD;
-  --border-focus: #2455B4;
+  --border-focus: var(--brand-700);
   --border-disabled: #DCE3ED;
   --text-disabled: #8B99AD;
-  --text-link: #1D4796;
-  --text-link-hover: #2455B4;
-  --text-link-visited: #1D4796;
+  --text-link: var(--brand-800);
+  --text-link-hover: var(--brand-700);
+  --text-link-visited: var(--brand-800);
   --focus-ring-width: 2px;
   --focus-ring-offset: 2px;
 
   /* ---------- Data visualization (light · 8 series) ---------- */
-  --chart-1: #2455B4;
+  --chart-1: var(--brand-700);
   --chart-2: #12805C;
   --chart-3: #B26B00;
   --chart-4: #C22B2B;
@@ -177,7 +216,7 @@
   /* ---------- Code syntax (light) ---------- */
   --syntax-keyword: #A85000;
   --syntax-string: #12805C;
-  --syntax-number: #2455B4;
+  --syntax-number: var(--brand-700);
   --syntax-comment: #8B99AD;
   --syntax-function: #8A5A00;
   --syntax-variable: #0D1420;
@@ -231,21 +270,21 @@
   --text-secondary: #A7B3C6;
   --text-tertiary: #6E7C91;
   --text-inverse: #05080F;
-  --action-primary: #2F6BDB;
-  --action-primary-hover: #3B78E8;
-  --action-primary-active: #2455B4;
+  --action-primary: var(--brand-600);
+  --action-primary-hover: var(--brand-550);
+  --action-primary-active: var(--brand-700);
   --on-action-primary: #FFFFFF;
-  --accent: #4C8DFF;
+  --accent: var(--brand-500);
   --on-accent: #05080F;
-  --focus-ring: #4C8DFF;
+  --focus-ring: var(--brand-500);
   --success: #37D399;
   --warning: #FFB020;
   --danger: #FF5C5C;
-  --info: #4C8DFF;
+  --info: var(--brand-500);
   --success-bg: rgba(55, 211, 153, .10);
   --warning-bg: rgba(255, 176, 32, .10);
   --danger-bg: rgba(255, 92, 92, .10);
-  --info-bg: rgba(76, 141, 255, .10);
+  --info-bg: color-mix(in srgb, var(--brand-500) 10%, transparent);
   --overlay: rgba(3, 6, 12, .72);
   --grid-line: rgba(255, 255, 255, .035);
   --shadow-sm: 0 1px 2px rgba(0, 0, 0, .24);
@@ -255,22 +294,22 @@
   /* ---------- Interaction states (dark) ---------- */
   --bg-hover: rgba(255, 255, 255, .05);
   --bg-active: rgba(255, 255, 255, .09);
-  --bg-selected: rgba(76, 141, 255, .14);
+  --bg-selected: color-mix(in srgb, var(--brand-500) 14%, transparent);
   --bg-disabled: rgba(255, 255, 255, .04);
   --border-hover: #4C5A70;
-  --border-focus: #4C8DFF;
+  --border-focus: var(--brand-500);
   --border-disabled: #242C3A;
   --text-disabled: #4C5A70;
-  --text-link: #7FB0FF;
-  --text-link-hover: #A9C8FF;
-  --text-link-visited: #7FB0FF;
+  --text-link: var(--brand-400);
+  --text-link-hover: var(--brand-300);
+  --text-link-visited: var(--brand-400);
 
   /* ---------- Data visualization (dark) ---------- */
-  --chart-1: #4C8DFF;
+  --chart-1: var(--brand-500);
   --chart-2: #37D399;
   --chart-3: #FFB020;
   --chart-4: #FF5C5C;
-  --chart-5: #7FB0FF;
+  --chart-5: var(--brand-400);
   --chart-6: #2FB8B8;
   --chart-7: #94A3B8;
   --chart-8: #D98A8A;
@@ -280,7 +319,7 @@
   /* ---------- Code syntax (dark) ---------- */
   --syntax-keyword: #FF9E64;
   --syntax-string: #7DD3A8;
-  --syntax-number: #7FB0FF;
+  --syntax-number: var(--brand-400);
   --syntax-comment: #6E7C91;
   --syntax-function: #FFD166;
   --syntax-variable: #F2F6FC;

@@ -3,25 +3,27 @@
 <head>
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
-<title>YUZK.AI — Design System v2.1.0</title>
+<title>YUZK.AI — Design System v2.2.0</title>
 <style>
 /* ==================== TOKENS ==================== */
 @import url('https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&family=JetBrains+Mono:wght@400;500;600&family=Space+Grotesk:wght@500;600;700&display=swap');
 
 :root{
-  /* Light is the default theme */
-  --blue-300:#A9C8FF;--blue-400:#7FB0FF;--blue-500:#4C8DFF;--blue-600:#2F6BDB;--blue-700:#2455B4;--blue-950:#071A3A;
-  --blue-glow:rgba(76,141,255,.18);--blue-ring:rgba(76,141,255,.5);
+  /* ===== BRAND CONFIG · 品牌色配置端（唯一人工改色处，8 槽位）===== */
+  --brand-300:#A9C8FF;--brand-400:#7FB0FF;--brand-500:#4C8DFF;--brand-550:#3470E1;--brand-600:#2F6BDB;--brand-700:#2455B4;--brand-800:#1D4796;--brand-950:#071A3A;
+  --brand-glow:color-mix(in srgb,var(--brand-500) 18%,transparent);--brand-ring:color-mix(in srgb,var(--brand-500) 50%,transparent);
+  /* 兼容别名 @deprecated since v2.2.0 → 改引 --brand-* */
+  --blue-300:var(--brand-300);--blue-400:var(--brand-400);--blue-500:var(--brand-500);--blue-600:var(--brand-600);--blue-700:var(--brand-700);--blue-950:var(--brand-950);--blue-glow:var(--brand-glow);--blue-ring:var(--brand-ring);
   --gray-950:#F5F7FB;--gray-900:#FFF;--gray-850:#EEF2F8;--gray-800:#FFF;--gray-750:#DCE3ED;--gray-700:#AEBBCC;
   --gray-600:#8B99AD;--gray-500:#5F6D82;--gray-400:#4A576B;--gray-100:#0D1420;
   --white:#FFF;--near-black:#0D1420;
   --bg-canvas:var(--gray-950);--bg-surface:var(--gray-900);--bg-surface-2:var(--gray-850);--bg-elevated:var(--gray-800);--bg-inset:#F8FAFD;
   --border-subtle:var(--gray-750);--border-strong:var(--gray-700);
   --text-primary:var(--gray-100);--text-secondary:var(--gray-400);--text-tertiary:var(--gray-500);
-  --action-primary:#2455B4;--action-primary-hover:#2F6BDB;--action-primary-active:#1D4796;
-  --on-action-primary:var(--white);--accent:#2455B4;--on-accent:var(--white);--focus-ring:#2455B4;
-  --success:#12805C;--warning:#9A5B00;--danger:#C22B2B;--info:#2455B4;
-  --success-bg:rgba(18,128,92,.08);--warning-bg:rgba(154,91,0,.08);--danger-bg:rgba(194,43,43,.08);--info-bg:rgba(36,85,180,.08);
+  --action-primary:var(--brand-700);--action-primary-hover:var(--brand-600);--action-primary-active:var(--brand-800);
+  --on-action-primary:var(--white);--accent:var(--brand-700);--on-accent:var(--white);--focus-ring:var(--brand-700);
+  --success:#12805C;--warning:#9A5B00;--danger:#C22B2B;--info:var(--brand-700);
+  --success-bg:rgba(18,128,92,.08);--warning-bg:rgba(154,91,0,.08);--danger-bg:rgba(194,43,43,.08);--info-bg:color-mix(in srgb,var(--brand-700) 8%,transparent);
   --overlay:rgba(13,20,32,.42);--grid-line:rgba(13,20,32,.05);
   --font-display:'Space Grotesk','Inter','PingFang SC','Microsoft YaHei',sans-serif;
   --font-body:'Inter','PingFang SC','Microsoft YaHei',sans-serif;
@@ -31,17 +33,17 @@
   --space-0:0;--space-1:4px;--space-2:8px;--space-3:12px;--space-4:16px;--space-5:24px;--space-6:32px;--space-7:48px;--space-8:64px;--space-9:96px;
   --radius-none:0;--radius-sm:4px;--radius-md:8px;--radius-lg:12px;--radius-pill:999px;
   --shadow-sm:0 1px 2px rgba(13,20,32,.06);--shadow-md:0 8px 24px rgba(13,20,32,.08);--shadow-lg:0 20px 48px rgba(13,20,32,.12);
-  --shadow-focus:0 0 0 2px var(--bg-canvas),0 0 0 4px var(--focus-ring);--shadow-active:0 0 0 1px var(--blue-ring),0 0 20px var(--blue-glow);
+  --shadow-focus:0 0 0 2px var(--bg-canvas),0 0 0 4px var(--focus-ring);--shadow-active:0 0 0 1px var(--brand-ring),0 0 20px var(--brand-glow);--glow-accent:var(--brand-glow);
   --duration-instant:80ms;--duration-fast:160ms;--duration-normal:240ms;--duration-slow:360ms;--dur-micro:var(--duration-instant);--dur-fast:var(--duration-fast);--dur-normal:var(--duration-normal);--dur-slow:var(--duration-slow);
   --ease-out:cubic-bezier(.2,.8,.2,1);--ease-in-out:cubic-bezier(.4,0,.2,1);
   --sidebar-width:248px;--topbar-height:56px;--content-max:1160px;--content-pad:24px;
   /* v1.2 state / data / syntax / size */
-  --bg-hover:rgba(13,20,32,.04);--bg-active:rgba(13,20,32,.08);--bg-selected:rgba(36,85,180,.08);--bg-disabled:rgba(13,20,32,.04);
-  --border-hover:#8B99AD;--border-focus:#2455B4;--border-disabled:#DCE3ED;--text-disabled:#8B99AD;
-  --text-link:#1D4796;--text-link-hover:#2455B4;--text-link-visited:#1D4796;--focus-ring-width:2px;--focus-ring-offset:2px;
-  --chart-1:#2455B4;--chart-2:#12805C;--chart-3:#B26B00;--chart-4:#C22B2B;--chart-5:#3F6FA8;--chart-6:#1F8A8A;--chart-7:#5F6B7A;--chart-8:#8A4A4A;
+  --bg-hover:rgba(13,20,32,.04);--bg-active:rgba(13,20,32,.08);--bg-selected:color-mix(in srgb,var(--brand-700) 8%,transparent);--bg-disabled:rgba(13,20,32,.04);
+  --border-hover:#8B99AD;--border-focus:var(--brand-700);--border-disabled:#DCE3ED;--text-disabled:#8B99AD;
+  --text-link:var(--brand-800);--text-link-hover:var(--brand-700);--text-link-visited:var(--brand-800);--focus-ring-width:2px;--focus-ring-offset:2px;
+  --chart-1:var(--brand-700);--chart-2:#12805C;--chart-3:#B26B00;--chart-4:#C22B2B;--chart-5:#3F6FA8;--chart-6:#1F8A8A;--chart-7:#5F6B7A;--chart-8:#8A4A4A;
   --chart-grid:rgba(13,20,32,.08);--chart-axis:#5F6D82;
-  --syntax-keyword:#A85000;--syntax-string:#12805C;--syntax-number:#2455B4;--syntax-comment:#8B99AD;--syntax-function:#8A5A00;--syntax-variable:#0D1420;
+  --syntax-keyword:#A85000;--syntax-string:#12805C;--syntax-number:var(--brand-700);--syntax-comment:#8B99AD;--syntax-function:#8A5A00;--syntax-variable:#0D1420;
   --size-icon-sm:16px;--size-icon-md:20px;--size-icon-lg:24px;--size-icon-xl:32px;--size-control-sm:32px;--size-control-md:40px;--size-control-lg:48px;--size-touch-min:44px;
   --opacity-1:.04;--opacity-2:.08;--opacity-3:.16;--opacity-4:.32;
 }
@@ -51,20 +53,27 @@
   --bg-canvas:var(--gray-950);--bg-surface:var(--gray-900);--bg-surface-2:var(--gray-850);--bg-elevated:var(--gray-800);--bg-inset:#0B0E15;
   --border-subtle:var(--gray-750);--border-strong:var(--gray-700);
   --text-primary:var(--gray-100);--text-secondary:var(--gray-400);--text-tertiary:var(--gray-500);
-  --action-primary:#2F6BDB;--action-primary-hover:#3B78E8;--action-primary-active:#2455B4;--on-action-primary:var(--white);
-  --accent:#4C8DFF;--on-accent:var(--near-black);--focus-ring:#4C8DFF;
-  --success:#37D399;--warning:#FFB020;--danger:#FF5C5C;--info:#4C8DFF;
-  --success-bg:rgba(55,211,153,.1);--warning-bg:rgba(255,176,32,.1);--danger-bg:rgba(255,92,92,.1);--info-bg:rgba(76,141,255,.1);
+  --action-primary:var(--brand-600);--action-primary-hover:var(--brand-550);--action-primary-active:var(--brand-700);--on-action-primary:var(--white);
+  --accent:var(--brand-500);--on-accent:var(--near-black);--focus-ring:var(--brand-500);
+  --success:#37D399;--warning:#FFB020;--danger:#FF5C5C;--info:var(--brand-500);
+  --success-bg:rgba(55,211,153,.1);--warning-bg:rgba(255,176,32,.1);--danger-bg:rgba(255,92,92,.1);--info-bg:color-mix(in srgb,var(--brand-500) 10%,transparent);
   --overlay:rgba(3,6,12,.72);--grid-line:rgba(255,255,255,.035);
   --shadow-sm:0 1px 2px rgba(0,0,0,.24);--shadow-md:0 8px 24px rgba(0,0,0,.28);--shadow-lg:0 20px 48px rgba(0,0,0,.36);
-  --bg-hover:rgba(255,255,255,.05);--bg-active:rgba(255,255,255,.09);--bg-selected:rgba(76,141,255,.14);--bg-disabled:rgba(255,255,255,.04);
-  --border-hover:#4C5A70;--border-focus:#4C8DFF;--border-disabled:#242C3A;--text-disabled:#4C5A70;
-  --text-link:#7FB0FF;--text-link-hover:#A9C8FF;--text-link-visited:#7FB0FF;
-  --chart-1:#4C8DFF;--chart-2:#37D399;--chart-3:#FFB020;--chart-4:#FF5C5C;--chart-5:#7FB0FF;--chart-6:#2FB8B8;--chart-7:#94A3B8;--chart-8:#D98A8A;
+  --bg-hover:rgba(255,255,255,.05);--bg-active:rgba(255,255,255,.09);--bg-selected:color-mix(in srgb,var(--brand-500) 14%,transparent);--bg-disabled:rgba(255,255,255,.04);
+  --border-hover:#4C5A70;--border-focus:var(--brand-500);--border-disabled:#242C3A;--text-disabled:#4C5A70;
+  --text-link:var(--brand-400);--text-link-hover:var(--brand-300);--text-link-visited:var(--brand-400);
+  --chart-1:var(--brand-500);--chart-2:#37D399;--chart-3:#FFB020;--chart-4:#FF5C5C;--chart-5:var(--brand-400);--chart-6:#2FB8B8;--chart-7:#94A3B8;--chart-8:#D98A8A;
   --chart-grid:rgba(255,255,255,.08);--chart-axis:#7A889D;
-  --syntax-keyword:#FF9E64;--syntax-string:#7DD3A8;--syntax-number:#7FB0FF;--syntax-comment:#7A889D;--syntax-function:#FFD166;--syntax-variable:#F2F6FC;
+  --syntax-keyword:#FF9E64;--syntax-string:#7DD3A8;--syntax-number:var(--brand-400);--syntax-comment:#7A889D;--syntax-function:#FFD166;--syntax-variable:#F2F6FC;
 }
 [data-density='compact']{--space-5:16px;--space-6:20px;--space-7:28px;--space-8:40px;--content-pad:16px}
+
+/* ==================== BRAND PACKS · 可选主题包（演示） ==================== */
+/* 规则：8 槽位必须全部给出；挂在根元素 <html data-brand>；于令牌之后声明。
+   每个包均已按 THEMING.md §5.8 实测 AA 通过；默认品牌（电光蓝）无需声明。 */
+[data-brand='indigo']{--brand-300:#C4C8FF;--brand-400:#9DA3FF;--brand-500:#6E74F2;--brand-550:#5A61E4;--brand-600:#4B52D6;--brand-700:#3A41B4;--brand-800:#2C318F;--brand-950:#14163A}
+[data-brand='teal']{--brand-300:#9FE3DF;--brand-400:#5CC9C2;--brand-500:#12A9A0;--brand-550:#0B817B;--brand-600:#086B66;--brand-700:#07544F;--brand-800:#053E3B;--brand-950:#032220}
+[data-brand='amber']{--brand-300:#FFD79A;--brand-400:#F0AE4A;--brand-500:#C98000;--brand-550:#A56900;--brand-600:#8F5A00;--brand-700:#754A00;--brand-800:#5C3A00;--brand-950:#241600}
 
 /* ==================== BASE ==================== */
 *,*::before,*::after{box-sizing:border-box}
@@ -84,7 +93,7 @@ code,pre,kbd{font-family:var(--font-mono);font-variant-numeric:tabular-nums}
 .layout{min-height:100vh}
 .sidebar{position:fixed;inset:0 auto 0 0;width:var(--sidebar-width);background:var(--bg-surface);border-right:1px solid var(--border-subtle);display:flex;flex-direction:column;z-index:100}
 .brand{height:var(--topbar-height);display:flex;align-items:center;gap:10px;padding:0 20px;border-bottom:1px solid var(--border-subtle)}
-.brand-mark{width:28px;height:28px;border:1px solid var(--accent);border-radius:var(--radius-sm);display:grid;place-items:center;color:var(--accent);font-family:var(--font-display);font-weight:700;font-size:13px;box-shadow:inset 0 0 12px var(--blue-glow)}
+.brand-mark{width:28px;height:28px;border:1px solid var(--accent);border-radius:var(--radius-sm);display:grid;place-items:center;color:var(--accent);font-family:var(--font-display);font-weight:700;font-size:13px;box-shadow:inset 0 0 12px var(--glow-accent)}
 .brand-name{font-family:var(--font-display);font-weight:700;font-size:15px;letter-spacing:.02em}
 .brand-name span{color:var(--accent)}
 .brand-tag{font-family:var(--font-mono);font-size:10px;color:var(--text-tertiary);letter-spacing:.08em}
@@ -115,7 +124,7 @@ button.kbd:hover{border-color:var(--border-strong);color:var(--text-primary)}
 .hero-inner{position:relative}
 .kicker{display:inline-flex;align-items:center;gap:8px;font-family:var(--font-mono);font-size:11px;letter-spacing:.16em;color:var(--accent);text-transform:uppercase;border-left:2px solid var(--accent);padding-left:10px}
 .hero h1{font-family:var(--font-display);font-size:clamp(40px,7vw,72px);line-height:1.02;letter-spacing:-.035em;margin:24px 0 12px;font-weight:700}
-.hero h1 em{font-style:normal;color:var(--accent);text-shadow:0 0 32px var(--blue-glow)}
+.hero h1 em{font-style:normal;color:var(--accent);text-shadow:0 0 32px var(--glow-accent)}
 .hero-lead{font-size:var(--text-body-lg);color:var(--text-secondary);max-width:620px;line-height:1.7;margin:0 0 28px}
 .hero-meta{display:flex;flex-wrap:wrap;gap:8px}
 .meta-chip{font-family:var(--font-mono);font-size:11px;color:var(--text-secondary);border:1px solid var(--border-subtle);background:var(--bg-surface);padding:7px 11px;border-radius:var(--radius-sm)}
@@ -242,7 +251,7 @@ button.kbd:hover{border-color:var(--border-strong);color:var(--text-primary)}
 .field label{font-size:12px;color:var(--text-secondary);font-weight:500}
 .yz-input{height:40px;padding:0 12px;background:var(--bg-inset);border:1px solid var(--border-strong);border-radius:var(--radius-sm);color:var(--text-primary);font-size:14px;transition:border-color var(--dur-fast) var(--ease-out),box-shadow var(--dur-fast) var(--ease-out)}
 .yz-input::placeholder{color:var(--text-tertiary)}
-.yz-input:focus{outline:none;border-color:var(--accent);box-shadow:0 0 0 3px var(--blue-glow)}
+.yz-input:focus{outline:none;border-color:var(--accent);box-shadow:0 0 0 3px var(--glow-accent)}
 .yz-input.err{border-color:var(--danger)}
 .field .help{font-size:11px;color:var(--text-tertiary)}
 .field .errtext{font-size:11px;color:var(--danger)}
@@ -296,7 +305,7 @@ button.kbd:hover{border-color:var(--border-strong);color:var(--text-primary)}
 .yz-chat.me{flex-direction:row-reverse}
 .yz-chat.me .bubble{background:var(--info-bg);border-color:color-mix(in srgb,var(--accent) 30%,transparent)}
 .yz-prompt{border:1px solid var(--border-strong);border-radius:var(--radius-md);background:var(--bg-surface);padding:12px;transition:border-color var(--dur-fast),box-shadow var(--dur-fast)}
-.yz-prompt:focus-within{border-color:var(--accent);box-shadow:0 0 0 3px var(--blue-glow)}
+.yz-prompt:focus-within{border-color:var(--accent);box-shadow:0 0 0 3px var(--glow-accent)}
 .yz-prompt textarea{width:100%;border:0;outline:0;resize:none;background:transparent;color:var(--text-primary);font-size:13px;min-height:44px;line-height:1.6}
 .yz-prompt textarea::placeholder{color:var(--text-tertiary)}
 .yz-prompt .bar{display:flex;align-items:center;justify-content:space-between;border-top:1px solid var(--border-subtle);padding-top:10px;margin-top:6px}
@@ -373,6 +382,8 @@ button.kbd:hover{border-color:var(--border-strong);color:var(--text-primary)}
 .seg{display:inline-flex;border:1px solid var(--border-strong);border-radius:var(--radius-sm);overflow:hidden}
 .seg button{border:0;background:transparent;padding:8px 14px;font-size:12px;color:var(--text-secondary)}
 .seg button[aria-pressed='true']{background:var(--bg-selected);color:var(--accent);font-weight:600}
+.seg button{display:inline-flex;align-items:center;gap:7px}
+.bdot{width:9px;height:9px;border-radius:2px;flex:none;box-shadow:inset 0 0 0 1px rgba(0,0,0,.16)}
 .dropdown{position:relative}
 .dropdown .menu{position:absolute;top:calc(100% + 6px);left:0;min-width:210px;background:var(--bg-elevated);border:1px solid var(--border-strong);border-radius:var(--radius-md);box-shadow:var(--shadow-md);padding:6px;z-index:10}
 .dropdown .menu[hidden]{display:none}
@@ -415,7 +426,7 @@ button.kbd:hover{border-color:var(--border-strong);color:var(--text-primary)}
 
 /* ==================== V1.3 ADDITIONS ==================== */
 .brand-lockup{display:flex;align-items:center;gap:12px;padding:24px;background:var(--bg-surface);border:1px solid var(--border-subtle);border-radius:var(--radius-md)}
-.brand-symbol{width:28px;height:28px;border:1px solid var(--accent);border-radius:var(--radius-sm);display:grid;place-items:center;color:var(--accent);font-family:var(--font-display);font-weight:700;font-size:13px;box-shadow:inset 0 0 12px var(--blue-glow);flex:none}
+.brand-symbol{width:28px;height:28px;border:1px solid var(--accent);border-radius:var(--radius-sm);display:grid;place-items:center;color:var(--accent);font-family:var(--font-display);font-weight:700;font-size:13px;box-shadow:inset 0 0 12px var(--glow-accent);flex:none}
 .brand-symbol.lg{width:40px;height:40px;font-size:18px}
 .brand-word{font-family:var(--font-display);font-weight:700;font-size:22px;letter-spacing:-.02em}
 .brand-word span{color:var(--accent)}
@@ -540,12 +551,12 @@ button.kbd:hover{border-color:var(--border-strong);color:var(--text-primary)}
       <a href="#theming-system"><span class="num">32</span>主题与令牌治理</a>
       <a href="#governance-system"><span class="num">33</span>贡献与演进</a>
     </nav>
-    <div class="side-foot"><span><span class="dot-live"></span>v2.1.0</span><span>LIGHT FIRST</span></div>
+    <div class="side-foot"><span><span class="dot-live"></span>v2.2.0</span><span>LIGHT FIRST</span></div>
   </aside>
 
   <div class="main">
     <header class="topbar">
-      <div class="crumb">YUZK.AI / <b>DESIGN SYSTEM</b> / v2.1.0</div>
+      <div class="crumb">YUZK.AI / <b>DESIGN SYSTEM</b> / v2.2.0</div>
       <div class="tools">
         <button class="kbd" id="cmdOpen" aria-label="打开命令面板"><svg width="13" height="13" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><circle cx="11" cy="11" r="7"/><path d="m20 20-3.5-3.5"/></svg><kbd>⌘ K</kbd></button>
         <button class="icon-btn" id="densityBtn" title="切换密度" aria-label="切换紧凑密度"><svg width="15" height="15" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.75"><path d="M4 6h16M4 12h16M4 18h16"/></svg></button>
@@ -613,18 +624,20 @@ button.kbd:hover{border-color:var(--border-strong);color:var(--text-primary)}
         <div class="sec-head"><span class="sec-num">03</span><h2>色彩系统</h2></div>
         <p class="sec-desc">一个强调色，一套中性阶。点击任意色值可复制。亮色为默认主题，暗色是同一套语义令牌的另一种映射，不是重新设计。</p>
 
-        <div class="subhead">品牌色 · Electric Blue</div>
-        <div class="swatches">
-          <div class="sw copy" data-copy="#A9C8FF"><div class="chip" style="background:#A9C8FF"></div><div class="meta"><b>blue-300</b><span>#A9C8FF</span></div></div>
-          <div class="sw copy" data-copy="#7FB0FF"><div class="chip" style="background:#7FB0FF"></div><div class="meta"><b>blue-400</b><span>#7FB0FF</span></div></div>
-          <div class="sw copy" data-copy="#4C8DFF"><div class="chip" style="background:#4C8DFF"></div><div class="meta"><b>blue-500 ★</b><span>#4C8DFF</span></div></div>
-          <div class="sw copy" data-copy="#2F6BDB"><div class="chip" style="background:#2F6BDB"></div><div class="meta"><b>blue-600</b><span>#2F6BDB</span></div></div>
-          <div class="sw copy" data-copy="#2455B4"><div class="chip" style="background:#2455B4"></div><div class="meta"><b>blue-700</b><span>#2455B4</span></div></div>
-          <div class="sw copy" data-copy="#071A3A"><div class="chip" style="background:#071A3A"></div><div class="meta"><b>blue-950</b><span>#071A3A</span></div></div>
+        <div class="subhead">品牌色 · 8 槽位可配置（默认电光蓝）</div>
+        <div class="swatches" style="grid-template-columns:repeat(4,minmax(0,1fr))">
+          <div class="sw copy"><div class="chip" style="background:var(--brand-300)"></div><div class="meta"><b>--brand-300</b><span data-bv="300">#A9C8FF</span></div></div>
+          <div class="sw copy"><div class="chip" style="background:var(--brand-400)"></div><div class="meta"><b>--brand-400</b><span data-bv="400">#7FB0FF</span></div></div>
+          <div class="sw copy"><div class="chip" style="background:var(--brand-500)"></div><div class="meta"><b>--brand-500 ★</b><span data-bv="500">#4C8DFF</span></div></div>
+          <div class="sw copy"><div class="chip" style="background:var(--brand-550)"></div><div class="meta"><b>--brand-550</b><span data-bv="550">#3470E1</span></div></div>
+          <div class="sw copy"><div class="chip" style="background:var(--brand-600)"></div><div class="meta"><b>--brand-600</b><span data-bv="600">#2F6BDB</span></div></div>
+          <div class="sw copy"><div class="chip" style="background:var(--brand-700)"></div><div class="meta"><b>--brand-700 ◆</b><span data-bv="700">#2455B4</span></div></div>
+          <div class="sw copy"><div class="chip" style="background:var(--brand-800)"></div><div class="meta"><b>--brand-800</b><span data-bv="800">#1D4796</span></div></div>
+          <div class="sw copy"><div class="chip" style="background:var(--brand-950)"></div><div class="meta"><b>--brand-950</b><span data-bv="950">#071A3A</span></div></div>
         </div>
         <div class="callout warn" style="margin-top:16px">
           <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.75"><path d="M12 9v4M12 17h.01"/><path d="M10.3 3.9 1.8 18a2 2 0 0 0 1.7 3h17a2 2 0 0 0 1.7-3L13.7 3.9a2 2 0 0 0-3.4 0Z"/></svg>
-          <div><b>#4C8DFF 上禁止使用白色文字</b>（对比仅 3.8:1）。暗色主题高亮蓝底配近黑 <code style="color:var(--accent)">#05080F</code> ≈ 6.2:1；亮色主题强调蓝为 <code style="color:var(--accent)">#2455B4</code>，配白字合规；实心主按钮统一用 <code style="color:var(--accent)">#2F6BDB</code> 配白字 ≈ 5.0:1。</div>
+          <div><b>#4C8DFF 上禁止使用白色文字</b>（白字仅 3.20:1，AA 不合格）。暗色主题高亮蓝底配近黑 <code style="color:var(--accent)">#05080F</code> = 6.26:1；亮色主题强调蓝 <code style="color:var(--accent)">#2455B4</code> 配白字 = 6.92:1；实心主按钮 <code style="color:var(--accent)">#2F6BDB</code> 配白字 = 4.94:1。<b>以上为默认品牌取值</b>，换品牌后按 <code style="color:var(--accent)">THEMING.md §5.8</code> 重测九项。</div>
         </div>
 
         <div class="subhead">表面层级 · 亮 / 暗映射</div>
@@ -650,13 +663,13 @@ button.kbd:hover{border-color:var(--border-strong);color:var(--text-primary)}
           <div class="state-cell" style="background:var(--bg-selected)"><b>--bg-selected</b>选中态</div>
           <div class="state-cell" style="color:var(--text-disabled)"><b>--text-disabled</b>禁用文字</div>
           <div class="state-cell" style="color:var(--text-link)"><b>--text-link</b>链接默认</div>
-          <div class="state-cell" style="border-color:var(--border-focus);box-shadow:0 0 0 2px var(--blue-glow)"><b>--border-focus</b>焦点描边</div>
+          <div class="state-cell" style="border-color:var(--border-focus);box-shadow:0 0 0 2px var(--glow-accent)"><b>--border-focus</b>焦点描边</div>
         </div>
         <p class="note">组件只引用状态令牌，不自行调配透明度；切换主题时状态层自动跟随。</p>
 
         <div class="subhead">数据可视化 · 8 色序列（亮色默认，点击复制）</div>
         <div class="chart-swatches" style="margin-bottom:26px">
-          <div class="chart-sw copy" data-copy="#2455B4" style="background:#2455B4">1</div>
+          <div class="chart-sw copy" data-copy="var(--chart-1)" style="background:var(--chart-1)">1</div>
           <div class="chart-sw copy" data-copy="#12805C" style="background:#12805C">2</div>
           <div class="chart-sw copy" data-copy="#B26B00" style="background:#B26B00">3</div>
           <div class="chart-sw copy" data-copy="#C22B2B" style="background:#C22B2B">4</div>
@@ -784,7 +797,7 @@ button.kbd:hover{border-color:var(--border-strong);color:var(--text-primary)}
             <div class="demo-label">Easing</div>
             <div class="row" style="gap:24px">
               <div><svg width="120" height="80" viewBox="0 0 120 80"><rect x="10" y="10" width="100" height="60" fill="none" stroke="var(--border-subtle)"/><path d="M10 70 C 45 12, 70 10, 110 10" fill="none" stroke="var(--accent)" stroke-width="2"/></svg><div class="note" style="text-align:center;margin-top:4px">ease-out · 默认</div></div>
-              <div><svg width="120" height="80" viewBox="0 0 120 80"><rect x="10" y="10" width="100" height="60" fill="none" stroke="var(--border-subtle)"/><path d="M10 70 C 45 70, 75 10, 110 10" fill="none" stroke="var(--blue-400)" stroke-width="2"/></svg><div class="note" style="text-align:center;margin-top:4px">ease-in-out</div></div>
+              <div><svg width="120" height="80" viewBox="0 0 120 80"><rect x="10" y="10" width="100" height="60" fill="none" stroke="var(--border-subtle)"/><path d="M10 70 C 45 70, 75 10, 110 10" fill="none" stroke="var(--accent)" stroke-width="2"/></svg><div class="note" style="text-align:center;margin-top:4px">ease-in-out</div></div>
             </div>
             <p class="note">数据界面禁止 bounce / overshoot；退出永远比进入更快。</p>
           </div>
@@ -967,7 +980,7 @@ button.kbd:hover{border-color:var(--border-strong);color:var(--text-primary)}
             <div class="crumbs"><a href="#components">控制台</a><span>/</span><a href="#components">智能体</a><span>/</span><span>Research Agent</span></div>
             <div class="demo-label" style="margin-top:24px">Avatar group · 最多 4 个 + 折叠</div>
             <div class="avatars">
-              <span class="av" style="background:#2455B4">ZY</span><span class="av" style="background:#12805C">LK</span>
+              <span class="av" style="background:var(--action-primary)">ZY</span><span class="av" style="background:#12805C">LK</span>
               <span class="av" style="background:#B26B00">WM</span><span class="av" style="background:#5F6B7A">+3</span>
             </div>
             <div class="demo-label" style="margin-top:24px">Accordion · 默认收起</div>
@@ -1713,15 +1726,41 @@ button.kbd:hover{border-color:var(--border-strong);color:var(--text-primary)}
       <!-- 32 THEMING -->
       <section class="section" id="theming-system">
         <div class="sec-head"><span class="sec-num">32</span><h2>主题与令牌治理</h2></div>
-        <p class="sec-desc">令牌是设计系统的唯一接口。三层模型 primitive → semantic → component，组件只引用语义层。完整规范见 <code style="color:var(--accent)">THEMING.md</code>。</p>
+        <p class="sec-desc">令牌是设计系统的唯一接口。四层模型：品牌配置 → primitive → semantic → component，组件只引用语义层。完整规范见 <code style="color:var(--accent)">THEMING.md</code> §5.6–5.9。</p>
         <div class="lt-grid">
+          <div class="lt"><h4>brand config 品牌配置端</h4><p>8 个 <span class="sem-code">--brand-*</span> 槽位。唯一允许人工改色的地方，换品牌只改这里。</p></div>
           <div class="lt"><h4>primitive 原语层</h4><p>色值、间距、字号的原始定义，不直接给组件用。</p></div>
           <div class="lt"><h4>semantic 语义层</h4><p>bg / text / border / action / state，主题切换的唯一作用面。</p></div>
           <div class="lt"><h4>component 组件层</h4><p>组件专属映射，引用语义层，禁止跨层与裸 hex。</p></div>
         </div>
+
+        <div class="panel panel-pad" style="margin-top:16px">
+          <div class="demo-label">品牌色切换 · 8 槽位驱动 31 处语义声明</div>
+          <div style="display:flex;align-items:center;gap:12px;flex-wrap:wrap">
+            <div class="seg" id="brandSeg" role="group" aria-label="切换品牌色">
+              <button type="button" data-brand="yuzk" aria-pressed="true"><i class="bdot" style="background:var(--brand-500)"></i>电光蓝</button>
+              <button type="button" data-brand="indigo" aria-pressed="false"><i class="bdot" style="background:var(--brand-500)"></i>靛蓝</button>
+              <button type="button" data-brand="teal" aria-pressed="false"><i class="bdot" style="background:var(--brand-500)"></i>青</button>
+              <button type="button" data-brand="amber" aria-pressed="false"><i class="bdot" style="background:var(--brand-500)"></i>琥珀</button>
+            </div>
+            <span class="mini-tag" id="brandCode">data-brand="yuzk（默认）"</span>
+          </div>
+          <div style="display:grid;grid-template-columns:repeat(8,1fr);height:14px;border:1px solid var(--border-subtle);border-radius:var(--radius-sm);overflow:hidden;margin-top:16px" aria-hidden="true">
+            <div style="background:var(--brand-300)"></div>
+            <div style="background:var(--brand-400)"></div>
+            <div style="background:var(--brand-500)"></div>
+            <div style="background:var(--brand-550)"></div>
+            <div style="background:var(--brand-600)"></div>
+            <div style="background:var(--brand-700)"></div>
+            <div style="background:var(--brand-800)"></div>
+            <div style="background:var(--brand-950)"></div>
+          </div>
+          <div class="note">切换后同步变化：主按钮 / 焦点环 / 链接 / 选中态 / 图表首序列 / 品牌柔光。<b>四套均已按 AA 实测</b>（§5.8 九项，最低 4.54:1）。默认品牌无需 <span class="sem-code">data-brand</span>，其余挂在根元素 <span class="sem-code">&lt;html data-brand="…"&gt;</span>，且必须给全 8 个槽位。</div>
+        </div>
+
         <div class="callout" style="margin-top:16px">
           <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.75"><path d="M12 3 2 7l10 4 10-4-10-4Z"/><path d="M2 12l10 4 10-4M2 17l10 4 10-4"/></svg>
-          <div><b>唯一强调色：</b>亮色 #2455B4、暗色 #4C8DFF；#4C8DFF 上禁止白字。弃用令牌需共存一个版本 + 迁移映射后再移除。</div>
+          <div><b>唯一强调色：</b>默认品牌亮色 <span class="sem-code">--brand-700 #2455B4</span>、暗色 <span class="sem-code">--brand-500 #4C8DFF</span>；#4C8DFF 上禁止白字。<b>整包替换允许，第二强调色禁止</b>——同一产品只允许一个品牌生效，不得与蓝并存。弃用令牌需共存一个版本 + 迁移映射后再移除。</div>
         </div>
       </section>
 
@@ -1746,7 +1785,7 @@ button.kbd:hover{border-color:var(--border-strong);color:var(--text-primary)}
       </section>
 
       <footer class="footer">
-        <span>YUZK.AI DESIGN SYSTEM · v2.1.0 · 2026-11-22</span>
+        <span>YUZK.AI DESIGN SYSTEM · v2.2.0 · 2026-11-23</span>
         <span>SIGNAL OVER DECORATION</span>
       </footer>
     </main>
@@ -1788,6 +1827,35 @@ button.kbd:hover{border-color:var(--border-strong);color:var(--text-primary)}
     showToast(on?'已切换：舒适密度':'已切换：紧凑密度');
   });
 
+  /* brand config —— 8 个 --brand-* 槽位，换品牌只改这一处 */
+  const BRANDS={yuzk:'电光蓝（默认）',indigo:'靛蓝',teal:'青',amber:'琥珀'};
+  const RAMP=['300','400','500','550','600','700','800','950'];
+  const savedBrand=localStorage.getItem('yuzk-brand-v1');
+  if(savedBrand&&BRANDS[savedBrand]&&savedBrand!=='yuzk') root.dataset.brand=savedBrand;
+  function paintBrand(){
+    const cur=root.dataset.brand||'yuzk', cs=getComputedStyle(root);
+    RAMP.forEach(k=>{
+      const v=cs.getPropertyValue('--brand-'+k).trim().toUpperCase();
+      document.querySelectorAll('[data-bv="'+k+'"]').forEach(el=>{
+        el.textContent=v;
+        const sw=el.closest('.sw'); if(sw) sw.dataset.copy=v;
+      });
+    });
+    const tag=document.getElementById('brandCode');
+    if(tag) tag.textContent='data-brand="'+(cur==='yuzk'?'yuzk（默认）':cur)+'"';
+    document.querySelectorAll('#brandSeg button').forEach(b=>b.setAttribute('aria-pressed',String(b.dataset.brand===cur)));
+  }
+  document.querySelectorAll('#brandSeg button').forEach(b=>{
+    b.addEventListener('click',()=>{
+      const v=b.dataset.brand;
+      if(v==='yuzk') root.removeAttribute('data-brand'); else root.dataset.brand=v;
+      localStorage.setItem('yuzk-brand-v1',v);
+      paintBrand();
+      showToast('已切换品牌色：'+BRANDS[v]);
+    });
+  });
+  paintBrand();
+
   /* copy tokens */
   document.querySelectorAll('.copy').forEach(el=>{
     el.setAttribute('tabindex','0');el.setAttribute('role','button');
@@ -1822,7 +1890,7 @@ button.kbd:hover{border-color:var(--border-strong);color:var(--text-primary)}
   /* command palette */
   const overlay=document.getElementById('cmdOverlay'),cmdInput=document.getElementById('cmdInput'),cmdList=document.getElementById('cmdList');
   const navItems=[...document.querySelectorAll('.nav a')].map(a=>({label:a.textContent.trim().replace(/^\d+/,''),id:a.getAttribute('href').slice(1),hint:'章节'}));
-  const actions=[{label:'切换亮 / 暗主题',id:'__theme',hint:'⌘ ⇧ T'},{label:'切换紧凑密度',id:'__density',hint:'⌘ D'},{label:'复制主强调色 #4C8DFF',id:'__copy',hint:'令牌'}];
+  const actions=[{label:'切换亮 / 暗主题',id:'__theme',hint:'⌘ ⇧ T'},{label:'切换紧凑密度',id:'__density',hint:'⌘ D'},{label:'切换品牌色（整包替换）',id:'__brand',hint:'令牌'},{label:'复制主强调色（当前品牌）',id:'__copy',hint:'令牌'}];
   const all=[...actions,...navItems];
   let sel=0;
   function render(q){
@@ -1844,7 +1912,8 @@ button.kbd:hover{border-color:var(--border-strong);color:var(--text-primary)}
     const li=e.target.closest('li');if(!li)return;const id=li.dataset.id;close();
     if(id==='__theme'){document.getElementById('themeBtn').click()}
     else if(id==='__density'){document.getElementById('densityBtn').click()}
-    else if(id==='__copy'){navigator.clipboard?.writeText('#4C8DFF').then(()=>showToast('已复制 #4C8DFF'))}
+    else if(id==='__brand'){const order=['yuzk','indigo','teal','amber'];const cur=root.dataset.brand||'yuzk';const next=order[(order.indexOf(cur)+1)%order.length];document.querySelector('#brandSeg button[data-brand="'+next+'"]').click()}
+    else if(id==='__copy'){const v=getComputedStyle(root).getPropertyValue('--brand-500').trim();navigator.clipboard?.writeText(v).then(()=>showToast('已复制 '+v))}
     else{const t=document.getElementById(id);if(t)t.scrollIntoView({behavior:'smooth'})}
   });
   document.addEventListener('keydown',e=>{
