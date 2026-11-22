@@ -1,11 +1,13 @@
 /* ============================================================
-   YUZK.AI Design System — Design Tokens v2.3.0
+   YUZK.AI Design System — Design Tokens v2.4.0
    唯一事实来源：MASTER.md
    用法：引入本文件后，只使用语义令牌，禁止裸 hex。
    默认主题：亮色（:root）。暗色为可选主题：[data-theme='dark']。
    品牌色：只改「BRAND CONFIG」一段即可换色，下游零硬编码。
    v2.3.0：图表 8 色与状态色解耦、状态色补 hover/active/border/on
            派生态、新增 --seq-* / --div-* 连续色阶。
+   v2.4.0：修 --info 与 --chart-1 同值（违反 THEMING §10-20）、语法色
+           6→11 类、新增状态语义 focus 环变体与 focus 分隔色。
    ============================================================ */
 
 @import url('https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&family=JetBrains+Mono:wght@400;500;600&family=Space+Grotesk:wght@500;600;700&display=swap');
@@ -94,11 +96,20 @@
   --success: #12805C;
   --warning: #9A5B00;
   --danger: #C22B2B;
-  --info: var(--brand-700);
+  /* info 不取 accent 同档：--accent 与 --chart-1 同为 brand-700，
+     若 info 也取 brand-700 则三者完全同值，违反 THEMING §10 第 20 条。
+     改取 brand-600：对画布 4.61:1（与 success 的 4.59 齐平，不压过 danger），
+     与 chart-1 的 OKLab ΔE = 0.082。选 600 而非更深的 800，是因为 800 达
+     8.8:1，会让「信息」成为四色里最重的一个，语义层级倒置。
+     代价一：info 与 accent 仅以明度区分——info 不得只靠颜色表达，必须带
+     图标或文案（MASTER §2.4）。
+     代价二：亮色下 info 与 --action-primary-hover 同值（同一品牌槽位）。
+     hover 是转瞬态，二者从不并置；若未来出现并置场景，改用 brand-800。 */
+  --info: var(--brand-600);
   --success-bg: rgba(18, 128, 92, .08);
   --warning-bg: rgba(154, 91, 0, .08);
   --danger-bg: rgba(194, 43, 43, .08);
-  --info-bg: color-mix(in srgb, var(--brand-700) 8%, transparent);
+  --info-bg: color-mix(in srgb, var(--info) 8%, transparent);
 
   /* ---------- Status interaction states (light · 实心态加深) ----------
      与品牌色同一套派生思路：状态色只定义 base，交互态全部由 color-mix 得出，
@@ -116,9 +127,10 @@
   --danger-active: color-mix(in srgb, var(--danger) 74%, #000);
   --danger-border: color-mix(in srgb, var(--danger) 42%, transparent);
   --on-danger: #FFFFFF;
-  --info-hover: var(--brand-600);
-  --info-active: var(--brand-800);
-  --info-border: color-mix(in srgb, var(--brand-700) 42%, transparent);
+  /* info 的交互态与其他三个状态色同构（base 混黑），不再特判品牌档位 */
+  --info-hover: color-mix(in srgb, var(--info) 86%, #000);
+  --info-active: color-mix(in srgb, var(--info) 74%, #000);
+  --info-border: color-mix(in srgb, var(--info) 42%, transparent);
   --on-info: #FFFFFF;
 
   /* ---------- Sequential scale (light · 热力图 / 密度图) ----------
@@ -190,7 +202,8 @@
   --shadow-sm: 0 1px 2px rgba(13, 20, 32, .06);
   --shadow-md: 0 8px 24px rgba(13, 20, 32, .08);
   --shadow-lg: 0 20px 48px rgba(13, 20, 32, .12);
-  --shadow-focus: 0 0 0 2px var(--bg-canvas), 0 0 0 4px var(--focus-ring);
+  --shadow-focus: 0 0 0 2px var(--focus-separator), 0 0 0 4px var(--focus-ring);
+  --shadow-focus-danger: 0 0 0 2px var(--focus-separator), 0 0 0 4px var(--focus-ring-danger);
   --shadow-active: 0 0 0 1px var(--brand-ring), 0 0 20px var(--brand-glow);
   --glow-accent: var(--brand-glow);   /* 品牌柔光：品牌符号内发光、强调描边外发光 */
 
@@ -243,6 +256,14 @@
   --text-link-visited: var(--brand-800);
   --focus-ring-width: 2px;
   --focus-ring-offset: 2px;
+  /* 焦点环的分隔色 = 环所在表面的底色。组件位于非 canvas 表面时
+     必须就地覆写：.card { --focus-separator: var(--bg-surface); }
+     否则分隔环与表面同色，环会直接贴住控件边缘。 */
+  --focus-separator: var(--bg-canvas);
+  /* 状态语义焦点环：表单校验态聚焦时，环与错误/警告/成功同源（THEMING §11 T-3） */
+  --focus-ring-danger: var(--danger);
+  --focus-ring-warning: var(--warning);
+  --focus-ring-success: var(--success);
 
   /* ---------- Data visualization (light · 8 series) ----------
      分类色板，与状态色互不共用：距最近状态色 OKLab ΔE >=0.10，
@@ -261,12 +282,21 @@
   --chart-axis: #5F6D82;
 
   /* ---------- Code syntax (light) ---------- */
-  --syntax-keyword: #A85000;
-  --syntax-string: #12805C;
-  --syntax-number: var(--brand-700);
-  --syntax-comment: #8B99AD;
-  --syntax-function: #8A5A00;
-  --syntax-variable: #0D1420;
+  /* 11 类，全部对代码块底 #F8FAFD 实测 >=4.5:1；两两 OKLab ΔE >=0.054。
+     comment 原为 #8B99AD（2.77:1，不达正文级），v2.4.0 改为 #5F6D82（5.03:1）。
+     punctuation 不单列：它与 operator 的 ΔE 仅 0.036，属不可辨冗余，
+     标点继承 --syntax-variable。 */
+  --syntax-keyword: #A85000;         /*  5.27 */
+  --syntax-string: #12805C;          /*  4.71 */
+  --syntax-number: var(--brand-700); /*  6.62 */
+  --syntax-comment: #5F6D82;         /*  5.03 */
+  --syntax-function: #8A5A00;        /*  5.67 */
+  --syntax-variable: #0D1420;        /* 17.65 */
+  --syntax-type: #047D7F;            /*  4.73 类名 / 接口 / 泛型 */
+  --syntax-constant: #845DB7;        /*  4.75 常量 / 枚举值 */
+  --syntax-tag: #B94D49;             /*  4.76 标签名（HTML/XML/组件） */
+  --syntax-attr: #6C7500;            /*  4.80 属性名 / 键名（橄榄，避开暖端的 keyword/function） */
+  --syntax-operator: #5A5E67;        /*  6.21 运算符 / 分隔符 */
 
   /* ---------- Size & opacity ---------- */
   --size-icon-sm: 16px;
@@ -327,11 +357,13 @@
   --success: #37D399;
   --warning: #FFB020;
   --danger: #FF5C5C;
-  --info: var(--brand-500);
+  /* 暗色下同样避开 --chart-1 所在的 brand-500，取 brand-400：
+     对 #0F131B 8.5:1，与 chart-1 的 ΔE = 0.112 */
+  --info: var(--brand-400);
   --success-bg: rgba(55, 211, 153, .10);
   --warning-bg: rgba(255, 176, 32, .10);
   --danger-bg: rgba(255, 92, 92, .10);
-  --info-bg: color-mix(in srgb, var(--brand-500) 10%, transparent);
+  --info-bg: color-mix(in srgb, var(--info) 10%, transparent);
 
   /* ---------- Status interaction states (dark · 实心态提亮) ----------
      暗底下交互方向相反：与白混合提亮，而非加深。 */
@@ -347,9 +379,9 @@
   --danger-active: color-mix(in srgb, var(--danger) 76%, #FFF);
   --danger-border: color-mix(in srgb, var(--danger) 42%, transparent);
   --on-danger: #05080F;
-  --info-hover: var(--brand-400);
-  --info-active: var(--brand-300);
-  --info-border: color-mix(in srgb, var(--brand-500) 42%, transparent);
+  --info-hover: color-mix(in srgb, var(--info) 88%, #FFF);
+  --info-active: color-mix(in srgb, var(--info) 76%, #FFF);
+  --info-border: color-mix(in srgb, var(--info) 42%, transparent);
   --on-info: #05080F;
 
   /* ---------- Sequential scale (dark) ---------- */
@@ -385,6 +417,12 @@
   --text-link: var(--brand-400);
   --text-link-hover: var(--brand-300);
   --text-link-visited: var(--brand-400);
+  /* 焦点环与分隔色在暗色段显式重声明：虽然 var() 会在同一元素上解析，
+     但显式声明让令牌表自解释，也避免主题挂在子树时取到浅色值 */
+  --focus-separator: var(--bg-canvas);
+  --focus-ring-danger: var(--danger);
+  --focus-ring-warning: var(--warning);
+  --focus-ring-success: var(--success);
 
   /* ---------- Data visualization (dark · 8 series) ----------
      与亮色同一批色相、同一序列语义，仅按暗底重新取明度。
@@ -402,12 +440,20 @@
   --chart-axis: #7A889D;
 
   /* ---------- Code syntax (dark) ---------- */
-  --syntax-keyword: #FF9E64;
-  --syntax-string: #7DD3A8;
-  --syntax-number: var(--brand-400);
-  --syntax-comment: #6E7C91;
-  --syntax-function: #FFD166;
-  --syntax-variable: #F2F6FC;
+  /* 11 类，对代码块底 #0B0E15 实测 >=4.55:1；两两 OKLab ΔE >=0.062。
+     comment 原为 #6E7C91（此处才 4.55:1，而 MASTER / index.html 写的是
+     #7A889D）——三处不一致且校验未覆盖语法色，v2.4.0 统一为 #7A889D（5.36:1）。 */
+  --syntax-keyword: #FF9E64;         /*  9.49 */
+  --syntax-string: #7DD3A8;          /* 10.81 */
+  --syntax-number: var(--brand-400); /*  8.78 */
+  --syntax-comment: #7A889D;         /*  5.36 */
+  --syntax-function: #FFD166;        /* 13.39 */
+  --syntax-variable: #F2F6FC;        /* 17.80 */
+  --syntax-type: #41C2C5;            /*  8.96 */
+  --syntax-constant: #C69EFF;        /*  8.95 */
+  --syntax-tag: #FF928B;             /*  8.95 */
+  --syntax-attr: #ADB850;            /*  8.96 */
+  --syntax-operator: #979CA6;        /*  7.01 */
 }
 
 /* ---------- Compact density ---------- */

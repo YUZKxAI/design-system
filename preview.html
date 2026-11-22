@@ -22,13 +22,13 @@
   --text-primary:var(--gray-100);--text-secondary:var(--gray-400);--text-tertiary:var(--gray-500);
   --action-primary:var(--brand-700);--action-primary-hover:var(--brand-600);--action-primary-active:var(--brand-800);
   --on-action-primary:var(--white);--accent:var(--brand-700);--on-accent:var(--white);--focus-ring:var(--brand-700);
-  --success:#12805C;--warning:#9A5B00;--danger:#C22B2B;--info:var(--brand-700);
-  --success-bg:rgba(18,128,92,.08);--warning-bg:rgba(154,91,0,.08);--danger-bg:rgba(194,43,43,.08);--info-bg:color-mix(in srgb,var(--brand-700) 8%,transparent);
+  --success:#12805C;--warning:#9A5B00;--danger:#C22B2B;--info:var(--brand-600);
+  --success-bg:rgba(18,128,92,.08);--warning-bg:rgba(154,91,0,.08);--danger-bg:rgba(194,43,43,.08);--info-bg:color-mix(in srgb,var(--info) 8%,transparent);
   /* 状态交互态：base 之外全部派生，不新增原语 */
   --success-hover:color-mix(in srgb,var(--success) 86%,#000);--success-active:color-mix(in srgb,var(--success) 74%,#000);--success-border:color-mix(in srgb,var(--success) 42%,transparent);--on-success:#FFFFFF;
   --warning-hover:color-mix(in srgb,var(--warning) 86%,#000);--warning-active:color-mix(in srgb,var(--warning) 74%,#000);--warning-border:color-mix(in srgb,var(--warning) 42%,transparent);--on-warning:#FFFFFF;
   --danger-hover:color-mix(in srgb,var(--danger) 86%,#000);--danger-active:color-mix(in srgb,var(--danger) 74%,#000);--danger-border:color-mix(in srgb,var(--danger) 42%,transparent);--on-danger:#FFFFFF;
-  --info-hover:var(--brand-600);--info-active:var(--brand-800);--info-border:color-mix(in srgb,var(--brand-700) 42%,transparent);--on-info:#FFFFFF;
+  --info-hover:color-mix(in srgb,var(--info) 86%,#000);--info-active:color-mix(in srgb,var(--info) 74%,#000);--info-border:color-mix(in srgb,var(--info) 42%,transparent);--on-info:#FFFFFF;
   /* 顺序色阶（热力图）5 档，随品牌联动 */
   --seq-1:color-mix(in srgb,var(--brand-700) 10%,#FFFFFF);--seq-2:color-mix(in srgb,var(--brand-700) 30%,#FFFFFF);--seq-3:color-mix(in srgb,var(--brand-700) 54%,#FFFFFF);--seq-4:color-mix(in srgb,var(--brand-700) 78%,#FFFFFF);--seq-5:var(--brand-700);
   /* 发散色阶 7 档：danger → 中性 → success */
@@ -42,18 +42,18 @@
   --space-0:0;--space-1:4px;--space-2:8px;--space-3:12px;--space-4:16px;--space-5:24px;--space-6:32px;--space-7:48px;--space-8:64px;--space-9:96px;
   --radius-none:0;--radius-sm:4px;--radius-md:8px;--radius-lg:12px;--radius-pill:999px;
   --shadow-sm:0 1px 2px rgba(13,20,32,.06);--shadow-md:0 8px 24px rgba(13,20,32,.08);--shadow-lg:0 20px 48px rgba(13,20,32,.12);
-  --shadow-focus:0 0 0 2px var(--bg-canvas),0 0 0 4px var(--focus-ring);--shadow-active:0 0 0 1px var(--brand-ring),0 0 20px var(--brand-glow);--glow-accent:var(--brand-glow);
+  --shadow-focus:0 0 0 2px var(--focus-separator),0 0 0 4px var(--focus-ring);--shadow-focus-danger:0 0 0 2px var(--focus-separator),0 0 0 4px var(--focus-ring-danger);--shadow-active:0 0 0 1px var(--brand-ring),0 0 20px var(--brand-glow);--glow-accent:var(--brand-glow);
   --duration-instant:80ms;--duration-fast:160ms;--duration-normal:240ms;--duration-slow:360ms;--dur-micro:var(--duration-instant);--dur-fast:var(--duration-fast);--dur-normal:var(--duration-normal);--dur-slow:var(--duration-slow);
   --ease-out:cubic-bezier(.2,.8,.2,1);--ease-in-out:cubic-bezier(.4,0,.2,1);
   --sidebar-width:248px;--topbar-height:56px;--content-max:1160px;--content-pad:24px;
   /* v1.2 state / data / syntax / size */
   --bg-hover:rgba(13,20,32,.04);--bg-active:rgba(13,20,32,.08);--bg-selected:color-mix(in srgb,var(--brand-700) 8%,transparent);--bg-disabled:rgba(13,20,32,.04);
   --border-hover:#8B99AD;--border-focus:var(--brand-700);--border-disabled:#DCE3ED;--text-disabled:#8B99AD;
-  --text-link:var(--brand-800);--text-link-hover:var(--brand-700);--text-link-visited:var(--brand-800);--focus-ring-width:2px;--focus-ring-offset:2px;
+  --text-link:var(--brand-800);--text-link-hover:var(--brand-700);--text-link-visited:var(--brand-800);--focus-ring-width:2px;--focus-ring-offset:2px;--focus-separator:var(--bg-canvas);--focus-ring-danger:var(--danger);--focus-ring-warning:var(--warning);--focus-ring-success:var(--success);
   /* 分类色板：与状态色解耦（ΔE ≥0.10 两两/对状态），对白 ≥3:1 */
   --chart-1:var(--brand-700);--chart-2:#0096BF;--chart-3:#00A287;--chart-4:#309909;--chart-5:#9C8300;--chart-6:#CD6600;--chart-7:#9F5DCB;--chart-8:#64748B;
   --chart-grid:rgba(13,20,32,.08);--chart-axis:#5F6D82;
-  --syntax-keyword:#A85000;--syntax-string:#12805C;--syntax-number:var(--brand-700);--syntax-comment:#8B99AD;--syntax-function:#8A5A00;--syntax-variable:#0D1420;
+  --syntax-keyword:#A85000;--syntax-string:#12805C;--syntax-number:var(--brand-700);--syntax-comment:#5F6D82;--syntax-function:#8A5A00;--syntax-variable:#0D1420;--syntax-type:#047D7F;--syntax-constant:#845DB7;--syntax-tag:#B94D49;--syntax-attr:#6C7500;--syntax-operator:#5A5E67;
   --size-icon-sm:16px;--size-icon-md:20px;--size-icon-lg:24px;--size-icon-xl:32px;--size-control-sm:32px;--size-control-md:40px;--size-control-lg:48px;--size-touch-min:44px;
   --opacity-1:.04;--opacity-2:.08;--opacity-3:.16;--opacity-4:.32;
 }
@@ -65,24 +65,24 @@
   --text-primary:var(--gray-100);--text-secondary:var(--gray-400);--text-tertiary:var(--gray-500);
   --action-primary:var(--brand-600);--action-primary-hover:var(--brand-550);--action-primary-active:var(--brand-700);--on-action-primary:var(--white);
   --accent:var(--brand-500);--on-accent:var(--near-black);--focus-ring:var(--brand-500);
-  --success:#37D399;--warning:#FFB020;--danger:#FF5C5C;--info:var(--brand-500);
-  --success-bg:rgba(55,211,153,.1);--warning-bg:rgba(255,176,32,.1);--danger-bg:rgba(255,92,92,.1);--info-bg:color-mix(in srgb,var(--brand-500) 10%,transparent);
+  --success:#37D399;--warning:#FFB020;--danger:#FF5C5C;--info:var(--brand-400);
+  --success-bg:rgba(55,211,153,.1);--warning-bg:rgba(255,176,32,.1);--danger-bg:rgba(255,92,92,.1);--info-bg:color-mix(in srgb,var(--info) 10%,transparent);
   /* 暗底交互方向相反：与白混合提亮 */
   --success-hover:color-mix(in srgb,var(--success) 88%,#FFF);--success-active:color-mix(in srgb,var(--success) 76%,#FFF);--success-border:color-mix(in srgb,var(--success) 42%,transparent);--on-success:#05080F;
   --warning-hover:color-mix(in srgb,var(--warning) 88%,#FFF);--warning-active:color-mix(in srgb,var(--warning) 76%,#FFF);--warning-border:color-mix(in srgb,var(--warning) 42%,transparent);--on-warning:#05080F;
   --danger-hover:color-mix(in srgb,var(--danger) 88%,#FFF);--danger-active:color-mix(in srgb,var(--danger) 76%,#FFF);--danger-border:color-mix(in srgb,var(--danger) 42%,transparent);--on-danger:#05080F;
-  --info-hover:var(--brand-400);--info-active:var(--brand-300);--info-border:color-mix(in srgb,var(--brand-500) 42%,transparent);--on-info:#05080F;
+  --info-hover:color-mix(in srgb,var(--info) 88%,#FFF);--info-active:color-mix(in srgb,var(--info) 76%,#FFF);--info-border:color-mix(in srgb,var(--info) 42%,transparent);--on-info:#05080F;
   --seq-1:color-mix(in srgb,var(--brand-500) 14%,#0F131B);--seq-2:color-mix(in srgb,var(--brand-500) 32%,#0F131B);--seq-3:color-mix(in srgb,var(--brand-500) 54%,#0F131B);--seq-4:color-mix(in srgb,var(--brand-500) 78%,#0F131B);--seq-5:var(--brand-500);
   --div-neg-3:var(--danger);--div-neg-2:color-mix(in srgb,var(--danger) 62%,#0F131B);--div-neg-1:color-mix(in srgb,var(--danger) 32%,#0F131B);--div-mid:#1B2230;--div-pos-1:color-mix(in srgb,var(--success) 32%,#0F131B);--div-pos-2:color-mix(in srgb,var(--success) 62%,#0F131B);--div-pos-3:var(--success);
   --overlay:rgba(3,6,12,.72);--grid-line:rgba(255,255,255,.035);
   --shadow-sm:0 1px 2px rgba(0,0,0,.24);--shadow-md:0 8px 24px rgba(0,0,0,.28);--shadow-lg:0 20px 48px rgba(0,0,0,.36);
   --bg-hover:rgba(255,255,255,.05);--bg-active:rgba(255,255,255,.09);--bg-selected:color-mix(in srgb,var(--brand-500) 14%,transparent);--bg-disabled:rgba(255,255,255,.04);
   --border-hover:#4C5A70;--border-focus:var(--brand-500);--border-disabled:#242C3A;--text-disabled:#4C5A70;
-  --text-link:var(--brand-400);--text-link-hover:var(--brand-300);--text-link-visited:var(--brand-400);
+  --text-link:var(--brand-400);--text-link-hover:var(--brand-300);--text-link-visited:var(--brand-400);--focus-separator:var(--bg-canvas);--focus-ring-danger:var(--danger);--focus-ring-warning:var(--warning);--focus-ring-success:var(--success);
   /* 同色相、按暗底取明度；对 #0F131B ≥5.8:1 */
   --chart-1:var(--brand-500);--chart-2:#4FB6DB;--chart-3:#3FC9B4;--chart-4:#8CCB6E;--chart-5:#B8A64B;--chart-6:#E39355;--chart-7:#B78AE0;--chart-8:#8FA1B8;
   --chart-grid:rgba(255,255,255,.08);--chart-axis:#7A889D;
-  --syntax-keyword:#FF9E64;--syntax-string:#7DD3A8;--syntax-number:var(--brand-400);--syntax-comment:#7A889D;--syntax-function:#FFD166;--syntax-variable:#F2F6FC;
+  --syntax-keyword:#FF9E64;--syntax-string:#7DD3A8;--syntax-number:var(--brand-400);--syntax-comment:#7A889D;--syntax-function:#FFD166;--syntax-variable:#F2F6FC;--syntax-type:#41C2C5;--syntax-constant:#C69EFF;--syntax-tag:#FF928B;--syntax-attr:#ADB850;--syntax-operator:#979CA6;
 }
 [data-density='compact']{--space-5:16px;--space-6:20px;--space-7:28px;--space-8:40px;--content-pad:16px}
 
@@ -398,6 +398,10 @@ button.kbd:hover{border-color:var(--border-strong);color:var(--text-primary)}
 .scale-item{display:grid;gap:6px}
 .scale-bar{height:40px;border:1px solid var(--border-subtle);border-radius:var(--radius-sm)}
 .scale-item span{font-family:var(--font-mono);font-size:10px;color:var(--text-tertiary);text-align:center}
+.syntax-legend{display:grid;grid-template-columns:repeat(auto-fill,minmax(104px,1fr));gap:8px 12px;margin-top:10px}
+.syntax-legend div{display:flex;align-items:center;gap:6px;min-width:0}
+.syntax-legend i{width:14px;height:14px;border-radius:3px;flex:none;border:1px solid rgba(13,20,32,.14)}
+.syntax-legend span{font-family:var(--font-mono);font-size:10px;color:var(--text-tertiary);white-space:nowrap;overflow:hidden;text-overflow:ellipsis}
 .state-trio{display:grid;grid-template-columns:repeat(4,minmax(0,1fr));gap:10px}
 .trio-col{display:grid;gap:4px}
 .trio-cap{font-family:var(--font-mono);font-size:10px;color:var(--text-tertiary);margin-bottom:2px}
@@ -763,14 +767,28 @@ button.kbd:hover{border-color:var(--border-strong);color:var(--text-primary)}
           <div class="note"><b>--div-neg-3 … --div-pos-3</b>，负端接 <span class="sem-code">--danger</span>、中点中性、正端接 <span class="sem-code">--success</span>。<b>财经场景「涨红跌绿」需反转正负映射</b>，不要直接套用。</div>
         </div>
 
-        <div class="subhead">代码语法色 · 六类令牌</div>
+        <div class="subhead">代码语法色 · 十一类令牌</div>
         <div class="code-block"><span style="color:var(--syntax-comment)">// YUZK.AI agent runtime</span>
-<span style="color:var(--syntax-keyword)">const</span> <span style="color:var(--syntax-variable)">agent</span> = <span style="color:var(--syntax-function)">createAgent</span>({
-  model: <span style="color:var(--syntax-string)">'gpt-4.1'</span>,
-  maxTokens: <span style="color:var(--syntax-number)">8192</span>,
-  tools: [<span style="color:var(--syntax-string)">'search'</span>, <span style="color:var(--syntax-string)">'fetch'</span>]
-});</div>
-        <p class="note">语法色只用于代码块与日志视图，不用于正文强调；亮/暗主题各有独立映射。</p>
+<span style="color:var(--syntax-keyword)">const</span> <span style="color:var(--syntax-variable)">agent</span><span style="color:var(--syntax-operator)">:</span> <span style="color:var(--syntax-type)">AgentConfig</span> <span style="color:var(--syntax-operator)">=</span> <span style="color:var(--syntax-function)">createAgent</span><span style="color:var(--syntax-operator)">({</span>
+  <span style="color:var(--syntax-attr)">model</span><span style="color:var(--syntax-operator)">:</span> <span style="color:var(--syntax-string)">'gpt-4.1'</span><span style="color:var(--syntax-operator)">,</span>
+  <span style="color:var(--syntax-attr)">timeout</span><span style="color:var(--syntax-operator)">:</span> <span style="color:var(--syntax-constant)">MAX_TIMEOUT</span><span style="color:var(--syntax-operator)">,</span>
+  <span style="color:var(--syntax-attr)">retries</span><span style="color:var(--syntax-operator)">:</span> <span style="color:var(--syntax-number)">3</span>
+<span style="color:var(--syntax-operator)">})</span></div>
+        <div class="code-block"><span style="color:var(--syntax-tag)">&lt;tool-call</span> <span style="color:var(--syntax-attr)">name</span><span style="color:var(--syntax-operator)">=</span><span style="color:var(--syntax-string)">"search"</span> <span style="color:var(--syntax-attr)">timeout</span><span style="color:var(--syntax-operator)">=</span><span style="color:var(--syntax-string)">"30"</span> <span style="color:var(--syntax-tag)">/&gt;</span></div>
+        <div class="syntax-legend">
+          <div><i style="background:var(--syntax-keyword)"></i><span>keyword</span></div>
+          <div><i style="background:var(--syntax-string)"></i><span>string</span></div>
+          <div><i style="background:var(--syntax-number)"></i><span>number</span></div>
+          <div><i style="background:var(--syntax-comment)"></i><span>comment</span></div>
+          <div><i style="background:var(--syntax-function)"></i><span>function</span></div>
+          <div><i style="background:var(--syntax-variable)"></i><span>variable</span></div>
+          <div><i style="background:var(--syntax-type)"></i><span>type</span></div>
+          <div><i style="background:var(--syntax-constant)"></i><span>constant</span></div>
+          <div><i style="background:var(--syntax-tag)"></i><span>tag</span></div>
+          <div><i style="background:var(--syntax-attr)"></i><span>attr</span></div>
+          <div><i style="background:var(--syntax-operator)"></i><span>operator</span></div>
+        </div>
+        <p class="note">语法色只用于代码块与日志视图，不用于正文强调；11 类均对代码块底色 ≥4.5:1，两两 OKLab ΔE ≥0.054。<b>标点不单列</b>——它与 <span class="sem-code">--syntax-operator</span> 的 ΔE 仅 0.036，不可辨的冗余令牌比缺一类更糟，标点继承 <span class="sem-code">--syntax-variable</span>。</p>
       </section>
 
       <!-- 04 TYPE -->
