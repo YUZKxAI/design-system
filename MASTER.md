@@ -3,6 +3,7 @@
 > 本文件是所有 YUZK.AI 产品的**唯一事实来源（Single Source of Truth）**。
 > 具体页面可在 `@YUZKxAI/product-patterns/pages/<page>.md` 中声明覆盖项，未声明的部分一律遵循本文件。
 > 组件中禁止出现裸 hex；只能引用语义令牌。
+> **系统如何被生成**（品牌 × 气质 × 模组、生成算法、部署形态）见 [`ARCHITECTURE.md`](./ARCHITECTURE.md)（v3.0.0-draft，设计依据，暂不作为施工依据）。本文定义"成品长什么样"，`ARCHITECTURE.md` 定义"成品如何被造出来"。
 
 **版本：** 2.3.0 · **建立日期：** 2026-11-22 · **默认主题：** 亮色（暗色为可选主题）
 **变更记录：**
