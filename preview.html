@@ -3,7 +3,7 @@
 <head>
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
-<title>YUZK.AI — Design System v2.0.0</title>
+<title>YUZK.AI — Design System v2.1.0</title>
 <style>
 /* ==================== TOKENS ==================== */
 @import url('https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&family=JetBrains+Mono:wght@400;500;600&family=Space+Grotesk:wght@500;600;700&display=swap');
@@ -534,13 +534,18 @@ button.kbd:hover{border-color:var(--border-strong);color:var(--text-primary)}
       <a href="#icons-system"><span class="num">27</span>图标系统</a>
       <a href="#dataviz-system"><span class="num">28</span>数据可视化</a>
       <a href="#content-system"><span class="num">29</span>内容设计</a>
+      <div class="nav-group">Core closure</div>
+      <a href="#keyboard-system"><span class="num">30</span>键盘与快捷键</a>
+      <a href="#forms-system"><span class="num">31</span>表单设计</a>
+      <a href="#theming-system"><span class="num">32</span>主题与令牌治理</a>
+      <a href="#governance-system"><span class="num">33</span>贡献与演进</a>
     </nav>
-    <div class="side-foot"><span><span class="dot-live"></span>v2.0.0</span><span>LIGHT FIRST</span></div>
+    <div class="side-foot"><span><span class="dot-live"></span>v2.1.0</span><span>LIGHT FIRST</span></div>
   </aside>
 
   <div class="main">
     <header class="topbar">
-      <div class="crumb">YUZK.AI / <b>DESIGN SYSTEM</b> / v2.0.0</div>
+      <div class="crumb">YUZK.AI / <b>DESIGN SYSTEM</b> / v2.1.0</div>
       <div class="tools">
         <button class="kbd" id="cmdOpen" aria-label="打开命令面板"><svg width="13" height="13" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><circle cx="11" cy="11" r="7"/><path d="m20 20-3.5-3.5"/></svg><kbd>⌘ K</kbd></button>
         <button class="icon-btn" id="densityBtn" title="切换密度" aria-label="切换紧凑密度"><svg width="15" height="15" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.75"><path d="M4 6h16M4 12h16M4 18h16"/></svg></button>
@@ -1097,6 +1102,10 @@ button.kbd:hover{border-color:var(--border-strong);color:var(--text-primary)}
               ├── <span style="color:var(--accent)">ICONS.md</span> &nbsp;— 图标系统与语义映射<br>
               ├── <span style="color:var(--accent)">DATA-VIZ.md</span> &nbsp;— 数据可视化规范<br>
               ├── <span style="color:var(--accent)">CONTENT.md</span> &nbsp;— 内容设计与文案规范<br>
+              ├── <span style="color:var(--accent)">KEYBOARD.md</span> &nbsp;— 键盘与快捷键规范<br>
+              ├── <span style="color:var(--accent)">FORMS.md</span> &nbsp;— 表单布局与交互规范<br>
+              ├── <span style="color:var(--accent)">THEMING.md</span> &nbsp;— 主题与令牌治理<br>
+              ├── <span style="color:var(--accent)">GOVERNANCE.md</span> — 贡献与演进流程<br>
               ├── <span style="color:var(--accent)">index.html</span> &nbsp;— 本手册（可交互）<br>
               ├── <span style="color:var(--accent)">tokens.css</span> &nbsp;— CSS 变量，亮/暗双主题<br>
               └── <span style="color:var(--accent)">tokens.json</span> — W3C DTCG 格式令牌
@@ -1655,8 +1664,89 @@ button.kbd:hover{border-color:var(--border-strong);color:var(--text-primary)}
         </div>
       </section>
 
+      <!-- 30 KEYBOARD -->
+      <section class="section" id="keyboard-system">
+        <div class="sec-head"><span class="sec-num">30</span><h2>键盘与快捷键</h2></div>
+        <p class="sec-desc">键盘路径是可用性的底线。全局键位统一，组件级键盘规则落地在各组件规格中。完整规范见 <code style="color:var(--accent)">KEYBOARD.md</code>。</p>
+        <div class="panel panel-pad" style="overflow-x:auto">
+          <table class="spec-table">
+            <thead><tr><th>键位</th><th>动作</th><th>作用域</th></tr></thead>
+            <tbody>
+              <tr><td>⌘/Ctrl + K</td><td>打开命令面板</td><td>全局</td></tr>
+              <tr><td>⌘/Ctrl + /</td><td>快捷键帮助</td><td>全局</td></tr>
+              <tr><td>Esc</td><td>关闭 / 取消</td><td>浮层、Modal、Drawer</td></tr>
+              <tr><td>⌘/Ctrl + Enter</td><td>提交</td><td>表单、PromptInput</td></tr>
+              <tr><td>Tab / Shift+Tab</td><td>顺序导航</td><td>全局</td></tr>
+            </tbody>
+          </table>
+        </div>
+        <div class="callout" style="margin-top:16px">
+          <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.75"><path d="M12 3 2 7l10 4 10-4-10-4Z"/><path d="M2 12l10 4 10-4M2 17l10 4 10-4"/></svg>
+          <div><b>优先级：</b>全局键 &gt; 组件键 &gt; 浏览器保留键。禁止占用 Ctrl+W / Ctrl+T。焦点陷阱仅 Modal / Drawer，且 Esc 可退出、关闭后焦点归还。</div>
+        </div>
+      </section>
+
+      <!-- 31 FORMS -->
+      <section class="section" id="forms-system">
+        <div class="sec-head"><span class="sec-num">31</span><h2>表单设计</h2></div>
+        <p class="sec-desc">§16 定义校验反馈，本章定义表单结构与交互。标签清晰、默认值合理、错误可恢复。完整规范见 <code style="color:var(--accent)">FORMS.md</code>。</p>
+        <div class="grid g2">
+          <div class="panel panel-pad">
+            <div class="demo-label">结构规则</div>
+            <div class="checklist">
+              <li><svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5"><path d="m5 12 4 4L19 6"/></svg><span>标签默认置顶，禁止 placeholder 代替标签</span></li>
+              <li><svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5"><path d="m5 12 4 4L19 6"/></svg><span>单列为主，多列仅用于强相关字段</span></li>
+              <li><svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5"><path d="m5 12 4 4L19 6"/></svg><span>字段宽度按令牌分档，不手写固定宽度</span></li>
+            </div>
+          </div>
+          <div class="panel panel-pad">
+            <div class="demo-label">提交行为</div>
+            <div class="checklist">
+              <li><svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5"><path d="m5 12 4 4L19 6"/></svg><span>提交中防重复，失败保留输入，成功给出去向</span></li>
+              <li><svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5"><path d="m5 12 4 4L19 6"/></svg><span>未保存离开必须确认；多步返回不丢数据</span></li>
+              <li><svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5"><path d="m5 12 4 4L19 6"/></svg><span>危险操作需输入确认词</span></li>
+            </div>
+          </div>
+        </div>
+      </section>
+
+      <!-- 32 THEMING -->
+      <section class="section" id="theming-system">
+        <div class="sec-head"><span class="sec-num">32</span><h2>主题与令牌治理</h2></div>
+        <p class="sec-desc">令牌是设计系统的唯一接口。三层模型 primitive → semantic → component，组件只引用语义层。完整规范见 <code style="color:var(--accent)">THEMING.md</code>。</p>
+        <div class="lt-grid">
+          <div class="lt"><h4>primitive 原语层</h4><p>色值、间距、字号的原始定义，不直接给组件用。</p></div>
+          <div class="lt"><h4>semantic 语义层</h4><p>bg / text / border / action / state，主题切换的唯一作用面。</p></div>
+          <div class="lt"><h4>component 组件层</h4><p>组件专属映射，引用语义层，禁止跨层与裸 hex。</p></div>
+        </div>
+        <div class="callout" style="margin-top:16px">
+          <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.75"><path d="M12 3 2 7l10 4 10-4-10-4Z"/><path d="M2 12l10 4 10-4M2 17l10 4 10-4"/></svg>
+          <div><b>唯一强调色：</b>亮色 #2455B4、暗色 #4C8DFF；#4C8DFF 上禁止白字。弃用令牌需共存一个版本 + 迁移映射后再移除。</div>
+        </div>
+      </section>
+
+      <!-- 33 GOVERNANCE -->
+      <section class="section" id="governance-system">
+        <div class="sec-head"><span class="sec-num">33</span><h2>贡献与演进</h2></div>
+        <p class="sec-desc">设计系统靠治理活下去。贡献分六类、审批按类型分级、评审执行量表。完整规范见 <code style="color:var(--accent)">GOVERNANCE.md</code>。</p>
+        <div class="panel panel-pad" style="overflow-x:auto">
+          <table class="spec-table">
+            <thead><tr><th>版本</th><th>判定</th><th>例子</th></tr></thead>
+            <tbody>
+              <tr><td>major</td><td>破坏性变更</td><td>删除令牌、改组件 API、视觉大改</td></tr>
+              <tr><td>minor</td><td>新增能力</td><td>新组件、新令牌、新规范文档</td></tr>
+              <tr><td>patch</td><td>修复</td><td>文案修正、示例补充、缺陷修复</td></tr>
+            </tbody>
+          </table>
+        </div>
+        <div class="callout" style="margin-top:16px">
+          <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.75"><path d="M12 3 2 7l10 4 10-4-10-4Z"/><path d="M2 12l10 4 10-4M2 17l10 4 10-4"/></svg>
+          <div>评审 ≥8 分交付，<b>对比度 / 键盘路径 / 裸 hex 一票否决</b>。核心层 breaking change 时私有 product-patterns 仓库必须同步响应，禁止反向依赖。</div>
+        </div>
+      </section>
+
       <footer class="footer">
-        <span>YUZK.AI DESIGN SYSTEM · v2.0.0 · 2026-11-22</span>
+        <span>YUZK.AI DESIGN SYSTEM · v2.1.0 · 2026-11-22</span>
         <span>SIGNAL OVER DECORATION</span>
       </footer>
     </main>

@@ -1,4 +1,4 @@
-# YUZK.AI — 图标系统规范 v2.0.0
+# YUZK.AI — 图标系统规范 v2.1.0
 
 > 本文档是 YUZK.AI 图标领域的**唯一事实来源**，细化 `MASTER.md` §13 与 `COMPONENTS.md` 的图标契约。
 > 上位规则见 [`MASTER.md`](./MASTER.md)；组件内图标用法见 [`COMPONENTS.md`](./COMPONENTS.md)；AI 语义见 [`@YUZKxAI/product-patterns/AI-PATTERNS.md`](./@YUZKxAI/product-patterns/AI-PATTERNS.md)。

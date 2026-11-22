@@ -1,4 +1,4 @@
-# YUZK.AI — 动效系统规范 v2.0.0
+# YUZK.AI — 动效系统规范 v2.1.0
 
 > 本文件是 YUZK.AI 全部**界面运动（Motion）**的唯一事实来源。组件、页面、AI 状态机中的一切动画都必须引用本文令牌与规则。
 > 通用视觉原则遵循 [`MASTER.md`](./MASTER.md)，组件结构遵循 [`COMPONENTS.md`](./COMPONENTS.md)，AI 语义遵循 [`@YUZKxAI/product-patterns/AI-PATTERNS.md`](./@YUZKxAI/product-patterns/AI-PATTERNS.md)。
