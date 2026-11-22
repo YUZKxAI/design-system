@@ -3,7 +3,7 @@
 <head>
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
-<title>YUZK.AI — Design System v1.7.0</title>
+<title>YUZK.AI — Design System v2.0.0</title>
 <style>
 /* ==================== TOKENS ==================== */
 @import url('https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&family=JetBrains+Mono:wght@400;500;600&family=Space+Grotesk:wght@500;600;700&display=swap');
@@ -521,7 +521,6 @@ button.kbd:hover{border-color:var(--border-strong);color:var(--text-primary)}
       <a href="#forms"><span class="num">16</span>表单校验</a>
       <div class="nav-group">Identity & Quality</div>
       <a href="#brand"><span class="num">17</span>品牌资产</a>
-      <a href="#aipatterns"><span class="num">18</span>AI 原生模式</a>
       <a href="#a11ydeep"><span class="num">19</span>可访问性深度</a>
       <a href="#microcopy"><span class="num">20</span>微文案库</a>
       <a href="#review"><span class="num">21</span>设计评审</a>
@@ -529,7 +528,6 @@ button.kbd:hover{border-color:var(--border-strong);color:var(--text-primary)}
       <a href="#responsive"><span class="num">22</span>响应式布局</a>
       <div class="nav-group">Execution</div>
       <a href="#api"><span class="num">23</span>API 契约</a>
-      <a href="#productpatterns"><span class="num">24</span>产品流程模式</a>
       <a href="#pagecover"><span class="num">25</span>页面覆盖与原语</a>
       <div class="nav-group">Craft</div>
       <a href="#motion-system"><span class="num">26</span>动效系统</a>
@@ -537,12 +535,12 @@ button.kbd:hover{border-color:var(--border-strong);color:var(--text-primary)}
       <a href="#dataviz-system"><span class="num">28</span>数据可视化</a>
       <a href="#content-system"><span class="num">29</span>内容设计</a>
     </nav>
-    <div class="side-foot"><span><span class="dot-live"></span>v1.7.0</span><span>LIGHT FIRST</span></div>
+    <div class="side-foot"><span><span class="dot-live"></span>v2.0.0</span><span>LIGHT FIRST</span></div>
   </aside>
 
   <div class="main">
     <header class="topbar">
-      <div class="crumb">YUZK.AI / <b>DESIGN SYSTEM</b> / v1.7.0</div>
+      <div class="crumb">YUZK.AI / <b>DESIGN SYSTEM</b> / v2.0.0</div>
       <div class="tools">
         <button class="kbd" id="cmdOpen" aria-label="打开命令面板"><svg width="13" height="13" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><circle cx="11" cy="11" r="7"/><path d="m20 20-3.5-3.5"/></svg><kbd>⌘ K</kbd></button>
         <button class="icon-btn" id="densityBtn" title="切换密度" aria-label="切换紧凑密度"><svg width="15" height="15" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.75"><path d="M4 6h16M4 12h16M4 18h16"/></svg></button>
@@ -1092,16 +1090,13 @@ button.kbd:hover{border-color:var(--border-strong);color:var(--text-primary)}
               design-system/yuzk-ai/<br>
               ├── <span style="color:var(--accent)">MASTER.md</span> &nbsp;— 设计宪法 / 唯一事实来源<br>
               ├── <span style="color:var(--accent)">COMPONENTS.md</span> — 31 项组件逐项规格<br>
-              ├── <span style="color:var(--accent)">AI-PATTERNS.md</span> — 12 个 AI 原生模式<br>
               ├── <span style="color:var(--accent)">BRAND.md</span> &nbsp;— 品牌资产规范<br>
               ├── <span style="color:var(--accent)">RESPONSIVE.md</span> — 响应式布局与断点行为<br>
               ├── <span style="color:var(--accent)">API-CONTRACT.md</span> — 39 组件 API 契约<br>
-              ├── <span style="color:var(--accent)">PRODUCT-PATTERNS.md</span> — 13 个产品流程模式<br>
               ├── <span style="color:var(--accent)">MOTION.md</span> &nbsp;— 动效系统与编排规则<br>
               ├── <span style="color:var(--accent)">ICONS.md</span> &nbsp;— 图标系统与语义映射<br>
               ├── <span style="color:var(--accent)">DATA-VIZ.md</span> &nbsp;— 数据可视化规范<br>
               ├── <span style="color:var(--accent)">CONTENT.md</span> &nbsp;— 内容设计与文案规范<br>
-              ├── <span style="color:var(--accent)">pages/</span> &nbsp;— 五份页面级覆盖规则<br>
               ├── <span style="color:var(--accent)">index.html</span> &nbsp;— 本手册（可交互）<br>
               ├── <span style="color:var(--accent)">tokens.css</span> &nbsp;— CSS 变量，亮/暗双主题<br>
               └── <span style="color:var(--accent)">tokens.json</span> — W3C DTCG 格式令牌
@@ -1251,46 +1246,7 @@ button.kbd:hover{border-color:var(--border-strong);color:var(--text-primary)}
       </section>
 
       <!-- 18 AI PATTERNS -->
-      <section class="section" id="aipatterns">
-        <div class="sec-head"><span class="sec-num">18</span><h2>AI 原生模式</h2></div>
-        <p class="sec-desc">通用设计系统解决"按钮长什么样"，这里解决"智能体怎么被看见、被信任、被控制"。12 个完整模式见 <code style="color:var(--accent)">AI-PATTERNS.md</code>。</p>
-
-        <div class="subhead">生命周期 · 状态永不只靠颜色</div>
-        <div class="panel panel-pad">
-          <div class="flow">
-            <span class="node">draft</span><span class="arrow">→</span>
-            <span class="node">queued</span><span class="arrow">→</span>
-            <span class="node on">running</span><span class="arrow">→</span>
-            <span class="node on">awaiting_approval</span><span class="arrow">→</span>
-            <span class="node">streaming</span><span class="arrow">→</span>
-            <span class="node">completed</span>
-            <span class="arrow">/</span><span class="node err">failed</span>
-          </div>
-          <p class="note">运行态必须显示当前步骤与已用时间，禁止笼统"处理中"；取消后保留已生成内容。</p>
-        </div>
-
-        <div class="subhead">工具调用透明化 · 默认折叠，运行时展开当前步</div>
-        <div class="panel panel-pad">
-          <details class="trace-row" open><summary><span>✓ &nbsp;网页搜索 · 查询"Agent 框架对比"</span><span class="trace-tag">1.2 s</span></summary><div class="detail">返回 8 条结果 · 已引用 3 条<br>[查看原始结果]</div></details>
-          <details class="trace-row"><summary><span>✓ &nbsp;代码执行 · python analyze.py</span><span class="trace-tag">0.4 s</span></summary><div class="detail">退出码 0 · 输出 12 行<br>[查看代码]</div></details>
-          <details class="trace-row"><summary><span>○ &nbsp;写入知识库 · 12 条记录</span><span class="trace-tag">等待审批</span></summary><div class="detail">影响范围：项目「Research」· 12 条 · 不可逆<br>[批准执行] [拒绝]</div></details>
-        </div>
-
-        <div class="grid g2" style="margin-top:16px">
-          <div class="panel panel-pad">
-            <div class="demo-label">引用与不确定性</div>
-            <p style="font-size:13px;line-height:1.8;margin:0">该方法在长上下文场景下召回率更高<span class="cite">1</span>，但在短文本上优势不明显<span class="cite">2</span>。<span class="yz-badge yz-badge--warning" style="margin-left:6px">推测</span></p>
-            <div class="meta-line">参考了 2 个来源 · [查看全部]</div>
-            <p class="note">引用 chip 紧贴对应句子；不确定性标记贴内容，不统一放末尾。禁止"置信度 87%"。</p>
-          </div>
-          <div class="panel panel-pad">
-            <div class="demo-label">成本 / 延迟 / 模型</div>
-            <div class="row" style="gap:8px"><span class="yz-badge">gpt-4.1</span><span class="yz-badge">1,284 tokens</span><span class="yz-badge">2.4 s</span><span class="yz-badge">估算 ¥0.03</span></div>
-            <div class="meta-line" style="margin-top:14px">已自动选择 claude-3.7 · 原因：上下文超过 32K</div>
-            <p class="note">成本必须标注"估算"；延迟显示单次墙钟时间；自动选模需说明原因并允许改回。</p>
-          </div>
-        </div>
-      </section>
+      
 
       <!-- 19 A11Y DEEP -->
       <section class="section" id="a11ydeep">
@@ -1524,7 +1480,7 @@ button.kbd:hover{border-color:var(--border-strong);color:var(--text-primary)}
       <!-- 23 API -->
       <section class="section" id="api">
         <div class="sec-head"><span class="sec-num">23</span><h2>组件 API 契约</h2></div>
-        <p class="sec-desc">31 个基础组件 + 8 个业务组件的框架无关接口定义，完整表见 <code style="color:var(--accent)">API-CONTRACT.md</code>。目标：不同人实现同一组件，调用方式不产生分歧。</p>
+        <p class="sec-desc">31 个基础组件的框架无关接口定义，完整表见 <code style="color:var(--accent)">API-CONTRACT.md</code>。目标：不同人实现同一组件，调用方式不产生分歧。</p>
         <div class="grid g2">
           <div class="panel panel-pad">
             <div class="demo-label">四条硬约定</div>
@@ -1543,7 +1499,6 @@ button.kbd:hover{border-color:var(--border-strong);color:var(--text-primary)}
                 <tr><td>Button</td><td>variant / size / icon / fullWidth</td><td>yz-click</td></tr>
                 <tr><td>Table</td><td>columns / data / loading / error / mobileCard</td><td>yz-sort / yz-select</td></tr>
                 <tr><td>ChatMessage</td><td>role / content / model / streaming / citations</td><td>yz-copy / yz-retry</td></tr>
-                <tr><td>ApprovalCard</td><td>action / target / impact / irreversible</td><td>yz-approve / yz-reject</td></tr>
               </tbody>
             </table>
           </div>
@@ -1551,42 +1506,18 @@ button.kbd:hover{border-color:var(--border-strong);color:var(--text-primary)}
         <div class="subhead">组件成熟度</div>
         <div class="row" style="gap:8px">
           <span class="yz-badge yz-badge--success">stable · 31 个基础组件</span>
-          <span class="yz-badge yz-badge--info">beta · 6 个业务组件</span>
-          <span class="yz-badge yz-badge--warning">experimental · LogViewer / ScopePicker</span>
           <span class="yz-badge">deprecated · 暂无</span>
         </div>
         <p class="note">beta 不得用于生产关键路径；deprecated 保留一个版本共存期并提供迁移映射。Breaking change 必须升主版本。</p>
       </section>
 
       <!-- 24 PRODUCT PATTERNS -->
-      <section class="section" id="productpatterns">
-        <div class="sec-head"><span class="sec-num">24</span><h2>产品流程模式</h2></div>
-        <p class="sec-desc">AI 模式解决"智能体怎么被信任"，这里解决"用户怎么进入、协作、付费、找回与管理"。完整规格见 <code style="color:var(--accent)">PRODUCT-PATTERNS.md</code>。</p>
-        <div class="lt-grid">
-          <div class="lt"><h4>01 登录与身份验证</h4><p>≤3 种方式；登录后跳回原目标；错误分类到字段，不统一"登录失败"。</p></div>
-          <div class="lt"><h4>02 邀请与成员加入</h4><p>角色说明写清权限；邀请链接有限期与次数；可撤销、可查状态。</p></div>
-          <div class="lt"><h4>03 工作区切换</h4><p>侧栏底部切换器；按最近使用排序；URL 含工作区标识可深链接。</p></div>
-          <div class="lt"><h4>04 首次使用引导</h4><p>≤3 步、可跳过、用真实界面高亮；不收集非必要信息。</p></div>
-          <div class="lt"><h4>05 权限申请与审批</h4><p>人→人申请，附用途与期限；默认 30 天自动失效；拒绝须说明原因。</p></div>
-          <div class="lt"><h4>06 分享与协作</h4><p>默认最小权限；公开链接默认关闭；已分享列表可撤销与改权限。</p></div>
-          <div class="lt"><h4>07 搜索与发现</h4><p>⌘K 内分组结果，每组 ≤5；高亮匹配；无结果给新建入口。</p></div>
-          <div class="lt"><h4>08 订阅 / 额度 / 付费墙</h4><p>用量常显；80% 告警、100% 阻断新运行；付费墙不遮挡已产生内容。</p></div>
-          <div class="lt"><h4>09 通知中心</h4><p>分类 + 同类合并；点击跳上下文并标已读；关键告警不可免打扰。</p></div>
-          <div class="lt"><h4>10 定时与自动化</h4><p>自然语言描述频率 + Cron 高级模式；显示下次运行时间；暂停不清历史。</p></div>
-          <div class="lt"><h4>11 模板与提示词库</h4><p>变量高亮提示填写；缺失时定位并禁止提交；可从会话另存为模板。</p></div>
-          <div class="lt"><h4>12 审计与历史</h4><p>谁/何时/对什么/做了什么/结果；敏感字段打码；导出异步完成通知。</p></div>
-          <div class="lt"><h4>13 人工接管</h4><p>转人工附上下文摘要；AI 转只读旁观；时间线标注接管人，不抹历史。</p></div>
-        </div>
-        <div class="callout" style="margin-top:16px">
-          <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.75"><path d="M12 3 2 7l10 4 10-4-10-4Z"/><path d="M2 12l10 4 10-4M2 17l10 4 10-4"/></svg>
-          <div>与 AI-PATTERNS 合起来才是完整闭环。共同原则：<b>默认最小权限、状态可追溯、危险操作可撤销、错误信息可执行</b>。</div>
-        </div>
-      </section>
+      
 
       <!-- 25 PAGE COVER -->
       <section class="section" id="pagecover">
         <div class="sec-head"><span class="sec-num">25</span><h2>页面覆盖与布局原语</h2></div>
-        <p class="sec-desc">页面只写差异，不复制 Master。五份覆盖规则已在 <code style="color:var(--accent)">pages/</code> 落地。</p>
+        <p class="sec-desc">页面只写差异，不复制 Master。五份覆盖规则已在 <code style="color:var(--accent)">@YUZKxAI/product-patterns/pages/</code> 落地。</p>
         <div class="lt-grid">
           <div class="lt"><h4>entry · 入口页</h4><p>中央单一输入框，最大宽 640px；桌面不抢焦点，移动端不自动弹键盘。</p></div>
           <div class="lt"><h4>console · 控制台</h4><p>侧栏 240 / 顶栏 56 sticky；表格窄屏转卡片；筛选状态写入 URL。</p></div>
@@ -1725,7 +1656,7 @@ button.kbd:hover{border-color:var(--border-strong);color:var(--text-primary)}
       </section>
 
       <footer class="footer">
-        <span>YUZK.AI DESIGN SYSTEM · v1.7.0 · 2026-11-22</span>
+        <span>YUZK.AI DESIGN SYSTEM · v2.0.0 · 2026-11-22</span>
         <span>SIGNAL OVER DECORATION</span>
       </footer>
     </main>

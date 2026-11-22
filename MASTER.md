@@ -1,16 +1,17 @@
 # YUZK.AI Design System — MASTER
 
 > 本文件是所有 YUZK.AI 产品的**唯一事实来源（Single Source of Truth）**。
-> 具体页面可在 `pages/<page>.md` 中声明覆盖项，未声明的部分一律遵循本文件。
+> 具体页面可在 `@YUZKxAI/product-patterns/pages/<page>.md` 中声明覆盖项，未声明的部分一律遵循本文件。
 > 组件中禁止出现裸 hex；只能引用语义令牌。
 
-**版本：** 1.7.0 · **建立日期：** 2026-11-22 · **默认主题：** 亮色（暗色为可选主题）
+**版本：** 2.0.0 · **建立日期：** 2026-11-22 · **默认主题：** 亮色（暗色为可选主题）
 **变更记录：**
+- v2.0.0 — 结构拆分：本仓库收敛为**核心设计系统**；AI 原生模式、业务组件、产品外围模式与页面覆盖规则迁移到 `YUZKxAI/product-patterns`。核心层不再承载产品业务内容。
 - v1.7.0 — 补执行细节层：新增 `MOTION.md` 动效系统、`ICONS.md` 图标系统、`DATA-VIZ.md` 数据可视化规范、`CONTENT.md` 内容设计规范；新增 duration 动效令牌，交互式手册扩展至 29 节。
 - v1.6.0 — 补全工程与产品闭环：新增 `API-CONTRACT.md`（39 组件接口契约）、`PRODUCT-PATTERNS.md`（13 个产品外围模式）、4 个页面级覆盖规则、布局原语与溢出规范、组件解剖图与令牌映射、8 个业务组件规格。
 - v1.5.0 — 断点上扩至 8K：新增 3xl(1920)/4xl(2560)/5xl(3840)/6xl(≥5120)；明确断点基于 CSS 视口而非物理分辨率；新增内容最大宽度分层、超宽屏、8K 墙屏模式、高 DPI 与分屏规则。
 - v1.4.0 — 新增 `RESPONSIVE.md`：6 个内容断点 + 2 个结构断点、容器查询策略、7 类布局模板、31 组件断点行为矩阵、Reflow 优先级、触控/缩放/密度联动与验收清单。
-- v1.3.0 — 新增 `AI-PATTERNS.md`（12 个 AI 原生交互模式）与 `BRAND.md`（品牌资产规范）；补充可访问性深度规范、动效编排、微文案库、设计评审量表与反模式图鉴；修正 tertiary 文字对比度（亮 4.37→4.92:1，暗 4.36→5.18:1）；新增错峰延迟令牌。
+- v1.3.0 — 新增 `@YUZKxAI/product-patterns/AI-PATTERNS.md`（12 个 AI 原生交互模式）与 `BRAND.md`（品牌资产规范）；补充可访问性深度规范、动效编排、微文案库、设计评审量表与反模式图鉴；修正 tertiary 文字对比度（亮 4.37→4.92:1，暗 4.36→5.18:1）；新增错峰延迟令牌。
 - v1.2.0 — 新增交互状态语义色、8 色数据可视化序列、代码语法色、尺寸/透明度令牌；新增 31 项组件逐项规格 `COMPONENTS.md`；补充图标、图表、反馈层级、表单校验、导航、性能与国际化规范。
 - v1.1.0 — 默认主题由暗色改为亮色，遵循用户偏好；暗色完整保留为可选主题。
 **定位：** AI 原生工具 / 智能体平台 / 开发者控制台
@@ -277,7 +278,7 @@ YUZK.AI 的界面不是"聊天窗口套壳"，而是一台**面向智能的精�
 ## 11. 治理与演进
 
 1. **Token 优先**：新增样式先判断是否已有令牌；禁止组件内硬编码颜色/间距。
-2. **页面覆盖**：仅在 `pages/<page>.md` 写差异，不复制 Master 全文。
+2. **页面覆盖**：仅在 `@YUZKxAI/product-patterns/pages/<page>.md` 写差异，不复制 Master 全文。
 3. **变更流程**：提案 → 影响面清单 → 对比度/键盘验证 → 版本号 +1 → 更新 `tokens.css` / `tokens.json`。
 4. **版本语义**：`x.y.z` — x 破坏性、y 新增能力、z 修复与文案。
 5. **交付前检查**：无 emoji 图标 · 焦点可见 · 对比达标 · 375/768/1024/1440 无横向滚动 · reduced-motion · 三态齐全。
@@ -288,16 +289,15 @@ YUZK.AI 的界面不是"聊天窗口套壳"，而是一台**面向智能的精�
 
 - `tokens.css` — 可直接引入的 CSS 变量（含亮/暗主题、状态层、图表与语法色）
 - `tokens.json` — W3C DTCG 格式设计令牌
-- `COMPONENTS.md` — 31 项组件逐项规格
-- `AI-PATTERNS.md` — 12 个 AI 原生交互模式
+- `COMPONENTS.md` — 31 项基础组件逐项规格
 - `BRAND.md` — 品牌资产与使用规范
 - `RESPONSIVE.md` — 响应式布局与组件断点行为
-- `API-CONTRACT.md` — 39 个组件的框架无关 API 契约
-- `PRODUCT-PATTERNS.md` — 13 个产品外围交互模式
-- `pages/` — 入口页 / 控制台 / 仪表盘 / 会话 / 设置 五份页面覆盖规则
-- `index.html` — 可交互的设计系统手册（本节的可视化版本）
+- `API-CONTRACT.md` — 31 个基础组件的框架无关 API 契约
+- `MOTION.md` / `ICONS.md` / `DATA-VIZ.md` / `CONTENT.md` — 执行细节层规范
+- `index.html` — 可交互的核心设计系统手册（本节的可视化版本）
 - `preview.html` — 与手册同步的静态预览
-- `pages/entry.md` — 页面级覆盖示例
+
+> 领域层与产品层位于 `@YUZKxAI/product-patterns`：AI 原生模式、领域组件、业务组件 API、产品外围模式与五份页面覆盖规则。本仓库只定义可跨产品复用的核心能力。
 
 ---
 
@@ -380,11 +380,11 @@ YUZK.AI 的界面不是"聊天窗口套壳"，而是一台**面向智能的精�
 
 ---
 
-## 21. AI 原生交互模式
+## 21. 领域与产品层边界
 
-12 个模式的完整规格见 [`AI-PATTERNS.md`](./AI-PATTERNS.md)：生命周期、工具透明、审批门、流式输出、引用溯源、不确定性、模型切换、成本延迟、会话上下文、错误恢复、多智能体编排、提示词调试。
+AI 原生交互模式、业务组件与产品外围流程已迁移至 `@YUZKxAI/product-patterns`，不属于核心设计系统。核心层只提供它们依赖的令牌、基础组件与执行细节规范。
 
-**三项额外义务**：可见性（知道它在做什么）、可追溯（知道依据是什么）、可控制（能暂停与撤销）。
+判断规则：如果一个概念离开 YUZK.AI 产品语境就失去意义，它属于领域层或产品层；如果它能被任意产品复用，才属于核心层。
 
 ---
 
@@ -538,7 +538,7 @@ YUZK.AI 的界面不是"聊天窗口套壳"，而是一台**面向智能的精�
 
 ## 28. 组件 API 契约
 
-31 个基础组件 + 8 个业务组件的 props / events / slots 定义见 [`API-CONTRACT.md`](./API-CONTRACT.md)。核心约束：
+31 个基础组件的 props / events / slots 定义见 [`API-CONTRACT.md`](./API-CONTRACT.md)。领域组件契约见 `@YUZKxAI/product-patterns` 的 `DOMAIN-API-CONTRACT.md`。核心约束：
 
 - 状态**只能由 props 驱动**，组件内部不得自改 `open` / `selected` / `disabled`。
 - 事件统一 `yz-` 前缀 + `detail` payload，框架层可提供 `onXxx` 等价回调。
@@ -547,13 +547,11 @@ YUZK.AI 的界面不是"聊天窗口套壳"，而是一台**面向智能的精�
 
 ## 29. 产品外围模式
 
-13 个模式见 [`PRODUCT-PATTERNS.md`](./PRODUCT-PATTERNS.md)：登录、邀请、工作区切换、首次引导、人→人权限审批、分享协作、搜索发现、订阅额度、通知中心、定时任务、模板库、审计历史、人工接管。
-
-它们与 `AI-PATTERNS.md` 合起来构成完整产品闭环。原则一致：**默认最小权限、状态可追溯、危险操作可撤销、错误信息可执行**。
+已迁移至 `@YUZKxAI/product-patterns`。核心设计系统不再定义登录、邀请、订阅、审计、人工接管等产品流程。
 
 ## 30. 页面覆盖与布局原语
 
-- 页面级规则见 `pages/`：entry / console / dashboard / conversation / settings。页面只写差异，不复制 Master。
+- 页面级覆盖规则见 `@YUZKxAI/product-patterns/pages/`：entry / console / dashboard / conversation / settings。页面只写差异，不复制 Master。
 - 页面布局由五个原语组合：`Container` / `Stack` / `Grid` / `Split` / `Cluster`，嵌套 ≤3 层，详见 `RESPONSIVE.md` §12。
 - Sticky / fixed 行为与内容溢出规则见 `RESPONSIVE.md` §13–14；禁止用 `display:none` 隐藏核心功能。
 

@@ -1,7 +1,7 @@
-# YUZK.AI — 动效系统规范 v1.7.0
+# YUZK.AI — 动效系统规范 v2.0.0
 
 > 本文件是 YUZK.AI 全部**界面运动（Motion）**的唯一事实来源。组件、页面、AI 状态机中的一切动画都必须引用本文令牌与规则。
-> 通用视觉原则遵循 [`MASTER.md`](./MASTER.md)，组件结构遵循 [`COMPONENTS.md`](./COMPONENTS.md)，AI 语义遵循 [`AI-PATTERNS.md`](./AI-PATTERNS.md)。
+> 通用视觉原则遵循 [`MASTER.md`](./MASTER.md)，组件结构遵循 [`COMPONENTS.md`](./COMPONENTS.md)，AI 语义遵循 [`@YUZKxAI/product-patterns/AI-PATTERNS.md`](./@YUZKxAI/product-patterns/AI-PATTERNS.md)。
 > **组件中禁止硬编码时长、缓动、延迟数值；只能引用本文令牌。**
 
 **版本：** 1.7.0 · **建立日期：** 2026-11-22 · **默认主题：** 亮色（暗色可选）
@@ -16,7 +16,7 @@
 |----|------|
 | 事实来源 | 本文定义所有运动令牌与编排规则；`tokens.css` / `tokens.json` 为令牌载体 |
 | 适用范围 | Web 控制台、仪表盘、会话页、设置页及其中的 39 个组件接口 |
-| 优先级 | 本文 > 页面覆盖 `pages/*.md`；页面仅可写差异，不得重复定义运动 |
+| 优先级 | 本文 > 页面覆盖 `@YUZKxAI/product-patterns/pages/*.md`；页面仅可写差异，不得重复定义运动 |
 | 强制级别 | 「必须 / 禁止」为强制；「建议」为默认实践，偏离需在评审记录说明 |
 
 > **v1.7.0 令牌迁移提示：** 本文引入统一的 `--duration-*` 命名（见 §2），将同步写入 `tokens.css` 与 `tokens.json`。旧命名 `--dur-micro/fast/normal/slow` 的迁移映射见 §2.5。迁移期内二者并存，但**新代码只能使用新命名**。
@@ -298,7 +298,7 @@
 
 ## 8. AI 原生动效
 
-AI 的**不确定性必须被显式标注**，动效承担"可见性 / 可追溯 / 可控制"三项义务（`AI-PATTERNS.md`）。
+AI 的**不确定性必须被显式标注**，动效承担"可见性 / 可追溯 / 可控制"三项义务（`@YUZKxAI/product-patterns/AI-PATTERNS.md`）。
 
 ### 8.1 thinking（思考态）
 
@@ -389,6 +389,6 @@ AI 的**不确定性必须被显式标注**，动效承担"可见性 / 可追溯
 | 版本 | 日期 | 变更内容 |
 |------|------|----------|
 | **v1.7.0** | 2026-11-22 | 独立成文《动效系统规范》。统一运动令牌命名（`--duration-instant/fast/normal/slow`，80/160/240/360ms）并给出旧令牌迁移映射；确立五原则与禁止场景；定义八类动效规格、编排规则、WCAG 2.2 reduced-motion 降级策略、性能预算、8+ 组件动效矩阵、AI 五类原生动效语义，以及交付检查表与反模式图鉴。 |
-| v1.6.x（前身） | 2026-11-22 | 动效规范散落于 `MASTER.md` §6/§18/§23、`AI-PATTERNS.md` §04、`tokens.css` Motion 段；无独立文档，令牌命名不统一。 |
+| v1.6.x（前身） | 2026-11-22 | 动效规范散落于 `MASTER.md` §6/§18/§23、`@YUZKxAI/product-patterns/AI-PATTERNS.md` §04、`tokens.css` Motion 段；无独立文档，令牌命名不统一。 |
 
 > 后续变更须遵循 `MASTER.md §11` 治理流程：提案 → 影响面清单 → 性能/无障碍验证 → 版本号 +1 → 同步 `tokens.css` / `tokens.json`。

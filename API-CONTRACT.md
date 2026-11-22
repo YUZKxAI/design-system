@@ -1,4 +1,4 @@
-# YUZK.AI — 组件 API 契约 v1.7.0
+# YUZK.AI — 组件 API 契约 v2.0.0
 
 > 视觉规格见 `COMPONENTS.md`；本文件定义**框架无关的接口契约**。
 > 无论用 React / Vue / Web Components 实现，props、events、slots 的语义必须一致。
@@ -446,103 +446,6 @@
 
 ---
 
-## 2. 业务组件
-
-### 2.1 TraceViewer
-
-| Prop | Type | Default | 说明 |
-|------|------|---------|------|
-| `steps` | `TraceStep[]` | `[]` | `{id,tool,status,duration,params,result?}` |
-| `expandedKeys` | string[] | `[]` | 默认只展开当前运行步 |
-| `status` | `'running'\|'done'\|'failed'` | `'done'` | — |
-
-**Events**：`yz-step-toggle`、`yz-retry-step`、`yz-view-raw`
-**Slots**：`step-detail`
-
-### 2.2 ApprovalCard
-
-| Prop | Type | Default | 说明 |
-|------|------|---------|------|
-| `action` | string | — | 动作摘要，必填 |
-| `target` | string | — | 目标对象 |
-| `impact` | string | — | 影响范围 |
-| `irreversible` | boolean | false | 为 true 时强制强调 |
-| `allowAlways` | boolean | false | 默认 false |
-
-**Events**：`yz-approve`、`yz-reject`、`yz-always`
-**Slots**：`default`（详情）
-
-### 2.3 ModelSelector
-
-| Prop | Type | Default | 说明 |
-|------|------|---------|------|
-| `value` | string | — | 当前模型 key |
-| `models` | `Model[]` | `[]` | `{key,name,position,cost,disabled?,reason?}` |
-| `autoSelected` | boolean | false | 显示自动选择原因 |
-
-**Events**：`yz-change`
-**Slots**：`option`
-
-### 2.4 TokenMeter
-
-| Prop | Type | Default | 说明 |
-|------|------|---------|------|
-| `inputTokens` | number | 0 | — |
-| `outputTokens` | number | 0 | — |
-| `estimatedCost` | number | — | 必须标注"估算" |
-| `currency` | string | `'CNY'` | — |
-| `budgetRatio` | number | — | 0–1，≥0.8 告警 |
-
-**Events**：`yz-budget-exceeded`
-**Slots**：无
-
-### 2.5 CitationChip
-
-| Prop | Type | Default | 说明 |
-|------|------|---------|------|
-| `index` | number | — | 回答内连续编号 |
-| `source` | `Source` | — | `{title,url,snippet,date}` |
-
-**Events**：`yz-open`
-**Slots**：无
-
-### 2.6 LogViewer
-
-| Prop | Type | Default | 说明 |
-|------|------|---------|------|
-| `lines` | `LogLine[]` | `[]` | `{level,time,message}` |
-| `syntax` | boolean | true | 使用语法色 |
-| `follow` | boolean | false | 自动滚动到底 |
-| `maxLines` | number | 1000 | 超出虚拟滚动 |
-
-**Events**：`yz-filter`、`yz-copy`
-**Slots**：`toolbar`
-
-### 2.7 PermissionScopePicker
-
-| Prop | Type | Default | 说明 |
-|------|------|---------|------|
-| `scopes` | `Scope[]` | `[]` | `{key,label,risk,description}` |
-| `value` | string[] | `[]` | 已选 |
-| `maxRisk` | `'low'\|'medium'\|'high'` | `'medium'` | 高风险需二次确认 |
-
-**Events**：`yz-change`、`yz-risk-confirm`
-**Slots**：`scope-detail`
-
-### 2.8 AgentStatusBadge
-
-| Prop | Type | Default | 说明 |
-|------|------|---------|------|
-| `status` | `'draft'\|'queued'\|'running'\|'awaiting_approval'\|'streaming'\|'completed'\|'cancelled'\|'failed'` | `'draft'` | — |
-| `step` | string | — | 当前步骤名 |
-| `elapsed` | number | — | 秒 |
-
-**Events**：无
-**Slots**：无
-**注意**：必须同时输出文字标签，不得只靠颜色或图标。
-
----
-
 ## 3. 组件成熟度
 
 | 状态 | 含义 | 可用范围 |
@@ -552,7 +455,7 @@
 | experimental | 规格草案 | 仅供探索 |
 | deprecated | 有替代方案 | 禁止新代码使用 |
 
-初始成熟度：基础组件全部 stable；业务组件 TraceViewer / ApprovalCard / ModelSelector / TokenMeter / CitationChip / AgentStatusBadge 为 beta；LogViewer / PermissionScopePicker 为 experimental。
+初始成熟度：31 个基础组件全部 stable。领域组件成熟度见 `@YUZKxAI/product-patterns/DOMAIN-API-CONTRACT.md`。
 
 ---
 

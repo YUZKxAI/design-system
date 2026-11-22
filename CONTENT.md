@@ -1,11 +1,11 @@
-# YUZK.AI — 内容设计规范 v1.7.0
+# YUZK.AI — 内容设计规范 v2.0.0
 
 > 本文件定义 YUZK.AI 全部界面文字的写法：语气、术语、句式、场景文案、AI 披露、数字格式、本地化与可访问性。
 > 它服务于品牌基因 **Precision · Signal · Control** —— 界面文字和界面像素一样，必须传递信息、承担操作、可被追溯。
-> 上位规则见 [`MASTER.md`](./MASTER.md)，品牌边界见 [`BRAND.md`](./BRAND.md)，AI 交互模式见 [`AI-PATTERNS.md`](./AI-PATTERNS.md)。本文件只管"字怎么写"。
+> 上位规则见 [`MASTER.md`](./MASTER.md)，品牌边界见 [`BRAND.md`](./BRAND.md)，AI 交互模式见 [`@YUZKxAI/product-patterns/AI-PATTERNS.md`](./@YUZKxAI/product-patterns/AI-PATTERNS.md)。本文件只管"字怎么写"。
 
 **版本：** 1.7.0 · **源语言：** 简体中文（zh-CN）· **回退语言：** 英文（en-US）
-**优先级：** 本文件 > 页面覆盖（`pages/*.md`）中的文案差异；任何文案与品牌四支柱冲突时，以四支柱为准。
+**优先级：** 本文件 > 页面覆盖（`@YUZKxAI/product-patterns/pages/*.md`）中的文案差异；任何文案与品牌四支柱冲突时，以四支柱为准。
 **适用范围：** 所有产品界面的按钮、标签、提示、错误、通知、AI 输出元信息、文档与帮助中心。
 
 ---

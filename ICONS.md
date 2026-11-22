@@ -1,7 +1,7 @@
-# YUZK.AI — 图标系统规范 v1.7.0
+# YUZK.AI — 图标系统规范 v2.0.0
 
 > 本文档是 YUZK.AI 图标领域的**唯一事实来源**，细化 `MASTER.md` §13 与 `COMPONENTS.md` 的图标契约。
-> 上位规则见 [`MASTER.md`](./MASTER.md)；组件内图标用法见 [`COMPONENTS.md`](./COMPONENTS.md)；AI 语义见 [`AI-PATTERNS.md`](./AI-PATTERNS.md)。
+> 上位规则见 [`MASTER.md`](./MASTER.md)；组件内图标用法见 [`COMPONENTS.md`](./COMPONENTS.md)；AI 语义见 [`@YUZKxAI/product-patterns/AI-PATTERNS.md`](./@YUZKxAI/product-patterns/AI-PATTERNS.md)。
 > 图标领域如与上位文档冲突，以本文档为准；其余一律遵循 `MASTER.md`。
 
 **版本：** 1.7.0 · **建立日期：** 2026-11-22 · **默认主题：** 亮色（暗色可选）
@@ -242,7 +242,7 @@ AI 界面的三项额外义务（可见性 / 可追溯 / 可控制）需要专�
 | permission scope 权限范围 | `ai-permission-scope`（`key-round`） | 授权范围、权限申请；配"默认最小权限" | `currentColor` / 危险授权 `var(--danger)` |
 
 **AI 图标附加规则：**
-- 生命周期状态（queued / running / completed / cancelled / failed）采用"**图标 + 文字标签 + Badge**"三重编码，见 `AI-PATTERNS.md` §01。
+- 生命周期状态（queued / running / completed / cancelled / failed）采用"**图标 + 文字标签 + Badge**"三重编码，见 `@YUZKxAI/product-patterns/AI-PATTERNS.md` §01。
 - 模型/成本/延迟类图标（`cpu`、`clock`、`chart-line`）沿用 `data-` 与 `object-` 分类，不单设 `ai-` 前缀。
 - AI 图标禁止使用"魔法棒""闪光精灵"等暗示不可解释性的造型；用电路、节点、箭头表达可控性。
 - 流式与思考动效遵循 `MASTER.md` §6：只动 `transform` / `opacity`，prefers-reduced-motion 下给终态。
