@@ -1,9 +1,11 @@
 /* ============================================================
-   YUZK.AI Design System — Design Tokens v2.2.0
+   YUZK.AI Design System — Design Tokens v2.3.0
    唯一事实来源：MASTER.md
    用法：引入本文件后，只使用语义令牌，禁止裸 hex。
    默认主题：亮色（:root）。暗色为可选主题：[data-theme='dark']。
    品牌色：只改「BRAND CONFIG」一段即可换色，下游零硬编码。
+   v2.3.0：图表 8 色与状态色解耦、状态色补 hover/active/border/on
+           派生态、新增 --seq-* / --div-* 连续色阶。
    ============================================================ */
 
 @import url('https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&family=JetBrains+Mono:wght@400;500;600&family=Space+Grotesk:wght@500;600;700&display=swap');
@@ -97,6 +99,47 @@
   --warning-bg: rgba(154, 91, 0, .08);
   --danger-bg: rgba(194, 43, 43, .08);
   --info-bg: color-mix(in srgb, var(--brand-700) 8%, transparent);
+
+  /* ---------- Status interaction states (light · 实心态加深) ----------
+     与品牌色同一套派生思路：状态色只定义 base，交互态全部由 color-mix 得出，
+     不新增原语。--on-* 是「状态色当实心底」时的前景；
+     --*-border 为 42% 叠加描边，主描边仍用 base 本身（已满足非文本 3:1）。 */
+  --success-hover: color-mix(in srgb, var(--success) 86%, #000);
+  --success-active: color-mix(in srgb, var(--success) 74%, #000);
+  --success-border: color-mix(in srgb, var(--success) 42%, transparent);
+  --on-success: #FFFFFF;
+  --warning-hover: color-mix(in srgb, var(--warning) 86%, #000);
+  --warning-active: color-mix(in srgb, var(--warning) 74%, #000);
+  --warning-border: color-mix(in srgb, var(--warning) 42%, transparent);
+  --on-warning: #FFFFFF;
+  --danger-hover: color-mix(in srgb, var(--danger) 86%, #000);
+  --danger-active: color-mix(in srgb, var(--danger) 74%, #000);
+  --danger-border: color-mix(in srgb, var(--danger) 42%, transparent);
+  --on-danger: #FFFFFF;
+  --info-hover: var(--brand-600);
+  --info-active: var(--brand-800);
+  --info-border: color-mix(in srgb, var(--brand-700) 42%, transparent);
+  --on-info: #FFFFFF;
+
+  /* ---------- Sequential scale (light · 热力图 / 密度图) ----------
+     5 档，从画布白扇出到 brand-700，随品牌色联动。
+     单元格必须标数值或 hover 显示，颜色不是唯一编码（DATA-VIZ §热力图）。 */
+  --seq-1: color-mix(in srgb, var(--brand-700) 10%, #FFFFFF);
+  --seq-2: color-mix(in srgb, var(--brand-700) 30%, #FFFFFF);
+  --seq-3: color-mix(in srgb, var(--brand-700) 54%, #FFFFFF);
+  --seq-4: color-mix(in srgb, var(--brand-700) 78%, #FFFFFF);
+  --seq-5: var(--brand-700);
+
+  /* ---------- Diverging scale (light · 正负差值 / 相关性) ----------
+     7 档：负端 danger、中点中性、正端 success，两端各 3 档。
+     财经场景「涨红跌绿」需按区域约定反转正负映射，见 DATA-VIZ §区域约定。 */
+  --div-neg-3: var(--danger);
+  --div-neg-2: color-mix(in srgb, var(--danger) 62%, #FFFFFF);
+  --div-neg-1: color-mix(in srgb, var(--danger) 30%, #FFFFFF);
+  --div-mid: var(--gray-850);   /* 亮色下解析为 #EEF2F8；中性阶方向问题见 THEMING §11 T-1 */
+  --div-pos-1: color-mix(in srgb, var(--success) 30%, #FFFFFF);
+  --div-pos-2: color-mix(in srgb, var(--success) 62%, #FFFFFF);
+  --div-pos-3: var(--success);
   --overlay: rgba(13, 20, 32, .42);
   --grid-line: rgba(13, 20, 32, .05);
 
@@ -201,15 +244,19 @@
   --focus-ring-width: 2px;
   --focus-ring-offset: 2px;
 
-  /* ---------- Data visualization (light · 8 series) ---------- */
-  --chart-1: var(--brand-700);
-  --chart-2: #12805C;
-  --chart-3: #B26B00;
-  --chart-4: #C22B2B;
-  --chart-5: #3F6FA8;
-  --chart-6: #1F8A8A;
-  --chart-7: #5F6B7A;
-  --chart-8: #8A4A4A;
+  /* ---------- Data visualization (light · 8 series) ----------
+     分类色板，与状态色互不共用：距最近状态色 OKLab ΔE >=0.10，
+     两两 ΔE >=0.10，对 #FFFFFF 对比均 >=3:1（非文本图形元素门槛）。
+     chart-1 与品牌同源；chart-8 为中性「其他/合计」档。
+     禁止把 --success / --warning / --danger 当系列色使用。 */
+  --chart-1: var(--brand-700);   /* 蓝   6.92:1 */
+  --chart-2: #0096BF;            /* 天蓝 3.43:1 */
+  --chart-3: #00A287;            /* 青   3.22:1 */
+  --chart-4: #309909;            /* 草绿 3.69:1 */
+  --chart-5: #9C8300;            /* 橄榄 3.71:1 */
+  --chart-6: #CD6600;            /* 琥珀 3.82:1 */
+  --chart-7: #9F5DCB;            /* 紫   4.28:1 */
+  --chart-8: #64748B;            /* 灰   4.76:1 */
   --chart-grid: rgba(13, 20, 32, .08);
   --chart-axis: #5F6D82;
 
@@ -285,6 +332,41 @@
   --warning-bg: rgba(255, 176, 32, .10);
   --danger-bg: rgba(255, 92, 92, .10);
   --info-bg: color-mix(in srgb, var(--brand-500) 10%, transparent);
+
+  /* ---------- Status interaction states (dark · 实心态提亮) ----------
+     暗底下交互方向相反：与白混合提亮，而非加深。 */
+  --success-hover: color-mix(in srgb, var(--success) 88%, #FFF);
+  --success-active: color-mix(in srgb, var(--success) 76%, #FFF);
+  --success-border: color-mix(in srgb, var(--success) 42%, transparent);
+  --on-success: #05080F;
+  --warning-hover: color-mix(in srgb, var(--warning) 88%, #FFF);
+  --warning-active: color-mix(in srgb, var(--warning) 76%, #FFF);
+  --warning-border: color-mix(in srgb, var(--warning) 42%, transparent);
+  --on-warning: #05080F;
+  --danger-hover: color-mix(in srgb, var(--danger) 88%, #FFF);
+  --danger-active: color-mix(in srgb, var(--danger) 76%, #FFF);
+  --danger-border: color-mix(in srgb, var(--danger) 42%, transparent);
+  --on-danger: #05080F;
+  --info-hover: var(--brand-400);
+  --info-active: var(--brand-300);
+  --info-border: color-mix(in srgb, var(--brand-500) 42%, transparent);
+  --on-info: #05080F;
+
+  /* ---------- Sequential scale (dark) ---------- */
+  --seq-1: color-mix(in srgb, var(--brand-500) 14%, #0F131B);
+  --seq-2: color-mix(in srgb, var(--brand-500) 32%, #0F131B);
+  --seq-3: color-mix(in srgb, var(--brand-500) 54%, #0F131B);
+  --seq-4: color-mix(in srgb, var(--brand-500) 78%, #0F131B);
+  --seq-5: var(--brand-500);
+
+  /* ---------- Diverging scale (dark) ---------- */
+  --div-neg-3: var(--danger);
+  --div-neg-2: color-mix(in srgb, var(--danger) 62%, #0F131B);
+  --div-neg-1: color-mix(in srgb, var(--danger) 32%, #0F131B);
+  --div-mid: #1B2230;
+  --div-pos-1: color-mix(in srgb, var(--success) 32%, #0F131B);
+  --div-pos-2: color-mix(in srgb, var(--success) 62%, #0F131B);
+  --div-pos-3: var(--success);
   --overlay: rgba(3, 6, 12, .72);
   --grid-line: rgba(255, 255, 255, .035);
   --shadow-sm: 0 1px 2px rgba(0, 0, 0, .24);
@@ -304,15 +386,18 @@
   --text-link-hover: var(--brand-300);
   --text-link-visited: var(--brand-400);
 
-  /* ---------- Data visualization (dark) ---------- */
-  --chart-1: var(--brand-500);
-  --chart-2: #37D399;
-  --chart-3: #FFB020;
-  --chart-4: #FF5C5C;
-  --chart-5: var(--brand-400);
-  --chart-6: #2FB8B8;
-  --chart-7: #94A3B8;
-  --chart-8: #D98A8A;
+  /* ---------- Data visualization (dark · 8 series) ----------
+     与亮色同一批色相、同一序列语义，仅按暗底重新取明度。
+     对 #0F131B 对比均 >=5.8:1；距最近状态色 ΔE >=0.055（该主题下的下限，
+     原因见 DATA-VIZ §4：状态色本身已占据高亮高饱和区，图表色只能靠彩度分流）。 */
+  --chart-1: var(--brand-500);   /* 蓝   5.81:1 */
+  --chart-2: #4FB6DB;            /* 天蓝 8.01:1 */
+  --chart-3: #3FC9B4;            /* 青   9.05:1 */
+  --chart-4: #8CCB6E;            /* 草绿 9.64:1 */
+  --chart-5: #B8A64B;            /* 橄榄 7.61:1 */
+  --chart-6: #E39355;            /* 琥珀 7.59:1 */
+  --chart-7: #B78AE0;            /* 紫   6.84:1 */
+  --chart-8: #8FA1B8;            /* 灰   7.05:1 */
   --chart-grid: rgba(255, 255, 255, .08);
   --chart-axis: #7A889D;
 

@@ -3,7 +3,7 @@
 <head>
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
-<title>YUZK.AI — Design System v2.2.0</title>
+<title>YUZK.AI — Design System v2.3.0</title>
 <style>
 /* ==================== TOKENS ==================== */
 @import url('https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&family=JetBrains+Mono:wght@400;500;600&family=Space+Grotesk:wght@500;600;700&display=swap');
@@ -24,6 +24,15 @@
   --on-action-primary:var(--white);--accent:var(--brand-700);--on-accent:var(--white);--focus-ring:var(--brand-700);
   --success:#12805C;--warning:#9A5B00;--danger:#C22B2B;--info:var(--brand-700);
   --success-bg:rgba(18,128,92,.08);--warning-bg:rgba(154,91,0,.08);--danger-bg:rgba(194,43,43,.08);--info-bg:color-mix(in srgb,var(--brand-700) 8%,transparent);
+  /* 状态交互态：base 之外全部派生，不新增原语 */
+  --success-hover:color-mix(in srgb,var(--success) 86%,#000);--success-active:color-mix(in srgb,var(--success) 74%,#000);--success-border:color-mix(in srgb,var(--success) 42%,transparent);--on-success:#FFFFFF;
+  --warning-hover:color-mix(in srgb,var(--warning) 86%,#000);--warning-active:color-mix(in srgb,var(--warning) 74%,#000);--warning-border:color-mix(in srgb,var(--warning) 42%,transparent);--on-warning:#FFFFFF;
+  --danger-hover:color-mix(in srgb,var(--danger) 86%,#000);--danger-active:color-mix(in srgb,var(--danger) 74%,#000);--danger-border:color-mix(in srgb,var(--danger) 42%,transparent);--on-danger:#FFFFFF;
+  --info-hover:var(--brand-600);--info-active:var(--brand-800);--info-border:color-mix(in srgb,var(--brand-700) 42%,transparent);--on-info:#FFFFFF;
+  /* 顺序色阶（热力图）5 档，随品牌联动 */
+  --seq-1:color-mix(in srgb,var(--brand-700) 10%,#FFFFFF);--seq-2:color-mix(in srgb,var(--brand-700) 30%,#FFFFFF);--seq-3:color-mix(in srgb,var(--brand-700) 54%,#FFFFFF);--seq-4:color-mix(in srgb,var(--brand-700) 78%,#FFFFFF);--seq-5:var(--brand-700);
+  /* 发散色阶 7 档：danger → 中性 → success */
+  --div-neg-3:var(--danger);--div-neg-2:color-mix(in srgb,var(--danger) 62%,#FFFFFF);--div-neg-1:color-mix(in srgb,var(--danger) 30%,#FFFFFF);--div-mid:var(--gray-850);--div-pos-1:color-mix(in srgb,var(--success) 30%,#FFFFFF);--div-pos-2:color-mix(in srgb,var(--success) 62%,#FFFFFF);--div-pos-3:var(--success);
   --overlay:rgba(13,20,32,.42);--grid-line:rgba(13,20,32,.05);
   --font-display:'Space Grotesk','Inter','PingFang SC','Microsoft YaHei',sans-serif;
   --font-body:'Inter','PingFang SC','Microsoft YaHei',sans-serif;
@@ -41,7 +50,8 @@
   --bg-hover:rgba(13,20,32,.04);--bg-active:rgba(13,20,32,.08);--bg-selected:color-mix(in srgb,var(--brand-700) 8%,transparent);--bg-disabled:rgba(13,20,32,.04);
   --border-hover:#8B99AD;--border-focus:var(--brand-700);--border-disabled:#DCE3ED;--text-disabled:#8B99AD;
   --text-link:var(--brand-800);--text-link-hover:var(--brand-700);--text-link-visited:var(--brand-800);--focus-ring-width:2px;--focus-ring-offset:2px;
-  --chart-1:var(--brand-700);--chart-2:#12805C;--chart-3:#B26B00;--chart-4:#C22B2B;--chart-5:#3F6FA8;--chart-6:#1F8A8A;--chart-7:#5F6B7A;--chart-8:#8A4A4A;
+  /* 分类色板：与状态色解耦（ΔE ≥0.10 两两/对状态），对白 ≥3:1 */
+  --chart-1:var(--brand-700);--chart-2:#0096BF;--chart-3:#00A287;--chart-4:#309909;--chart-5:#9C8300;--chart-6:#CD6600;--chart-7:#9F5DCB;--chart-8:#64748B;
   --chart-grid:rgba(13,20,32,.08);--chart-axis:#5F6D82;
   --syntax-keyword:#A85000;--syntax-string:#12805C;--syntax-number:var(--brand-700);--syntax-comment:#8B99AD;--syntax-function:#8A5A00;--syntax-variable:#0D1420;
   --size-icon-sm:16px;--size-icon-md:20px;--size-icon-lg:24px;--size-icon-xl:32px;--size-control-sm:32px;--size-control-md:40px;--size-control-lg:48px;--size-touch-min:44px;
@@ -57,12 +67,20 @@
   --accent:var(--brand-500);--on-accent:var(--near-black);--focus-ring:var(--brand-500);
   --success:#37D399;--warning:#FFB020;--danger:#FF5C5C;--info:var(--brand-500);
   --success-bg:rgba(55,211,153,.1);--warning-bg:rgba(255,176,32,.1);--danger-bg:rgba(255,92,92,.1);--info-bg:color-mix(in srgb,var(--brand-500) 10%,transparent);
+  /* 暗底交互方向相反：与白混合提亮 */
+  --success-hover:color-mix(in srgb,var(--success) 88%,#FFF);--success-active:color-mix(in srgb,var(--success) 76%,#FFF);--success-border:color-mix(in srgb,var(--success) 42%,transparent);--on-success:#05080F;
+  --warning-hover:color-mix(in srgb,var(--warning) 88%,#FFF);--warning-active:color-mix(in srgb,var(--warning) 76%,#FFF);--warning-border:color-mix(in srgb,var(--warning) 42%,transparent);--on-warning:#05080F;
+  --danger-hover:color-mix(in srgb,var(--danger) 88%,#FFF);--danger-active:color-mix(in srgb,var(--danger) 76%,#FFF);--danger-border:color-mix(in srgb,var(--danger) 42%,transparent);--on-danger:#05080F;
+  --info-hover:var(--brand-400);--info-active:var(--brand-300);--info-border:color-mix(in srgb,var(--brand-500) 42%,transparent);--on-info:#05080F;
+  --seq-1:color-mix(in srgb,var(--brand-500) 14%,#0F131B);--seq-2:color-mix(in srgb,var(--brand-500) 32%,#0F131B);--seq-3:color-mix(in srgb,var(--brand-500) 54%,#0F131B);--seq-4:color-mix(in srgb,var(--brand-500) 78%,#0F131B);--seq-5:var(--brand-500);
+  --div-neg-3:var(--danger);--div-neg-2:color-mix(in srgb,var(--danger) 62%,#0F131B);--div-neg-1:color-mix(in srgb,var(--danger) 32%,#0F131B);--div-mid:#1B2230;--div-pos-1:color-mix(in srgb,var(--success) 32%,#0F131B);--div-pos-2:color-mix(in srgb,var(--success) 62%,#0F131B);--div-pos-3:var(--success);
   --overlay:rgba(3,6,12,.72);--grid-line:rgba(255,255,255,.035);
   --shadow-sm:0 1px 2px rgba(0,0,0,.24);--shadow-md:0 8px 24px rgba(0,0,0,.28);--shadow-lg:0 20px 48px rgba(0,0,0,.36);
   --bg-hover:rgba(255,255,255,.05);--bg-active:rgba(255,255,255,.09);--bg-selected:color-mix(in srgb,var(--brand-500) 14%,transparent);--bg-disabled:rgba(255,255,255,.04);
   --border-hover:#4C5A70;--border-focus:var(--brand-500);--border-disabled:#242C3A;--text-disabled:#4C5A70;
   --text-link:var(--brand-400);--text-link-hover:var(--brand-300);--text-link-visited:var(--brand-400);
-  --chart-1:var(--brand-500);--chart-2:#37D399;--chart-3:#FFB020;--chart-4:#FF5C5C;--chart-5:var(--brand-400);--chart-6:#2FB8B8;--chart-7:#94A3B8;--chart-8:#D98A8A;
+  /* 同色相、按暗底取明度；对 #0F131B ≥5.8:1 */
+  --chart-1:var(--brand-500);--chart-2:#4FB6DB;--chart-3:#3FC9B4;--chart-4:#8CCB6E;--chart-5:#B8A64B;--chart-6:#E39355;--chart-7:#B78AE0;--chart-8:#8FA1B8;
   --chart-grid:rgba(255,255,255,.08);--chart-axis:#7A889D;
   --syntax-keyword:#FF9E64;--syntax-string:#7DD3A8;--syntax-number:var(--brand-400);--syntax-comment:#7A889D;--syntax-function:#FFD166;--syntax-variable:#F2F6FC;
 }
@@ -376,6 +394,14 @@ button.kbd:hover{border-color:var(--border-strong);color:var(--text-primary)}
 .state-cell{padding:12px;border:1px solid var(--border-subtle);border-radius:var(--radius-sm);font-size:12px;color:var(--text-secondary);background:var(--bg-surface)}
 .state-cell b{display:block;font-family:var(--font-mono);font-size:10px;color:var(--accent);font-weight:500;margin-bottom:6px}
 .chart-swatches{display:grid;grid-template-columns:repeat(8,minmax(0,1fr));gap:8px}
+.scale-row{display:grid;gap:6px}
+.scale-item{display:grid;gap:6px}
+.scale-bar{height:40px;border:1px solid var(--border-subtle);border-radius:var(--radius-sm)}
+.scale-item span{font-family:var(--font-mono);font-size:10px;color:var(--text-tertiary);text-align:center}
+.state-trio{display:grid;grid-template-columns:repeat(4,minmax(0,1fr));gap:10px}
+.trio-col{display:grid;gap:4px}
+.trio-cap{font-family:var(--font-mono);font-size:10px;color:var(--text-tertiary);margin-bottom:2px}
+.trio-cell{height:34px;border-radius:var(--radius-sm);display:grid;place-items:center;font-family:var(--font-mono);font-size:11px}
 .chart-sw{height:48px;border-radius:var(--radius-sm);display:grid;place-items:end start;padding:6px;font-family:var(--font-mono);font-size:9px;color:rgba(255,255,255,.85)}
 .chart-sw.dark-txt{color:rgba(13,20,32,.7)}
 .code-block{background:var(--bg-inset);border:1px solid var(--border-subtle);border-radius:var(--radius-md);padding:16px;font-family:var(--font-mono);font-size:12px;line-height:1.85;overflow-x:auto;white-space:pre}
@@ -551,12 +577,12 @@ button.kbd:hover{border-color:var(--border-strong);color:var(--text-primary)}
       <a href="#theming-system"><span class="num">32</span>主题与令牌治理</a>
       <a href="#governance-system"><span class="num">33</span>贡献与演进</a>
     </nav>
-    <div class="side-foot"><span><span class="dot-live"></span>v2.2.0</span><span>LIGHT FIRST</span></div>
+    <div class="side-foot"><span><span class="dot-live"></span>v2.3.0</span><span>LIGHT FIRST</span></div>
   </aside>
 
   <div class="main">
     <header class="topbar">
-      <div class="crumb">YUZK.AI / <b>DESIGN SYSTEM</b> / v2.2.0</div>
+      <div class="crumb">YUZK.AI / <b>DESIGN SYSTEM</b> / v2.3.0</div>
       <div class="tools">
         <button class="kbd" id="cmdOpen" aria-label="打开命令面板"><svg width="13" height="13" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><circle cx="11" cy="11" r="7"/><path d="m20 20-3.5-3.5"/></svg><kbd>⌘ K</kbd></button>
         <button class="icon-btn" id="densityBtn" title="切换密度" aria-label="切换紧凑密度"><svg width="15" height="15" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.75"><path d="M4 6h16M4 12h16M4 18h16"/></svg></button>
@@ -656,6 +682,33 @@ button.kbd:hover{border-color:var(--border-strong);color:var(--text-primary)}
           <div class="sem-row"><div class="sem-left"><span class="sem-dot" style="background:var(--info)"></span>Info / 中性提示</div><div class="sem-code copy" data-copy="var(--info)">--info</div></div>
         </div>
 
+        <div class="subhead">状态交互态 · base 之外全部派生</div>
+        <div class="panel panel-pad" style="margin-bottom:26px">
+          <div class="state-trio">
+            <div class="trio-col"><span class="trio-cap">success</span>
+              <div class="trio-cell" style="background:var(--success);color:var(--on-success)">base</div>
+              <div class="trio-cell" style="background:var(--success-hover);color:var(--on-success)">hover</div>
+              <div class="trio-cell" style="background:var(--success-active);color:var(--on-success)">active</div>
+            </div>
+            <div class="trio-col"><span class="trio-cap">warning</span>
+              <div class="trio-cell" style="background:var(--warning);color:var(--on-warning)">base</div>
+              <div class="trio-cell" style="background:var(--warning-hover);color:var(--on-warning)">hover</div>
+              <div class="trio-cell" style="background:var(--warning-active);color:var(--on-warning)">active</div>
+            </div>
+            <div class="trio-col"><span class="trio-cap">danger</span>
+              <div class="trio-cell" style="background:var(--danger);color:var(--on-danger)">base</div>
+              <div class="trio-cell" style="background:var(--danger-hover);color:var(--on-danger)">hover</div>
+              <div class="trio-cell" style="background:var(--danger-active);color:var(--on-danger)">active</div>
+            </div>
+            <div class="trio-col"><span class="trio-cap">info</span>
+              <div class="trio-cell" style="background:var(--info);color:var(--on-info)">base</div>
+              <div class="trio-cell" style="background:var(--info-hover);color:var(--on-info)">hover</div>
+              <div class="trio-cell" style="background:var(--info-active);color:var(--on-info)">active</div>
+            </div>
+          </div>
+          <div class="note">状态色只定义 base，<b>hover / active / on / border 全部由 color-mix 派生</b>，不新增原语。亮色向下加深、暗色向上提亮——方向由底色决定，不由色相决定。</div>
+        </div>
+
         <div class="subhead">交互状态语义色 · 不新增色相</div>
         <div class="state-grid">
           <div class="state-cell" style="background:var(--bg-hover)"><b>--bg-hover</b>悬停底色</div>
@@ -667,20 +720,47 @@ button.kbd:hover{border-color:var(--border-strong);color:var(--text-primary)}
         </div>
         <p class="note">组件只引用状态令牌，不自行调配透明度；切换主题时状态层自动跟随。</p>
 
-        <div class="subhead">数据可视化 · 8 色序列（亮色默认，点击复制）</div>
-        <div class="chart-swatches" style="margin-bottom:26px">
+        <div class="subhead">数据可视化 · 8 色分类序列（点击复制）</div>
+        <div class="chart-swatches" style="margin-bottom:14px">
           <div class="chart-sw copy" data-copy="var(--chart-1)" style="background:var(--chart-1)">1</div>
-          <div class="chart-sw copy" data-copy="#12805C" style="background:#12805C">2</div>
-          <div class="chart-sw copy" data-copy="#B26B00" style="background:#B26B00">3</div>
-          <div class="chart-sw copy" data-copy="#C22B2B" style="background:#C22B2B">4</div>
-          <div class="chart-sw copy" data-copy="#3F6FA8" style="background:#3F6FA8">5</div>
-          <div class="chart-sw copy" data-copy="#1F8A8A" style="background:#1F8A8A">6</div>
-          <div class="chart-sw copy" data-copy="#5F6B7A" style="background:#5F6B7A">7</div>
-          <div class="chart-sw copy" data-copy="#8A4A4A" style="background:#8A4A4A">8</div>
+          <div class="chart-sw copy" data-copy="var(--chart-2)" style="background:var(--chart-2)">2</div>
+          <div class="chart-sw copy" data-copy="var(--chart-3)" style="background:var(--chart-3)">3</div>
+          <div class="chart-sw copy" data-copy="var(--chart-4)" style="background:var(--chart-4)">4</div>
+          <div class="chart-sw copy" data-copy="var(--chart-5)" style="background:var(--chart-5)">5</div>
+          <div class="chart-sw copy" data-copy="var(--chart-6)" style="background:var(--chart-6)">6</div>
+          <div class="chart-sw copy" data-copy="var(--chart-7)" style="background:var(--chart-7)">7</div>
+          <div class="chart-sw copy" data-copy="var(--chart-8)" style="background:var(--chart-8)">8</div>
         </div>
+        <div class="note" style="margin-top:0;margin-bottom:20px">分类色板已与状态色解耦：距最近状态色 OKLab ΔE ≥0.10、两两 ΔE ≥0.10、对底色对比 ≥3:1。chart-1 与品牌同源，chart-8 是中性「其他 / 合计」档。</div>
         <div class="callout">
           <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.75"><path d="M3 3v18h18"/><path d="m7 14 4-4 3 3 5-6"/></svg>
-          <div>序列色按 <b>1→8 顺序取用，不跳号</b>；颜色永远不是唯一编码，必须配文字标签或线型。Y 轴从 0 起，禁止截断制造趋势假象。</div>
+          <div>序列色按 <b>1→8 顺序取用，不跳号</b>；颜色永远不是唯一编码，必须配文字标签或线型。<b>禁止把 success / warning / danger 当系列色</b>——状态色负责「喊」，系列色负责「分」。Y 轴从 0 起，禁止截断制造趋势假象。</div>
+        </div>
+
+        <div class="subhead">顺序色阶 · 热力图 / 密度图</div>
+        <div class="panel panel-pad" style="margin-bottom:26px">
+          <div class="scale-row" style="grid-template-columns:repeat(5,minmax(0,1fr))">
+            <div class="scale-item"><div class="scale-bar" style="background:var(--seq-1)"></div><span>seq-1</span></div>
+            <div class="scale-item"><div class="scale-bar" style="background:var(--seq-2)"></div><span>seq-2</span></div>
+            <div class="scale-item"><div class="scale-bar" style="background:var(--seq-3)"></div><span>seq-3</span></div>
+            <div class="scale-item"><div class="scale-bar" style="background:var(--seq-4)"></div><span>seq-4</span></div>
+            <div class="scale-item"><div class="scale-bar" style="background:var(--seq-5)"></div><span>seq-5</span></div>
+          </div>
+          <div class="note"><b>--seq-1…5</b>，从画布白扇出到 <span class="sem-code">--brand-700</span>，换品牌自动联动。热力图必须标数值或 hover 显示，颜色不是唯一编码。</div>
+        </div>
+
+        <div class="subhead">发散色阶 · 正负差值 / 相关性</div>
+        <div class="panel panel-pad" style="margin-bottom:26px">
+          <div class="scale-row" style="grid-template-columns:repeat(7,minmax(0,1fr))">
+            <div class="scale-item"><div class="scale-bar" style="background:var(--div-neg-3)"></div><span>−3</span></div>
+            <div class="scale-item"><div class="scale-bar" style="background:var(--div-neg-2)"></div><span>−2</span></div>
+            <div class="scale-item"><div class="scale-bar" style="background:var(--div-neg-1)"></div><span>−1</span></div>
+            <div class="scale-item"><div class="scale-bar" style="background:var(--div-mid)"></div><span>0</span></div>
+            <div class="scale-item"><div class="scale-bar" style="background:var(--div-pos-1)"></div><span>+1</span></div>
+            <div class="scale-item"><div class="scale-bar" style="background:var(--div-pos-2)"></div><span>+2</span></div>
+            <div class="scale-item"><div class="scale-bar" style="background:var(--div-pos-3)"></div><span>+3</span></div>
+          </div>
+          <div class="note"><b>--div-neg-3 … --div-pos-3</b>，负端接 <span class="sem-code">--danger</span>、中点中性、正端接 <span class="sem-code">--success</span>。<b>财经场景「涨红跌绿」需反转正负映射</b>，不要直接套用。</div>
         </div>
 
         <div class="subhead">代码语法色 · 六类令牌</div>
@@ -1785,7 +1865,7 @@ button.kbd:hover{border-color:var(--border-strong);color:var(--text-primary)}
       </section>
 
       <footer class="footer">
-        <span>YUZK.AI DESIGN SYSTEM · v2.2.0 · 2026-11-23</span>
+        <span>YUZK.AI DESIGN SYSTEM · v2.3.0 · 2026-11-23</span>
         <span>SIGNAL OVER DECORATION</span>
       </footer>
     </main>
