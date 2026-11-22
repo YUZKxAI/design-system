@@ -628,7 +628,19 @@ c_effective(stop) = c_seed × mood.chroma × stopFactor(stop)
 
 做法是把 `generate.py` 移植为 TypeScript（或编译 Python→WASM），并用**固定种子快照测试**防漂移：一组 `(seed, mood) → outputHash` 的快照，两侧都必须匹配。否则会出现"网页上看到的"与"构建出来的"不同——这是配置器类产品最典型、也最难排查的缺陷。
 
-**为什么不用 WASM：** 值得考虑，但会增加包体积（~1MB）与首屏延迟。纯 TS 移植的算法只有约 400 行，风险可控。**这条待实测后决策。**
+**为什么不用 WASM：** 值得考虑，但会增加包体积（~1MB）与首屏延迟。纯 JS 移植的算法只有约 400 行，风险可控。**结论：用 JS 移植，不用 WASM。**
+
+**实施状态（已落地）：**
+
+| 产物 | 作用 | 验证 |
+|------|------|------|
+| `engine/generate.py` | 构建期生成（Python） | 12 种子 × 6 预设全 PASS |
+| `engine/generate.mjs` | 浏览器生成（JS 移植） | 与 Python **5112 项逐值一致** |
+| `engine/snapshot_test.mjs` | 双实现防漂移 | `node engine/snapshot_test.mjs` |
+| `engine/generator.template.html` | 页面骨架（占位符注入） | 无头浏览器 0 error |
+| `engine/build_page.py` | 生成 `generator.html` | 单文件，可 `file://` 直开 |
+
+两条容易踩的移植细节，已在代码注释中标注：Python 的 `x ** (1/3)` 必须写成 `Math.pow(x, 1/3)` 而非 `Math.cbrt`（末位差异会导致色值偏移）；`round()` 是银行家舍入，JS 需自实现（`Math.round` 是四舍五入）。这两处不合会导致同一 seed 在网页与构建产物中产出不同色阶。
 
 ### 8.3 分发与体积
 
@@ -688,7 +700,7 @@ Bootstrap / Tailwind        实现层，可共存（从 tokens.json 生成 confi
 | 5 | `chroma` 轴生效 | 改 `--mood-chroma` 全部色阶跟随 | ❌ 未做 |
 | 6 | 模组可拆 | 删 `dataviz` 后 core 无悬空引用，且无重复逐值 | ❌ 未验证（`MASTER` §2.6/§2.7 存疑） |
 | 7 | a11y 门槛内建 | 校验器覆盖全部门槛项 | ⚠️ 部分 |
-| 8 | 网页生成器一致 | 网页 / CLI 同快照哈希 | ❌ 未做 |
+| 8 | 网页生成器一致 | 网页 / CLI 同快照哈希 | ✅ 5112 项逐值一致 |
 | 9 | 文档三层同步 | 机制 / 视觉 / 载体版本互指 | ⚠️ 本文先行 |
 
 ### 10.2 待办（按依赖排序）
@@ -699,7 +711,7 @@ Bootstrap / Tailwind        实现层，可共存（从 tokens.json 生成 confi
 | 2 | engine 0.2.0：接线 `chroma` 轴 + 输出完整 `tokens.json` | 本文 §7.2 | 代码 |
 | 3 | `tokens.css` 加 MOOD CONFIG 段，L2 改为派生引用 | #2 | 令牌 |
 | 4 | 解决 T-1 中性阶方向反转（破坏性，v3.0.0 必做） | 本文 §3.4 | 令牌 + 迁移 |
-| 5 | 网页生成器原型（三栏 + 活界面） | #2 | 网页 |
+| 5 | ~~网页生成器原型（三栏 + 活界面）~~ | #2 | ✅ `generator.html` |
 | 6 | 快照测试：Python ↔ TS 逐位一致 | #5 | 测试 |
 | 7 | 模组拆包与 `@layer` 落地 | #1 | CSS |
 | 8 | v3.0.0 迁移指南（路线 B 若采纳） | §4.6 | 文档 |

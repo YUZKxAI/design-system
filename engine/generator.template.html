@@ -1,0 +1,882 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>YUZK.AI — 设计系统生成器</title>
+<style>
+  *, *::before, *::after { box-sizing: border-box; }
+  :root {
+    --page-bg: #F6F8FC;
+    --page-surface: #FFFFFF;
+    --page-sunken: #F1F4F9;
+    --page-line: #E2E8F1;
+    --page-line-strong: #CBD5E4;
+    --page-ink: #0D1420;
+    --page-ink-2: #4A576B;
+    --page-ink-3: #7A879C;
+    --page-accent: #2455B4;
+    --page-accent-soft: #ECF2FD;
+    --page-ok: #0B7A57;
+    --page-ok-soft: #E7F4EF;
+    --page-warn: #8A5A00;
+    --page-warn-soft: #FCF3E2;
+    --page-fail: #B3261E;
+    --page-fail-soft: #FBEBEA;
+    --r: 7px;
+    --mono: ui-monospace, SFMono-Regular, "SF Mono", Menlo, Consolas, "Liberation Mono", monospace;
+    --sans: ui-sans-serif, system-ui, -apple-system, "Segoe UI", "PingFang SC", "Hiragino Sans GB", "Microsoft YaHei", sans-serif;
+  }
+  html, body { height: 100%; }
+  body {
+    margin: 0; font-family: var(--sans); color: var(--page-ink);
+    background: var(--page-bg); font-size: 13px; line-height: 1.55;
+    -webkit-font-smoothing: antialiased;
+  }
+  .app { display: grid; grid-template-columns: 312px minmax(0, 1fr) 384px; height: 100vh; }
+
+  /* ---------- masthead ---------- */
+  .mast {
+    grid-column: 1 / -1; display: flex; align-items: center; gap: 14px;
+    padding: 0 18px; height: 52px; background: var(--page-surface);
+    border-bottom: 1px solid var(--page-line); position: relative; z-index: 3;
+  }
+  .mast::before {
+    content: ""; position: absolute; inset: 0 0 auto 0; height: 2px;
+    background: linear-gradient(90deg, #2455B4 0%, #2455B4 42%, #7FB0FF 42%, #7FB0FF 46%, #DCE6F6 46%, #DCE6F6 100%);
+  }
+  .mark { font-weight: 700; letter-spacing: .14em; font-size: 13px; }
+  .mark span { color: var(--page-accent); }
+  .mast .sub { font-family: var(--mono); font-size: 10.5px; letter-spacing: .1em; color: var(--page-ink-3); text-transform: uppercase; }
+  .mast .spacer { flex: 1; }
+  .pill {
+    font-family: var(--mono); font-size: 10.5px; letter-spacing: .06em;
+    padding: 3px 9px; border-radius: 999px; border: 1px solid var(--page-line);
+    color: var(--page-ink-2); background: var(--page-sunken); white-space: nowrap;
+  }
+  .pill.ok { color: var(--page-ok); background: var(--page-ok-soft); border-color: #BFE3D5; }
+  .pill.fail { color: var(--page-fail); background: var(--page-fail-soft); border-color: #F0C9C6; }
+
+  /* ---------- columns ---------- */
+  .col { overflow-y: auto; background: var(--page-surface); }
+  .col.left { border-right: 1px solid var(--page-line); padding: 0 0 40px; }
+  .col.mid { background: var(--page-bg); padding: 20px 22px 48px; }
+  .col.right { border-left: 1px solid var(--page-line); padding: 0 0 40px; }
+
+  .group { border-bottom: 1px solid var(--page-line); padding: 14px 16px 18px; }
+  .group:last-child { border-bottom: 0; }
+  .glabel {
+    display: flex; align-items: baseline; gap: 8px; margin: 0 0 12px;
+    font-family: var(--mono); font-size: 10px; letter-spacing: .12em;
+    text-transform: uppercase; color: var(--page-ink-3);
+  }
+  .glabel b { color: var(--page-accent); font-weight: 600; letter-spacing: .04em; }
+  .glabel .hint { margin-left: auto; text-transform: none; letter-spacing: 0; font-size: 10px; color: var(--page-ink-3); }
+
+  /* ---------- seed ---------- */
+  .seedrow { display: flex; gap: 8px; align-items: stretch; }
+  .seedswatch {
+    width: 44px; height: 44px; border-radius: var(--r); border: 1px solid var(--page-line-strong);
+    padding: 0; overflow: hidden; cursor: pointer; flex: none; position: relative;
+  }
+  .seedswatch input { position: absolute; inset: -8px; width: 200%; height: 200%; border: 0; padding: 0; cursor: pointer; }
+  .seedtext {
+    flex: 1; min-width: 0; display: flex; flex-direction: column; justify-content: center; gap: 2px;
+  }
+  .seedtext input {
+    font-family: var(--mono); font-size: 14px; letter-spacing: .06em; text-transform: uppercase;
+    border: 1px solid var(--page-line); border-radius: var(--r); padding: 6px 9px;
+    background: var(--page-surface); color: var(--page-ink); width: 100%;
+  }
+  .seedtext input:focus { outline: 2px solid var(--page-accent-soft); border-color: var(--page-accent); }
+  .seedtext .meta { font-family: var(--mono); font-size: 10px; color: var(--page-ink-3); letter-spacing: .04em; }
+  .presets { display: flex; gap: 5px; margin-top: 9px; flex-wrap: wrap; }
+  .presets button {
+    width: 22px; height: 22px; border-radius: 4px; border: 1px solid rgba(13,20,32,.12);
+    cursor: pointer; padding: 0; transition: transform .12s ease;
+  }
+  .presets button:hover { transform: translateY(-1px); }
+  .presets button[aria-pressed="true"] { box-shadow: 0 0 0 2px var(--page-surface), 0 0 0 3.5px var(--page-accent); }
+
+  /* ---------- mood chips ---------- */
+  .moods { display: grid; grid-template-columns: 1fr 1fr; gap: 5px; }
+  .moods button {
+    text-align: left; padding: 6px 9px; border-radius: var(--r); border: 1px solid var(--page-line);
+    background: var(--page-surface); cursor: pointer; font-family: var(--sans); font-size: 12px;
+    color: var(--page-ink-2); display: flex; flex-direction: column; gap: 1px; line-height: 1.3;
+  }
+  .moods button small { font-family: var(--mono); font-size: 9.5px; color: var(--page-ink-3); letter-spacing: .02em; }
+  .moods button:hover { border-color: var(--page-line-strong); }
+  .moods button[aria-pressed="true"] {
+    border-color: var(--page-accent); background: var(--page-accent-soft); color: var(--page-accent); font-weight: 600;
+  }
+  .moods button[aria-pressed="true"] small { color: var(--page-accent); opacity: .75; }
+
+  /* ---------- axes ---------- */
+  .axis { margin-bottom: 11px; }
+  .axis:last-child { margin-bottom: 0; }
+  .axis .top { display: flex; align-items: baseline; gap: 6px; margin-bottom: 3px; }
+  .axis .name { font-size: 11.5px; color: var(--page-ink-2); }
+  .axis .val { margin-left: auto; font-family: var(--mono); font-size: 11px; color: var(--page-ink); font-variant-numeric: tabular-nums; }
+  .axis .lim { font-family: var(--mono); font-size: 9.5px; color: var(--page-ink-3); margin-left: 7px; }
+  .axis.off { opacity: .48; }
+  input[type="range"] {
+    -webkit-appearance: none; appearance: none; width: 100%; height: 16px;
+    background: transparent; cursor: pointer; display: block;
+  }
+  input[type="range"]::-webkit-slider-runnable-track {
+    height: 2px; background: var(--page-line-strong); border-radius: 2px;
+  }
+  input[type="range"]::-webkit-slider-thumb {
+    -webkit-appearance: none; width: 11px; height: 11px; margin-top: -4.5px;
+    border-radius: 2px; background: var(--page-surface);
+    border: 1.5px solid var(--page-accent); box-shadow: 0 0 0 3px rgba(36,85,180,.07);
+  }
+  input[type="range"]::-moz-range-track { height: 2px; background: var(--page-line-strong); border-radius: 2px; }
+  input[type="range"]::-moz-range-thumb {
+    width: 11px; height: 11px; border-radius: 2px; background: var(--page-surface);
+    border: 1.5px solid var(--page-accent);
+  }
+  input[type="range"]:disabled { cursor: not-allowed; }
+  .seg { display: flex; border: 1px solid var(--page-line); border-radius: 5px; overflow: hidden; }
+  .seg button {
+    flex: 1; padding: 4px 0; font-size: 10.5px; background: var(--page-surface); border: 0;
+    border-right: 1px solid var(--page-line); color: var(--page-ink-2); cursor: pointer;
+    font-family: var(--mono); letter-spacing: .02em;
+  }
+  .seg button:last-child { border-right: 0; }
+  .seg button[aria-pressed="true"] { background: var(--page-accent-soft); color: var(--page-accent); font-weight: 600; }
+
+  /* ---------- modules ---------- */
+  .mods { display: flex; flex-direction: column; gap: 2px; }
+  .mod {
+    display: flex; align-items: center; gap: 9px; padding: 6px 7px; border-radius: 5px;
+    cursor: pointer; border: 1px solid transparent;
+  }
+  .mod:hover { background: var(--page-sunken); }
+  .mod .box {
+    width: 13px; height: 13px; border-radius: 3px; border: 1.5px solid var(--page-line-strong);
+    flex: none; position: relative; background: var(--page-surface);
+  }
+  .mod[aria-checked="true"] .box { background: var(--page-accent); border-color: var(--page-accent); }
+  .mod[aria-checked="true"] .box::after {
+    content: ""; position: absolute; left: 3.5px; top: 1px; width: 3.5px; height: 7px;
+    border: solid #fff; border-width: 0 1.5px 1.5px 0; transform: rotate(42deg);
+  }
+  .mod .txt { font-size: 12px; }
+  .mod .txt code { font-family: var(--mono); font-size: 9.5px; color: var(--page-ink-3); margin-left: 5px; }
+  .mod.locked { cursor: default; }
+  .mod.locked .txt::after { content: " 门槛"; font-family: var(--mono); font-size: 9px; color: var(--page-ok); }
+
+  /* ---------- preview ---------- */
+  .pv-head { display: flex; align-items: center; gap: 10px; margin-bottom: 14px; }
+  .pv-head h1 { margin: 0; font-size: 15px; font-weight: 650; letter-spacing: -.01em; }
+  .pv-head .path { font-family: var(--mono); font-size: 10.5px; color: var(--page-ink-3); }
+  .pv-head .spacer { flex: 1; }
+  .themebtn {
+    font-family: var(--mono); font-size: 10.5px; padding: 4px 9px; border-radius: 5px;
+    border: 1px solid var(--page-line-strong); background: var(--page-surface);
+    color: var(--page-ink-2); cursor: pointer;
+  }
+  .themebtn:hover { color: var(--page-ink); }
+
+  #preview {
+    --pv-bg: #F5F7FB; --pv-surface: #FFFFFF; --pv-sunken: #EEF2F8;
+    --pv-line: #DCE3ED; --pv-line-strong: #AEBBCC;
+    --pv-ink: #0D1420; --pv-ink-2: #4A576B; --pv-ink-3: #5F6D82;
+    --pv-accent: #2455B4; --pv-accent-hover: #376ACA; --pv-on-accent: #FFFFFF;
+    --pv-radius: 2px; --pv-space: 8px;
+    background: var(--pv-bg); color: var(--pv-ink);
+    border: 1px solid var(--page-line); border-radius: 10px; overflow: hidden;
+    transition: background .2s ease, color .2s ease;
+  }
+  .pv-inner { padding: calc(var(--pv-space) * 2.5); display: flex; flex-direction: column; gap: calc(var(--pv-space) * 2.5); }
+  .pv-sec { display: flex; flex-direction: column; gap: calc(var(--pv-space) * 1.25); }
+  .pv-sec > .cap {
+    font-family: var(--mono); font-size: 9.5px; letter-spacing: .1em; text-transform: uppercase;
+    color: var(--pv-ink-3); display: flex; align-items: center; gap: 7px;
+  }
+  .pv-sec > .cap::after { content: ""; flex: 1; height: 1px; background: var(--pv-line); }
+  .row { display: flex; gap: calc(var(--pv-space) * 1); flex-wrap: wrap; align-items: center; }
+
+  .btn {
+    font-family: var(--sans); font-size: 12.5px; font-weight: 550; cursor: pointer;
+    border-radius: var(--pv-radius); padding: calc(var(--pv-space) * 0.75) calc(var(--pv-space) * 1.5);
+    border: 1px solid transparent; transition: background .12s ease, border-color .12s ease;
+    display: inline-flex; align-items: center; gap: 6px;
+  }
+  .btn.primary { background: var(--pv-accent); color: var(--pv-on-accent); }
+  .btn.primary:hover { background: var(--pv-accent-hover); }
+  .btn.secondary { background: var(--pv-surface); color: var(--pv-ink); border-color: var(--pv-line-strong); }
+  .btn.secondary:hover { border-color: var(--pv-ink-3); }
+  .btn.ghost { background: transparent; color: var(--pv-accent); }
+  .btn.ghost:hover { background: var(--pv-sunken); }
+  .btn[disabled] { opacity: .42; cursor: not-allowed; }
+  .btn:focus-visible { outline: none; box-shadow: 0 0 0 2px var(--pv-bg), 0 0 0 4px var(--pv-focus); }
+  :focus-visible { outline: 2px solid var(--pv-focus); outline-offset: 1px; }
+
+  .chipset { display: flex; gap: 6px; flex-wrap: wrap; }
+  .chip {
+    font-family: var(--mono); font-size: 10.5px; padding: 2px 7px; border-radius: 999px;
+    border: 1px solid var(--pv-line); color: var(--pv-ink-2); background: var(--pv-surface);
+  }
+  .chip.solid { color: #fff; border-color: transparent; }
+
+  .field { display: flex; flex-direction: column; gap: 4px; max-width: 300px; }
+  .field label { font-size: 11.5px; color: var(--pv-ink-2); font-weight: 550; }
+  .field input[type="text"] {
+    font-family: var(--sans); font-size: 12.5px; padding: calc(var(--pv-space) * 0.7) calc(var(--pv-space) * 1);
+    border: 1px solid var(--pv-line-strong); border-radius: var(--pv-radius);
+    background: var(--pv-surface); color: var(--pv-ink);
+  }
+  .field .help { font-size: 10.5px; color: var(--pv-ink-3); }
+  .field.err input[type="text"] { border-color: var(--pv-danger); }
+  .field.err .help { color: var(--pv-danger); }
+
+  table.mini { width: 100%; border-collapse: collapse; font-size: 12px; }
+  table.mini th {
+    text-align: left; font-weight: 550; font-size: 10px; letter-spacing: .06em; text-transform: uppercase;
+    color: var(--pv-ink-3); padding: 0 6px 6px; border-bottom: 1px solid var(--pv-line);
+  }
+  table.mini td { padding: 6px; border-bottom: 1px solid var(--pv-line); }
+  table.mini td.num { font-family: var(--mono); font-variant-numeric: tabular-nums; text-align: right; }
+
+  .bars { display: flex; align-items: flex-end; gap: 3px; height: 86px; }
+  .bars i { flex: 1; border-radius: 1px 1px 0 0; display: block; }
+  .legend { display: flex; gap: 9px; flex-wrap: wrap; font-family: var(--mono); font-size: 9.5px; color: var(--pv-ink-3); }
+  .legend span { display: inline-flex; align-items: center; gap: 4px; }
+  .legend b { width: 7px; height: 7px; border-radius: 1px; display: inline-block; }
+  .seqbar { display: flex; height: 12px; border-radius: 2px; overflow: hidden; }
+  .seqbar i { flex: 1; display: block; }
+
+  .typescale { display: flex; flex-direction: column; gap: calc(var(--pv-space) * 0.75); }
+  .typescale div { display: flex; align-items: baseline; gap: 10px; }
+  .typescale .k { font-family: var(--mono); font-size: 9.5px; color: var(--pv-ink-3); width: 34px; flex: none; }
+  .kbd {
+    font-family: var(--mono); font-size: 10.5px; padding: 1px 5px; border-radius: 3px;
+    background: var(--pv-sunken); border: 1px solid var(--pv-line);
+    border-bottom-width: 2px; color: var(--pv-ink-2);
+  }
+
+  /* ---------- right panel ---------- */
+  .rgroup { border-bottom: 1px solid var(--page-line); padding: 13px 16px 15px; }
+  .rgroup:last-child { border-bottom: 0; }
+  table.tok { width: 100%; border-collapse: collapse; font-size: 11.5px; }
+  table.tok td { padding: 3.5px 0; vertical-align: middle; }
+  table.tok td.sw { width: 22px; }
+  table.tok td.sw i { display: block; width: 16px; height: 16px; border-radius: 3px; border: 1px solid rgba(13,20,32,.1); }
+  table.tok td.k { font-family: var(--mono); font-size: 10.5px; color: var(--page-ink-3); width: 34px; }
+  table.tok.status td.k { width: auto; white-space: nowrap; padding-right: 10px; font-size: 10px; }
+  table.tok td.hx { font-family: var(--mono); font-size: 11px; font-variant-numeric: tabular-nums; }
+  table.tok td.cr { font-family: var(--mono); font-size: 10.5px; text-align: right; color: var(--page-ink-2); font-variant-numeric: tabular-nums; }
+  table.tok tr.hl td.hx { font-weight: 700; }
+
+  .chartgrid { display: grid; grid-template-columns: repeat(4, 1fr); gap: 6px; }
+  .chartgrid div { display: flex; flex-direction: column; gap: 3px; }
+  .chartgrid i { height: 18px; border-radius: 3px; display: block; border: 1px solid rgba(13,20,32,.08); }
+  .chartgrid b { font-family: var(--mono); font-size: 8.5px; color: var(--page-ink-3); font-weight: 400; letter-spacing: .02em; }
+
+  table.checks { width: 100%; border-collapse: collapse; font-size: 11px; }
+  table.checks td { padding: 2.5px 0; font-variant-numeric: tabular-nums; }
+  table.checks td.n { color: var(--page-ink-2); }
+  table.checks td.v { font-family: var(--mono); text-align: right; color: var(--page-ink); width: 52px; }
+  table.checks td.f { font-family: var(--mono); text-align: right; color: var(--page-ink-3); width: 46px; font-size: 10px; }
+  table.checks td.m { width: 22px; padding-right: 7px; text-align: center; font-family: var(--mono); font-size: 10px; }
+  table.checks td.m.ok { color: var(--page-ok); }
+  table.checks td.m.no { color: var(--page-fail); font-weight: 700; }
+
+  .note {
+    font-size: 11.5px; color: var(--page-warn); background: var(--page-warn-soft);
+    border: 1px solid #F0DCB8; border-radius: 6px; padding: 7px 9px; margin-bottom: 6px;
+  }
+  .note b { font-family: var(--mono); font-size: 9.5px; letter-spacing: .06em; display: block; margin-bottom: 2px; }
+  .muted { font-size: 11px; color: var(--page-ink-3); }
+  .kv { display: grid; grid-template-columns: 78px 1fr; gap: 3px 8px; font-size: 11.5px; }
+  .kv dt { font-family: var(--mono); font-size: 10.5px; color: var(--page-ink-3); }
+  .kv dd { margin: 0; font-family: var(--mono); font-size: 11px; font-variant-numeric: tabular-nums; }
+  .export {
+    width: 100%; margin-top: 4px; padding: 9px; border-radius: var(--r); cursor: pointer;
+    background: var(--page-accent); color: #fff; border: 0; font-size: 12px; font-weight: 600;
+    font-family: var(--sans); letter-spacing: .02em;
+  }
+  .export:hover { background: #1C4A9E; }
+  .hash { font-family: var(--mono); font-size: 10px; color: var(--page-ink-3); letter-spacing: .06em; }
+
+  @media (max-width: 1180px) {
+    .app { grid-template-columns: 280px minmax(0, 1fr); height: auto; }
+    .col.right { grid-column: 1 / -1; border-left: 0; border-top: 1px solid var(--page-line); }
+    .col { overflow: visible; }
+  }
+  @media (max-width: 780px) {
+    .app { grid-template-columns: 1fr; }
+    .col.left { border-right: 0; border-bottom: 1px solid var(--page-line); }
+  }
+</style>
+</head>
+<body>
+<div class="app">
+  <header class="mast">
+    <div class="mark">YUZK<span>.</span>AI</div>
+    <div class="sub">Design System Generator</div>
+    <div class="spacer"></div>
+    <div class="pill" id="enginePill">engine 0.1.0</div>
+    <div class="pill" id="hashPill">—</div>
+    <div class="pill" id="verdictPill">—</div>
+  </header>
+
+  <!-- ============ 左：输入 ============ -->
+  <aside class="col left">
+    <section class="group">
+      <p class="glabel"><b>01</b> 种子 SEED <span class="hint">决定色相 + 彩度上限</span></p>
+      <div class="seedrow">
+        <label class="seedswatch" id="seedSwatch">
+          <input type="color" id="seedColor" value="#2455b4" aria-label="选择种子色">
+        </label>
+        <div class="seedtext">
+          <input type="text" id="seedText" value="#2455B4" spellcheck="false" aria-label="种子色十六进制">
+          <span class="meta" id="seedMeta">H 262° · C 0.160 · L 0.47</span>
+        </div>
+      </div>
+      <div class="presets" id="presets"></div>
+    </section>
+
+    <section class="group">
+      <p class="glabel"><b>02</b> 气质预设 MOOD <span class="hint">9 轴锚点</span></p>
+      <div class="moods" id="moods"></div>
+    </section>
+
+    <section class="group">
+      <p class="glabel"><b>03</b> 九轴坐标 <span class="hint" id="axisHint">instrument</span></p>
+      <div id="axes"></div>
+    </section>
+
+    <section class="group">
+      <p class="glabel"><b>04</b> 模组 MODULES <span class="hint">门槛不可卸</span></p>
+      <div class="mods" id="mods"></div>
+      <p class="muted" style="margin:9px 0 0">未启用模组的令牌不生成，也不兜底——引用即失效。</p>
+    </section>
+  </aside>
+
+  <!-- ============ 中：活界面 ============ -->
+  <main class="col mid">
+    <div class="pv-head">
+      <h1>生成的系统</h1>
+      <span class="path" id="pvPath">seed #2455B4 · instrument</span>
+      <span class="spacer"></span>
+      <button class="themebtn" id="themeBtn">暗色预览</button>
+    </div>
+
+    <div id="preview">
+      <div class="pv-inner">
+        <section class="pv-sec">
+          <p class="cap">Actions</p>
+          <div class="row">
+            <button class="btn primary" id="pvFocus">主要操作</button>
+            <button class="btn secondary">次要操作</button>
+            <button class="btn ghost">文字按钮</button>
+            <button class="btn secondary" disabled>禁用</button>
+          </div>
+          <p class="muted" style="margin:0;font-size:10.5px">Tab 聚焦可见焦点环 · 门槛项（core）</p>
+        </section>
+
+        <section class="pv-sec">
+          <p class="cap">Status</p>
+          <div class="chipset" id="pvStatus"></div>
+        </section>
+
+        <section class="pv-sec" id="pvFormsSec">
+          <p class="cap">Form · forms 模组</p>
+          <div class="row" style="align-items:flex-start;gap:calc(var(--pv-space)*2)">
+            <div class="field">
+              <label for="f1">项目名称</label>
+              <input type="text" id="f1" value="gpu-cluster-07">
+              <span class="help">用于日志检索，长度 4–32</span>
+            </div>
+            <div class="field err">
+              <label for="f2">并发上限</label>
+              <input type="text" id="f2" value="1200" aria-invalid="true" aria-describedby="f2h">
+              <span class="help" id="f2h">超过配额 1000，请调整</span>
+            </div>
+          </div>
+        </section>
+
+        <section class="pv-sec">
+          <p class="cap">Table</p>
+          <table class="mini">
+            <thead><tr><th>节点</th><th>状态</th><th style="text-align:right">负载</th></tr></thead>
+            <tbody id="pvTable"></tbody>
+          </table>
+        </section>
+
+        <section class="pv-sec" id="pvChartSec">
+          <p class="cap">Chart · dataviz 模组</p>
+          <div class="bars" id="pvBars"></div>
+          <div class="legend" id="pvLegend"></div>
+          <div class="seqbar" id="pvSeq"></div>
+        </section>
+
+        <section class="pv-sec">
+          <p class="cap">Type scale</p>
+          <div class="typescale" id="pvType"></div>
+        </section>
+
+        <section class="pv-sec" id="pvKbdSec">
+          <p class="cap">Keyboard · keyboard 模组</p>
+          <div class="row">
+            <span class="kbd">⌘K</span><span class="muted" style="font-size:11px">全局命令面板</span>
+          </div>
+        </section>
+
+        <section class="pv-sec" id="pvI18nSec">
+          <p class="cap">i18n · i18n 模组</p>
+          <div class="field" style="max-width:100%">
+            <label for="f3">提交审批</label>
+            <input type="text" id="f3" value="Submit for approval" style="max-width:100%">
+            <span class="help" id="pvI18nHelp">当前文案 · 英文膨胀后需预留 30% 宽度</span>
+          </div>
+        </section>
+      </div>
+    </div>
+  </main>
+
+  <!-- ============ 右：输出 ============ -->
+  <aside class="col right">
+    <section class="rgroup">
+      <p class="glabel"><b>05</b> 品牌色阶 <span class="hint">对比度求解</span></p>
+      <table class="tok" id="rampTable"></table>
+    </section>
+
+    <section class="rgroup">
+      <p class="glabel"><b>06</b> 状态色 <span class="hint">明 / 暗</span></p>
+      <table class="tok status" id="statusTable"></table>
+    </section>
+
+    <section class="rgroup">
+      <p class="glabel"><b>07</b> 图表色板 <span class="hint" id="chartHint">8 色</span></p>
+      <div class="chartgrid" id="chartGrid"></div>
+    </section>
+
+    <section class="rgroup">
+      <p class="glabel"><b>08</b> 形令牌 <span class="hint">由 9 轴派生</span></p>
+      <dl class="kv" id="formKv"></dl>
+    </section>
+
+    <section class="rgroup">
+      <p class="glabel"><b>09</b> 校验报告 <span class="hint" id="checkHint"></span></p>
+      <table class="checks" id="checkTable"></table>
+    </section>
+
+    <section class="rgroup">
+      <p class="glabel"><b>10</b> 约束与告警</p>
+      <div id="notes"></div>
+      <p class="muted" id="noNotes" style="display:none">无告警。全部目标在物理约束内可达。</p>
+    </section>
+
+    <section class="rgroup">
+      <p class="glabel"><b>11</b> 导出</p>
+      <p class="muted" style="margin:0 0 8px">中性阶 / 字重 / 图标仍取自存量 v2.3.0，生成器暂不接管（见架构 §10.3）。</p>
+      <button class="export" id="exportBtn">导出 tokens.css</button>
+      <p class="hash" id="hashLine" style="margin:8px 0 0"></p>
+    </section>
+  </aside>
+</div>
+
+<script>
+/*__ENGINE__*/
+</script>
+
+<script>
+(function () {
+  "use strict";
+
+  // Neutrals are still taken from the shipped v2.3.0 palette: the generator does
+  // not own the neutral ramp yet (T-1 direction inversion must be fixed first).
+  const NEUTRAL = {
+    light: { bg: "#F5F7FB", surface: "#FFFFFF", sunken: "#EEF2F8", line: "#DCE3ED", lineStrong: "#AEBBCC", ink: "#0D1420", ink2: "#4A576B", ink3: "#5F6D82" },
+    dark:  { bg: "#0F131B", surface: "#151A24", sunken: "#1B2230", line: "#242C3A", lineStrong: "#364154", ink: "#F2F6FC", ink2: "#A7B3C6", ink3: "#7A889D" }
+  };
+
+  const AXES = [
+    { key: "radius", label: "圆角", min: 0, max: 16, step: 1, fmt: (v) => v + "px", lim: "0–16" },
+    { key: "elevation", label: "抬升", min: 0, max: 0.9, step: 0.05, fmt: (v) => v.toFixed(2), lim: "0–0.9" },
+    { key: "density", label: "密度", min: 0.2, max: 1, step: 0.02, fmt: (v) => v.toFixed(2), lim: "0.2–1" },
+    { key: "ratio", label: "字号比", min: 1.12, max: 1.75, step: 0.01, fmt: (v) => v.toFixed(2), lim: "1.12–1.75" },
+    { key: "motion", label: "动效", min: 60, max: 400, step: 10, fmt: (v) => v + "ms", lim: "60–400" },
+    { key: "chroma", label: "彩度", min: 0.1, max: 1, step: 0.02, fmt: (v) => v.toFixed(2), lim: "0.1–1", off: true },
+    { key: "depth", label: "层数", min: 1, max: 4, step: 1, fmt: (v) => v + " 层", lim: "1–4" }
+  ];
+
+  const state = {
+    seed: "#2455B4",
+    mood: "instrument",
+    axes: Object.assign({}, MOODS.instrument),
+    dark: false,
+    modules: { dataviz: true, forms: true, keyboard: true, i18n: true }
+  };
+
+  const $ = (id) => document.getElementById(id);
+  const esc = (s) => String(s).replace(/[&<>"]/g, (c) => ({ "&": "&amp;", "<": "&lt;", ">": "&gt;", '"': "&quot;" }[c]));
+
+  // ---------------------------------------------------------------- model
+  function current() {
+    const [res] = generate(state.seed, state.mood);
+    if (!res) return null;
+    // The 9 axes only drive form tokens; brand/status/chart do not consume them
+    // yet (chroma wiring lands in engine 0.2.0).
+    res.form = build_form(state.axes);
+    return res;
+  }
+
+  function hash(str) {
+    let h = 0x811c9dc5;
+    for (let i = 0; i < str.length; i++) { h ^= str.charCodeAt(i); h = Math.imul(h, 0x01000193) >>> 0; }
+    return h.toString(16).padStart(8, "0");
+  }
+
+  // ---------------------------------------------------------------- chrome
+  function renderPresets() {
+    const seeds = ["#2455B4", "#E5484D", "#10B981", "#7C3AED", "#F5B800", "#000080"];
+    $("presets").innerHTML = seeds.map((s) =>
+      `<button data-seed="${s}" style="background:${s}" aria-pressed="${s.toLowerCase() === state.seed.toLowerCase()}" title="${s}"></button>`
+    ).join("");
+  }
+
+  function renderMoods() {
+    const meta = {
+      instrument: "仪表盘", engineer: "终端", institution: "企业",
+      editorial: "长阅读", warm: "消费", vibrant: "展示"
+    };
+    $("moods").innerHTML = Object.keys(MOODS).map((k) => {
+      const m = MOODS[k];
+      return `<button data-mood="${k}" aria-pressed="${k === state.mood}">${k}<small>${meta[k]} · r${m.radius} · ${m.motion}ms</small></button>`;
+    }).join("");
+  }
+
+  function renderAxes() {
+    $("axes").innerHTML = AXES.map((a) => {
+      const v = state.axes[a.key];
+      return `<div class="axis ${a.off ? "off" : ""}">
+        <div class="top">
+          <span class="name">${a.label}</span>
+          <span class="lim">${a.off ? "未接线" : a.lim}</span>
+          <span class="val">${a.fmt(v)}</span>
+        </div>
+        <input type="range" data-axis="${a.key}" min="${a.min}" max="${a.max}" step="${a.step}"
+               value="${v}" ${a.off ? "disabled" : ""} aria-label="${a.label}">
+      </div>`;
+    }).join("") + `
+      <div class="axis">
+        <div class="top"><span class="name">栅格</span><span class="lim">strict / loose</span></div>
+        <div class="seg" data-seg="grid">
+          <button data-v="strict" aria-pressed="${state.axes.grid === "strict"}">strict</button>
+          <button data-v="loose" aria-pressed="${state.axes.grid === "loose"}">loose</button>
+        </div>
+      </div>
+      <div class="axis">
+        <div class="top"><span class="name">装饰</span><span class="lim">四值</span></div>
+        <div class="seg" data-seg="ornament">
+          ${["none", "faint", "on", "strong"].map((v) =>
+            `<button data-v="${v}" aria-pressed="${state.axes.ornament === v}">${v}</button>`).join("")}
+        </div>
+      </div>`;
+  }
+
+  function renderModules() {
+    const items = [
+      { k: "dataviz", note: "--chart-*", locked: false },
+      { k: "forms", note: "--form-*", locked: false },
+      { k: "keyboard", note: "无令牌", locked: false },
+      { k: "i18n", note: "无令牌", locked: false }
+    ];
+    $("mods").innerHTML = items.map((it) =>
+      `<div class="mod" role="checkbox" tabindex="0" data-mod="${it.k}"
+            aria-checked="${!!state.modules[it.k]}">
+         <span class="box"></span>
+         <span class="txt">${it.k}<code>${it.note}</code></span>
+       </div>`
+    ).join("") + `<div class="mod locked"><span class="box" style="background:var(--page-ok);border-color:var(--page-ok)"></span>
+        <span class="txt">a11y 门槛<code>core 内建</code></span></div>`;
+  }
+
+  // ---------------------------------------------------------------- preview
+  function applyPreview(res) {
+    const pv = $("preview");
+    const n = state.dark ? NEUTRAL.dark : NEUTRAL.light;
+    const f = res.form;
+    const accent = state.dark ? res.brand["500"] : res.brand["700"];
+    const accentHover = state.dark ? res.brand["550"] : res.brand["600"];
+    const st = state.dark ? res.darkStatus : res.status;
+    const chart = state.dark ? res.chartDark : res.chart;
+
+    const vars = {
+      "--pv-bg": n.bg, "--pv-surface": n.surface, "--pv-sunken": n.sunken,
+      "--pv-line": n.line, "--pv-line-strong": n.lineStrong,
+      "--pv-ink": n.ink, "--pv-ink-2": n.ink2, "--pv-ink-3": n.ink3,
+      "--pv-accent": accent, "--pv-accent-hover": accentHover,
+      "--pv-on-accent": "#FFFFFF",
+      "--pv-focus": res.semantic.focusRing,
+      "--pv-radius": f.radius.md + "px",
+      "--pv-space": f.space[2] + "px",
+      "--pv-danger": st.danger, "--pv-success": st.success, "--pv-warning": st.warning
+    };
+    for (const [k, v] of Object.entries(vars)) pv.style.setProperty(k, v);
+    for (let i = 0; i < 8; i++) pv.style.setProperty("--pv-chart-" + (i + 1), chart[i]);
+
+    // status chips
+    $("pvStatus").innerHTML = ["success", "warning", "danger", "info"]
+      .map((k) => `<span class="chip solid" style="background:${st[k]}">${k}</span>`)
+      .join("") + `<span class="chip" style="border-color:${res.semantic.focusRing};color:${res.semantic.focusRing}">focus ring</span>`;
+
+    // table
+    const rows = [["api-01", "success", "42%"], ["api-02", "warning", "78%"], ["api-03", "danger", "94%"]];
+    $("pvTable").innerHTML = rows.map(([id, k, load], i) =>
+      `<tr style="border-bottom:${i === rows.length - 1 ? "0" : "1px solid var(--pv-line)"}">
+         <td style="border-bottom:0">${id}</td>
+         <td style="border-bottom:0"><span class="chip solid" style="background:${st[k]};font-size:9.5px">${load}</span></td>
+         <td class="num" style="border-bottom:0">${load}</td>
+       </tr>`).join("");
+
+    // chart bars
+    const heights = [78, 62, 88, 46, 70, 54, 92, 38];
+    $("pvBars").innerHTML = heights.map((h, i) =>
+      `<i style="height:${h}%;background:${chart[i % 8]}"></i>`).join("");
+    $("pvLegend").innerHTML = chart.map((c, i) =>
+      `<span><b style="background:${c}"></b>系列 ${i + 1}</span>`).join("");
+    // sequential scale derived from the brand stop ladder (illustrative only)
+    const seqLight = ["#E9EEF8", "#BDCCE8", "#89A3D6", "#547AC4", res.brand["700"]];
+    const seqDark = ["#18243B", "#233A64", "#305596", "#3F72CD", res.brand["500"]];
+    $("pvSeq").innerHTML = (state.dark ? seqDark : seqLight).map((c) => `<i style="background:${c}"></i>`).join("");
+
+    // type scale
+    const t = f.type;
+    const items = [["3xl", t["3xl"]], ["2xl", t["2xl"]], ["xl", t.xl], ["lg", t.lg], ["base", t.base]];
+    $("pvType").innerHTML = items.sort((a, b) => a[1] - b[1]).reverse().map(([k, v]) =>
+      `<div><span class="k">${k}</span><span style="font-size:${v}px;line-height:1.15;letter-spacing:-.01em">精密仪器 · 信号</span>
+       <span class="k" style="width:auto;margin-left:auto">${v}px</span></div>`).join("");
+
+    // module visibility
+    $("pvFormsSec").style.display = state.modules.forms ? "" : "none";
+    $("pvChartSec").style.display = state.modules.dataviz ? "" : "none";
+    $("pvKbdSec").style.display = state.modules.keyboard ? "" : "none";
+    $("pvI18nSec").style.display = state.modules.i18n ? "" : "none";
+    $("pvI18nHelp").textContent = state.modules.i18n
+      ? "当前文案 · 英文膨胀后需预留 30% 宽度"
+      : "";
+  }
+
+  // ---------------------------------------------------------------- output
+  function renderOutput(res) {
+    const role = { 950: "info 面", 800: "链接 / 按下", 700: "accent + solid", 600: "暗色 solid", 550: "暗色 hover", 500: "暗色 accent", 400: "hover 文字", 300: "暗色高亮文字" };
+    $("rampTable").innerHTML = ["950", "800", "700", "600", "550", "500", "400", "300"].map((k) => {
+      const hex = res.brand[k];
+      const c = cr(hex);
+      return `<tr class="${k === "700" ? "hl" : ""}">
+        <td class="sw"><i style="background:${hex}"></i></td>
+        <td class="k">${k}</td>
+        <td class="hx">${hex}</td>
+        <td class="cr">${c.toFixed(2)}:1</td>
+      </tr>`;
+    }).join("");
+
+    $("statusTable").innerHTML = ["success", "warning", "danger", "info"].map((k) =>
+      `<tr>
+        <td class="sw"><i style="background:${res.status[k]}"></i></td>
+        <td class="k">${k}</td>
+        <td class="hx">${res.status[k]}</td>
+        <td class="hx" style="color:var(--page-ink-3)">${res.darkStatus[k]}</td>
+      </tr>`).join("");
+
+    const grid = state.dark ? res.chartDark : res.chart;
+    $("chartGrid").innerHTML = grid.map((c, i) =>
+      `<div><i style="background:${c}"></i><b>${i < 7 ? "c" + (i + 1) : "other"}</b></div>`).join("");
+    $("chartHint").textContent = state.dark ? "8 色 · 暗色" : "8 色 · 亮色";
+
+    const f = res.form;
+    $("formKv").innerHTML = [
+      ["radius", `sm ${f.radius.sm} · md ${f.radius.md} · lg ${f.radius.lg}`],
+      ["space", `1 ${f.space[1]} · 2 ${f.space[2]} · 4 ${f.space[4]} · 6 ${f.space[6]}`],
+      ["type", `base ${f.type.base} · 2xl ${f.type["2xl"]} · 3xl ${f.type["3xl"]}`],
+      ["span", `×${f.typeSpan}`],
+      ["motion", `${f.motion.instant} / ${f.motion.fast} / ${f.motion.normal} / ${f.motion.slow}ms`],
+      ["shadow", `blur ${f.shadow.blur}px · y ${f.shadow.y}px`],
+      ["border", `${f.shadow.border}px`],
+      ["layers", `${f.meta.depth} 层 · ${f.meta.grid} · ${f.meta.ornament}`]
+    ].map(([k, v]) => `<dt>${k}</dt><dd>${v}</dd>`).join("");
+
+    $("checkTable").innerHTML = res.rows.map((r) => {
+      const isRatio = r.name.indexOf("dE") === -1;
+      const val = isRatio ? r.ratio.toFixed(2) : r.ratio.toFixed(3);
+      return `<tr>
+        <td class="m ${r.good ? "ok" : "no"}">${r.good ? "✓" : "✗"}</td>
+        <td class="n">${r.name}</td>
+        <td class="v">${val}</td>
+        <td class="f">≥${r.floor.toFixed(2)}</td>
+      </tr>`;
+    }).join("");
+    const passed = res.rows.filter((r) => r.good).length;
+    $("checkHint").textContent = `${passed}/${res.rows.length}`;
+    $("verdictPill").textContent = res.ok ? "PASS" : "FAIL";
+    $("verdictPill").className = "pill " + (res.ok ? "ok" : "fail");
+
+    const notes = res.notes || [];
+    $("notes").innerHTML = notes.map((n) =>
+      `<div class="note"><b>约束</b>${esc(n)}</div>`).join("");
+    $("noNotes").style.display = notes.length ? "none" : "block";
+
+    const [L, C, H] = lch_of(state.seed);
+    $("seedMeta").textContent = `H ${Math.round(H)}° · C ${C.toFixed(3)} · L ${L.toFixed(2)}`;
+    $("pvPath").textContent = `seed ${state.seed.toUpperCase()} · ${state.mood}`;
+    $("axisHint").textContent = isCustomAxes() ? "自定义" : state.mood;
+
+    const h = hash(JSON.stringify({
+      b: res.brand, s: res.status, d: res.darkStatus, c: res.chart, cd: res.chartDark, f: res.form
+    }));
+    $("hashPill").textContent = "sha " + h;
+    $("hashLine").textContent = `output hash ${h} · 同输入必得同输出`;
+  }
+
+  function isCustomAxes() {
+    const base = MOODS[state.mood];
+    return Object.keys(base).some((k) => base[k] !== state.axes[k]);
+  }
+
+  // ---------------------------------------------------------------- loop
+  function render() {
+    const res = current();
+    if (!res) {
+      $("verdictPill").textContent = "REJECTED";
+      $("verdictPill").className = "pill fail";
+      return;
+    }
+    applyPreview(res);
+    renderOutput(res);
+  }
+
+  // ---------------------------------------------------------------- events
+  function setSeed(v) {
+    if (!/^#[0-9a-f]{6}$/i.test(v)) return;
+    state.seed = v.toUpperCase();
+    $("seedText").value = state.seed;
+    $("seedColor").value = state.seed.toLowerCase();
+    renderPresets();
+    render();
+  }
+
+  $("seedColor").addEventListener("input", (e) => setSeed(e.target.value));
+  $("seedText").addEventListener("change", (e) => {
+    let v = e.target.value.trim();
+    if (!v.startsWith("#")) v = "#" + v;
+    if (/^#[0-9a-f]{6}$/i.test(v)) setSeed(v);
+    else e.target.value = state.seed;
+  });
+
+  $("presets").addEventListener("click", (e) => {
+    const b = e.target.closest("button[data-seed]");
+    if (b) setSeed(b.dataset.seed);
+  });
+
+  $("moods").addEventListener("click", (e) => {
+    const b = e.target.closest("button[data-mood]");
+    if (!b) return;
+    state.mood = b.dataset.mood;
+    state.axes = Object.assign({}, MOODS[state.mood]);
+    renderMoods();
+    renderAxes();
+    render();
+  });
+
+  $("axes").addEventListener("input", (e) => {
+    const r = e.target.closest("input[data-axis]");
+    if (!r) return;
+    state.axes[r.dataset.axis] = parseFloat(r.value);
+    const a = AXES.find((x) => x.key === r.dataset.axis);
+    const val = r.parentElement.querySelector(".val");
+    if (val) val.textContent = a.fmt(parseFloat(r.value));
+    render();
+  });
+
+  $("axes").addEventListener("click", (e) => {
+    const b = e.target.closest(".seg button");
+    if (!b) return;
+    const seg = b.parentElement.dataset.seg;
+    state.axes[seg] = b.dataset.v;
+    renderAxes();
+    render();
+  });
+
+  $("mods").addEventListener("click", (e) => {
+    const m = e.target.closest(".mod[data-mod]");
+    if (!m) return;
+    const k = m.dataset.mod;
+    state.modules[k] = !state.modules[k];
+    m.setAttribute("aria-checked", state.modules[k]);
+    render();
+  });
+  $("mods").addEventListener("keydown", (e) => {
+    if (e.key !== " " && e.key !== "Enter") return;
+    const m = e.target.closest(".mod[data-mod]");
+    if (!m) return;
+    e.preventDefault();
+    m.click();
+  });
+
+  $("themeBtn").addEventListener("click", () => {
+    state.dark = !state.dark;
+    $("themeBtn").textContent = state.dark ? "亮色预览" : "暗色预览";
+    render();
+  });
+
+  $("exportBtn").addEventListener("click", () => {
+    const res = current();
+    if (!res) return;
+    const f = res.form;
+    const L = [];
+    L.push("/* YUZK.AI tokens — generated, do not edit by hand");
+    L.push("   seed " + state.seed.toUpperCase() + " · mood " + state.mood + " · engine 0.1.0");
+    L.push("   output hash " + hash(JSON.stringify({ b: res.brand, s: res.status, c: res.chart, f })) + " */");
+    L.push(":root {");
+    L.push("  /* L1c brand config (the only hand-editable block) */");
+    for (const k of ["300", "400", "500", "550", "600", "700", "800", "950"])
+      L.push("  --brand-" + k + ": " + res.brand[k] + ";");
+    L.push("");
+    L.push("  /* L2 semantic */");
+    for (const [k, v] of Object.entries(res.semantic)) L.push("  --" + k + ": " + v + ";");
+    L.push("");
+    L.push("  /* status */");
+    for (const k of ["success", "warning", "danger", "info"]) {
+      L.push("  --status-" + k + ": " + res.status[k] + ";");
+      L.push("  --status-" + k + "-dark: " + res.darkStatus[k] + ";");
+    }
+    if (state.modules.dataviz) {
+      L.push("");
+      L.push("  /* dataviz module */");
+      res.chart.forEach((c, i) => L.push("  --chart-" + (i + 1) + ": " + c + ";"));
+      res.chartDark.forEach((c, i) => L.push("  --chart-" + (i + 1) + "-dark: " + c + ";"));
+    }
+    L.push("");
+    L.push("  /* form tokens derived from the 9 axes */");
+    L.push("  --radius-sm: " + f.radius.sm + "px;  --radius-md: " + f.radius.md + "px;  --radius-lg: " + f.radius.lg + "px;");
+    L.push("  --space-1: " + f.space[1] + "px;  --space-2: " + f.space[2] + "px;  --space-3: " + f.space[3] + "px;  --space-4: " + f.space[4] + "px;  --space-5: " + f.space[5] + "px;");
+    L.push("  --text-base: " + f.type.base + "px;  --text-lg: " + f.type.lg + "px;  --text-xl: " + f.type.xl + "px;  --text-2xl: " + f.type["2xl"] + "px;  --text-3xl: " + f.type["3xl"] + "px;");
+    L.push("  --duration-instant: " + f.motion.instant + "ms;  --duration-fast: " + f.motion.fast + "ms;  --duration-normal: " + f.motion.normal + "ms;  --duration-slow: " + f.motion.slow + "ms;");
+    L.push("  --shadow-blur: " + f.shadow.blur + "px;  --shadow-y: " + f.shadow.y + "px;  --border-width: " + f.shadow.border + "px;");
+    L.push("}");
+
+    const blob = new Blob([L.join("\n")], { type: "text/css;charset=utf-8" });
+    const a = document.createElement("a");
+    a.href = URL.createObjectURL(blob);
+    a.download = "tokens-" + state.seed.replace("#", "").toLowerCase() + "-" + state.mood + ".css";
+    a.click();
+    URL.revokeObjectURL(a.href);
+  });
+
+  // ---------------------------------------------------------------- boot
+  renderPresets();
+  renderMoods();
+  renderAxes();
+  renderModules();
+  render();
+})();
+</script>
+</body>
+</html>
