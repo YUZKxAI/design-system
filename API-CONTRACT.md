@@ -1,4 +1,4 @@
-# YUZK.AI — 组件 API 契约 v1.6.0
+# YUZK.AI — 组件 API 契约 v1.7.0
 
 > 视觉规格见 `COMPONENTS.md`；本文件定义**框架无关的接口契约**。
 > 无论用 React / Vue / Web Components 实现，props、events、slots 的语义必须一致。

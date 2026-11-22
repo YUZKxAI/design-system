@@ -113,15 +113,20 @@
   --shadow-active: 0 0 0 1px var(--blue-ring), 0 0 20px var(--blue-glow);
 
   /* ---------- Motion ---------- */
-  --dur-micro: 120ms;
-  --dur-fast: 180ms;
-  --dur-normal: 240ms;
-  --dur-slow: 400ms;
+  --duration-instant: 80ms;
+  --duration-fast: 160ms;
+  --duration-normal: 240ms;
+  --duration-slow: 360ms;
   --ease-out: cubic-bezier(.2, .8, .2, 1);
   --ease-in-out: cubic-bezier(.4, 0, .2, 1);
   --delay-1: 120ms;
   --delay-2: 240ms;
   --delay-3: 360ms;
+  /* Legacy aliases — keep existing references working */
+  --dur-micro: var(--duration-instant);
+  --dur-fast: var(--duration-fast);
+  --dur-normal: var(--duration-normal);
+  --dur-slow: var(--duration-slow);
 
   /* ---------- Layout ---------- */
   --sidebar-width: 240px;
@@ -181,6 +186,7 @@
   --size-icon-sm: 16px;
   --size-icon-md: 20px;
   --size-icon-lg: 24px;
+  --size-icon-xl: 32px;
   --size-control-sm: 32px;
   --size-control-md: 40px;
   --size-control-lg: 48px;
@@ -292,6 +298,10 @@
 /* ---------- Reduced motion ---------- */
 @media (prefers-reduced-motion: reduce) {
   :root {
+    --duration-instant: 0ms;
+    --duration-fast: 0ms;
+    --duration-normal: 0ms;
+    --duration-slow: 0ms;
     --dur-micro: 0ms;
     --dur-fast: 0ms;
     --dur-normal: 0ms;

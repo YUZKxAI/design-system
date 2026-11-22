@@ -4,8 +4,9 @@
 > 具体页面可在 `pages/<page>.md` 中声明覆盖项，未声明的部分一律遵循本文件。
 > 组件中禁止出现裸 hex；只能引用语义令牌。
 
-**版本：** 1.6.0 · **建立日期：** 2026-11-22 · **默认主题：** 亮色（暗色为可选主题）
+**版本：** 1.7.0 · **建立日期：** 2026-11-22 · **默认主题：** 亮色（暗色为可选主题）
 **变更记录：**
+- v1.7.0 — 补执行细节层：新增 `MOTION.md` 动效系统、`ICONS.md` 图标系统、`DATA-VIZ.md` 数据可视化规范、`CONTENT.md` 内容设计规范；新增 duration 动效令牌，交互式手册扩展至 29 节。
 - v1.6.0 — 补全工程与产品闭环：新增 `API-CONTRACT.md`（39 组件接口契约）、`PRODUCT-PATTERNS.md`（13 个产品外围模式）、4 个页面级覆盖规则、布局原语与溢出规范、组件解剖图与令牌映射、8 个业务组件规格。
 - v1.5.0 — 断点上扩至 8K：新增 3xl(1920)/4xl(2560)/5xl(3840)/6xl(≥5120)；明确断点基于 CSS 视口而非物理分辨率；新增内容最大宽度分层、超宽屏、8K 墙屏模式、高 DPI 与分屏规则。
 - v1.4.0 — 新增 `RESPONSIVE.md`：6 个内容断点 + 2 个结构断点、容器查询策略、7 类布局模板、31 组件断点行为矩阵、Reflow 优先级、触控/缩放/密度联动与验收清单。
@@ -555,3 +556,43 @@ YUZK.AI 的界面不是"聊天窗口套壳"，而是一台**面向智能的精�
 - 页面级规则见 `pages/`：entry / console / dashboard / conversation / settings。页面只写差异，不复制 Master。
 - 页面布局由五个原语组合：`Container` / `Stack` / `Grid` / `Split` / `Cluster`，嵌套 ≤3 层，详见 `RESPONSIVE.md` §12。
 - Sticky / fixed 行为与内容溢出规则见 `RESPONSIVE.md` §13–14；禁止用 `display:none` 隐藏核心功能。
+
+## 31. 动效系统
+
+完整规范见 [`MOTION.md`](./MOTION.md)。动效是状态变化的信号，不是装饰。
+
+- 令牌：`--duration-instant/fast/normal/slow`、`--ease-out`、`--ease-in-out`、`--delay-1/2/3`。
+- 微反馈 80–160ms，状态切换 160–240ms，进出场 240–360ms；超过 360ms 必须可中断。
+- 只动 `transform` / `opacity`；禁止动画触发布局重排。
+- `prefers-reduced-motion: reduce` 下保留终态，去除位移与缩放。
+- AI 场景：thinking 用低频呼吸，streaming 用增量出现，tool call 用阶段指示，approval gate 用静止高亮而非循环闪烁。
+
+## 32. 图标系统
+
+完整规范见 [`ICONS.md`](./ICONS.md)。图标必须语义明确、光学对齐、风格一致。
+
+- 24px 基准网格，16 / 20 / 24 / 32 四档；默认 `currentColor`。
+- 线性图标优先；禁止 emoji 作为产品图标；禁止混用填充与线性风格表达同一语义。
+- 纯图标按钮必须有 `aria-label`；装饰性图标必须 `aria-hidden="true"`。
+- AI 专用语义：agent / tool / thinking / streaming / approval / citation / confidence / trace / memory / scope。
+- 新增图标需经过语义、网格、对比度、暗色主题四项评审。
+
+## 33. 数据可视化
+
+完整规范见 [`DATA-VIZ.md`](./DATA-VIZ.md)。图表是仪表盘的精密读数，不是装饰性图形。
+
+- 序列色使用 `--chart-1` 至 `--chart-8`；颜色不得作为唯一编码。
+- Y 轴默认从 0 起；例外必须在图表标题或轴上明确标注。
+- 错误态保留上次数据并标注时间；空态、加载态、无权限态必须可区分。
+- 每个图表必须提供表格等价物或可读数据摘要。
+- AI 场景优先展示 token / cost / latency / confidence / trace / approval 等待，不用拟物化仪表盘。
+
+## 34. 内容设计
+
+完整规范见 [`CONTENT.md`](./CONTENT.md)。文案是界面行为的一部分，不是最后填充的标签。
+
+- 语气四支柱：精准、克制、直接、透明。
+- 错误文案必须说明**发生了什么、影响范围、下一步动作**；禁止只写"操作失败"。
+- AI 生成内容必须明确标识；不确定性使用概率或区间表达，不做绝对承诺。
+- 中文为源语言，英文回退；布局需预留 30%–35% 文本膨胀空间。
+- 默认货币 `¥`，数字千分位，日期与相对时间随 locale 变化。

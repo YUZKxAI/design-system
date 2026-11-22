@@ -3,7 +3,7 @@
 <head>
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
-<title>YUZK.AI — Design System v1.6.0</title>
+<title>YUZK.AI — Design System v1.7.0</title>
 <style>
 /* ==================== TOKENS ==================== */
 @import url('https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&family=JetBrains+Mono:wght@400;500;600&family=Space+Grotesk:wght@500;600;700&display=swap');
@@ -32,7 +32,7 @@
   --radius-none:0;--radius-sm:4px;--radius-md:8px;--radius-lg:12px;--radius-pill:999px;
   --shadow-sm:0 1px 2px rgba(13,20,32,.06);--shadow-md:0 8px 24px rgba(13,20,32,.08);--shadow-lg:0 20px 48px rgba(13,20,32,.12);
   --shadow-focus:0 0 0 2px var(--bg-canvas),0 0 0 4px var(--focus-ring);--shadow-active:0 0 0 1px var(--blue-ring),0 0 20px var(--blue-glow);
-  --dur-micro:120ms;--dur-fast:180ms;--dur-normal:240ms;--dur-slow:400ms;
+  --duration-instant:80ms;--duration-fast:160ms;--duration-normal:240ms;--duration-slow:360ms;--dur-micro:var(--duration-instant);--dur-fast:var(--duration-fast);--dur-normal:var(--duration-normal);--dur-slow:var(--duration-slow);
   --ease-out:cubic-bezier(.2,.8,.2,1);--ease-in-out:cubic-bezier(.4,0,.2,1);
   --sidebar-width:248px;--topbar-height:56px;--content-max:1160px;--content-pad:24px;
   /* v1.2 state / data / syntax / size */
@@ -42,7 +42,7 @@
   --chart-1:#2455B4;--chart-2:#12805C;--chart-3:#B26B00;--chart-4:#C22B2B;--chart-5:#3F6FA8;--chart-6:#1F8A8A;--chart-7:#5F6B7A;--chart-8:#8A4A4A;
   --chart-grid:rgba(13,20,32,.08);--chart-axis:#5F6D82;
   --syntax-keyword:#A85000;--syntax-string:#12805C;--syntax-number:#2455B4;--syntax-comment:#8B99AD;--syntax-function:#8A5A00;--syntax-variable:#0D1420;
-  --size-icon-sm:16px;--size-icon-md:20px;--size-icon-lg:24px;--size-control-sm:32px;--size-control-md:40px;--size-control-lg:48px;--size-touch-min:44px;
+  --size-icon-sm:16px;--size-icon-md:20px;--size-icon-lg:24px;--size-icon-xl:32px;--size-control-sm:32px;--size-control-md:40px;--size-control-lg:48px;--size-touch-min:44px;
   --opacity-1:.04;--opacity-2:.08;--opacity-3:.16;--opacity-4:.32;
 }
 [data-theme='dark']{
@@ -531,13 +531,18 @@ button.kbd:hover{border-color:var(--border-strong);color:var(--text-primary)}
       <a href="#api"><span class="num">23</span>API 契约</a>
       <a href="#productpatterns"><span class="num">24</span>产品流程模式</a>
       <a href="#pagecover"><span class="num">25</span>页面覆盖与原语</a>
+      <div class="nav-group">Craft</div>
+      <a href="#motion-system"><span class="num">26</span>动效系统</a>
+      <a href="#icons-system"><span class="num">27</span>图标系统</a>
+      <a href="#dataviz-system"><span class="num">28</span>数据可视化</a>
+      <a href="#content-system"><span class="num">29</span>内容设计</a>
     </nav>
-    <div class="side-foot"><span><span class="dot-live"></span>v1.6.0</span><span>LIGHT FIRST</span></div>
+    <div class="side-foot"><span><span class="dot-live"></span>v1.7.0</span><span>LIGHT FIRST</span></div>
   </aside>
 
   <div class="main">
     <header class="topbar">
-      <div class="crumb">YUZK.AI / <b>DESIGN SYSTEM</b> / v1.6.0</div>
+      <div class="crumb">YUZK.AI / <b>DESIGN SYSTEM</b> / v1.7.0</div>
       <div class="tools">
         <button class="kbd" id="cmdOpen" aria-label="打开命令面板"><svg width="13" height="13" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><circle cx="11" cy="11" r="7"/><path d="m20 20-3.5-3.5"/></svg><kbd>⌘ K</kbd></button>
         <button class="icon-btn" id="densityBtn" title="切换密度" aria-label="切换紧凑密度"><svg width="15" height="15" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.75"><path d="M4 6h16M4 12h16M4 18h16"/></svg></button>
@@ -562,7 +567,7 @@ button.kbd:hover{border-color:var(--border-strong);color:var(--text-primary)}
           <div class="hero-stats">
             <div class="stat"><div class="v">31</div><div class="l">Component Specs</div></div>
             <div class="stat"><div class="v">2</div><div class="l">Themes</div></div>
-            <div class="stat"><div class="v">6</div><div class="l">Breakpoints</div></div>
+            <div class="stat"><div class="v">10</div><div class="l">Breakpoints</div></div>
             <div class="stat"><div class="v">1</div><div class="l">Accent Color</div></div>
           </div>
         </div>
@@ -1092,6 +1097,10 @@ button.kbd:hover{border-color:var(--border-strong);color:var(--text-primary)}
               ├── <span style="color:var(--accent)">RESPONSIVE.md</span> — 响应式布局与断点行为<br>
               ├── <span style="color:var(--accent)">API-CONTRACT.md</span> — 39 组件 API 契约<br>
               ├── <span style="color:var(--accent)">PRODUCT-PATTERNS.md</span> — 13 个产品流程模式<br>
+              ├── <span style="color:var(--accent)">MOTION.md</span> &nbsp;— 动效系统与编排规则<br>
+              ├── <span style="color:var(--accent)">ICONS.md</span> &nbsp;— 图标系统与语义映射<br>
+              ├── <span style="color:var(--accent)">DATA-VIZ.md</span> &nbsp;— 数据可视化规范<br>
+              ├── <span style="color:var(--accent)">CONTENT.md</span> &nbsp;— 内容设计与文案规范<br>
               ├── <span style="color:var(--accent)">pages/</span> &nbsp;— 五份页面级覆盖规则<br>
               ├── <span style="color:var(--accent)">index.html</span> &nbsp;— 本手册（可交互）<br>
               ├── <span style="color:var(--accent)">tokens.css</span> &nbsp;— CSS 变量，亮/暗双主题<br>
@@ -1619,8 +1628,104 @@ button.kbd:hover{border-color:var(--border-strong);color:var(--text-primary)}
         </div>
       </section>
 
+      <!-- 26 MOTION SYSTEM -->
+      <section class="section" id="motion-system">
+        <div class="sec-head"><span class="sec-num">26</span><h2>动效系统</h2></div>
+        <p class="sec-desc">动效是状态变化的信号，不是装饰。独立规范见 <code style="color:var(--accent)">MOTION.md</code>；只动 transform / opacity，任何动画都必须可中断。</p>
+        <div class="panel panel-pad" style="overflow-x:auto">
+          <table class="spec-table">
+            <thead><tr><th>令牌</th><th>时长</th><th>用途</th></tr></thead>
+            <tbody>
+              <tr><td>--duration-instant</td><td>80ms</td><td>hover / focus 即时反馈</td></tr>
+              <tr><td>--duration-fast</td><td>160ms</td><td>按钮、输入框、Tab 状态切换</td></tr>
+              <tr><td>--duration-normal</td><td>240ms</td><td>Modal / Drawer / 列表进出场</td></tr>
+              <tr><td>--duration-slow</td><td>360ms</td><td>复杂编排，超过则拆分为阶段</td></tr>
+            </tbody>
+          </table>
+        </div>
+        <div class="subhead">AI 场景语义</div>
+        <div class="lt-grid">
+          <div class="lt"><h4>thinking</h4><p>低频呼吸，不做永久循环；超过 2 秒应显示阶段文本。</p></div>
+          <div class="lt"><h4>streaming</h4><p>增量出现，保留已生成内容；停止生成不应清空。</p></div>
+          <div class="lt"><h4>tool call</h4><p>阶段指示 + 耗时，不隐藏工具名称。</p></div>
+          <div class="lt"><h4>approval gate</h4><p>静止高亮 + 明确动作，禁止闪烁催促。</p></div>
+        </div>
+        <div class="callout" style="margin-top:16px">
+          <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.75"><path d="M12 3 2 7l10 4 10-4-10-4Z"/><path d="M2 12l10 4 10-4M2 17l10 4 10-4"/></svg>
+          <div><b>reduced-motion</b>：保留终态与状态差异，去除位移、缩放和循环动画。</div>
+        </div>
+      </section>
+
+      <!-- 27 ICONS SYSTEM -->
+      <section class="section" id="icons-system">
+        <div class="sec-head"><span class="sec-num">27</span><h2>图标系统</h2></div>
+        <p class="sec-desc">统一使用 Lucide 线性图标，24px 基准网格，默认 20px，颜色继承 currentColor。完整规范见 <code style="color:var(--accent)">ICONS.md</code>。</p>
+        <div class="panel panel-pad" style="overflow-x:auto">
+          <table class="spec-table">
+            <thead><tr><th>尺寸</th><th>线宽</th><th>用途</th></tr></thead>
+            <tbody>
+              <tr><td>16px</td><td>1.5px</td><td>表格、密集列表、内联状态</td></tr>
+              <tr><td>20px</td><td>1.75px</td><td>默认按钮、导航、工具栏</td></tr>
+              <tr><td>24px</td><td>2px</td><td>卡片标题、空状态</td></tr>
+              <tr><td>32px</td><td>2px</td><td>页面级空状态、引导插图</td></tr>
+            </tbody>
+          </table>
+        </div>
+        <div class="subhead">AI 语义锚点</div>
+        <div class="checklist">
+          <li><svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5"><path d="m5 12 4 4L19 6"/></svg><span>agent / tool / thinking / streaming / approval</span></li>
+          <li><svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5"><path d="m5 12 4 4L19 6"/></svg><span>citation / confidence / trace / memory / permission scope</span></li>
+          <li><svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5"><path d="m5 12 4 4L19 6"/></svg><span>纯图标按钮必须有 aria-label；装饰图标 aria-hidden</span></li>
+        </div>
+      </section>
+
+      <!-- 28 DATA VIZ SYSTEM -->
+      <section class="section" id="dataviz-system">
+        <div class="sec-head"><span class="sec-num">28</span><h2>数据可视化体系</h2></div>
+        <p class="sec-desc">图表是精密读数，不是装饰。序列色按 --chart-1 → --chart-8 顺序取用，颜色不能成为唯一编码。完整规范见 <code style="color:var(--accent)">DATA-VIZ.md</code>。</p>
+        <div class="grid g2">
+          <div class="panel panel-pad">
+            <div class="demo-label">硬规则</div>
+            <div class="checklist">
+              <li><svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5"><path d="m5 12 4 4L19 6"/></svg><span>Y 轴默认从 0 起，例外必须标注</span></li>
+              <li><svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5"><path d="m5 12 4 4L19 6"/></svg><span>错误态保留上次数据并标注时间</span></li>
+              <li><svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5"><path d="m5 12 4 4L19 6"/></svg><span>每个图表提供表格等价物或数据摘要</span></li>
+            </div>
+          </div>
+          <div class="panel panel-pad">
+            <div class="demo-label">AI 专用读数</div>
+            <div class="checklist">
+              <li><svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5"><path d="m5 12 4 4L19 6"/></svg><span>token / cost / latency 趋势</span></li>
+              <li><svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5"><path d="m5 12 4 4L19 6"/></svg><span>置信度区间与审批等待时长</span></li>
+              <li><svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5"><path d="m5 12 4 4L19 6"/></svg><span>工具调用耗时与 Agent 编排关系</span></li>
+            </div>
+          </div>
+        </div>
+      </section>
+
+      <!-- 29 CONTENT SYSTEM -->
+      <section class="section" id="content-system">
+        <div class="sec-head"><span class="sec-num">29</span><h2>内容设计</h2></div>
+        <p class="sec-desc">文案是界面行为的一部分。语气四支柱：精准、克制、直接、透明。完整规范见 <code style="color:var(--accent)">CONTENT.md</code>。</p>
+        <div class="panel panel-pad" style="overflow-x:auto">
+          <table class="spec-table">
+            <thead><tr><th>场景</th><th>文案公式</th><th>示例</th></tr></thead>
+            <tbody>
+              <tr><td>错误</td><td>发生了什么 + 影响 + 下一步</td><td>数据库连接中断，本次结果未保存。请重试。</td></tr>
+              <tr><td>空状态</td><td>为什么空 + 如何开始</td><td>还没有智能体。创建第一个智能体以开始编排。</td></tr>
+              <tr><td>AI 生成</td><td>标识 + 来源 + 不确定性</td><td>AI 生成 · 参考 3 份资料 · 置信度 82%</td></tr>
+              <tr><td>危险操作</td><td>对象 + 后果 + 确认词</td><td>删除工作区「研发」及其全部数据。输入工作区名确认。</td></tr>
+            </tbody>
+          </table>
+        </div>
+        <div class="callout" style="margin-top:16px">
+          <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.75"><path d="M12 3 2 7l10 4 10-4-10-4Z"/><path d="M2 12l10 4 10-4M2 17l10 4 10-4"/></svg>
+          <div>中文为源语言，英文回退；布局预留 <b>30%–35%</b> 文本膨胀空间。默认货币 <b>¥</b>。</div>
+        </div>
+      </section>
+
       <footer class="footer">
-        <span>YUZK.AI DESIGN SYSTEM · v1.6.0 · 2026-11-22</span>
+        <span>YUZK.AI DESIGN SYSTEM · v1.7.0 · 2026-11-22</span>
         <span>SIGNAL OVER DECORATION</span>
       </footer>
     </main>

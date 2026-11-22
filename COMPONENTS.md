@@ -1,4 +1,4 @@
-# YUZK.AI Design System — 组件规格明细 v1.6.0
+# YUZK.AI Design System — 组件规格明细 v1.7.0
 
 > 本文件是 `MASTER.md` 第 7 节「组件契约」的展开。Master 定义原则，本文件定义**逐组件的可执行规格**。
 > 所有尺寸、颜色、间距必须引用令牌；组件内禁止裸 hex。
